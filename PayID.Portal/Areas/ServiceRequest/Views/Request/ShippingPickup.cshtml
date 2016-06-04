@@ -1,0 +1,322 @@
+﻿<style>
+    .preview-content {
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    .lading-preview {
+        min-height: 200px;
+        background-color: #F2F2F2;
+        /* padding: 20px; */
+        /* -webkit-box-sizing: border-box; */
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 0 11px 5px -10px rgba(0, 0, 0, 0.3);
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-top: 10px;
+    }
+</style>
+
+<div class="row">
+    <label for="inputPassword3" class="col-sm-1 control-label">Quản lý kho</label>
+    <div class="col-sm-3">
+        <input type="text" class="form-control" id="shipping_pickup_contact_name" required placeholder="Họ và tên" value="">
+    </div>
+    <label for="inputPassword3" class="col-sm-1 control-label">Điện thoại</label>
+    <div class="col-sm-3">
+        <input type="text" class="form-control" id="shipping_pickup_contact_mobile" maxlength="11" required onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" placeholder="Số điện thoại" value="">
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-1"></div>
+    <span class="label"> <span class="glyphicon glyphicon-user"></span> Thông tin người nhận</span>
+</div>
+<div class="row">
+    <label for="inputPassword3" class="col-sm-1 control-label">Họ tên&nbsp;<span style="color:#f48260;">(*)</span></label>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" id="shipping_pickup_receiver_name" required placeholder="Họ và tên" value="">
+    </div>
+    <label for="inputPassword3" class="col-sm-1 control-label">Điện thoại&nbsp;<span style="color:#f48260;">(*)</span></label>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" id="shipping_pickup_receiver_mobile" maxlength="11" required onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" placeholder="Số điện thoại" value="">
+    </div>
+    <label for="address" class="col-sm-1 control-label">Địa chỉ&nbsp;<span style="color:#f48260;">(*)</span></label>
+    <div class="col-sm-5">
+        <input type="text" class="form-control forward-text" id="shipping_pickup_receiver_address" required placeholder="Địa chỉ" value="">
+    </div>
+</div>
+<div class="row">
+    <label class="col-sm-1 control-label" style="text-align:right;"><span style="color:#f48260;">(*)</span> </label>
+    <div class="col-sm-2">
+        <select class="form-control select-forward-text province" data-group="receiver" required id="shipping_pickup_receiver_province">
+            <option value="">Tỉnh/Thành phố</option>
+        </select>
+    </div>
+    <label class="col-sm-1 control-label"> </label>
+    <div class="col-sm-2">
+        <select class="form-control select-forward-text district district-receiver" data-group="receiver" id="shipping_pickup_receiver_district">
+            <option>Quận, huyện</option>
+        </select>
+    </div>
+    <label class="col-sm-1 control-label"> </label>
+    <div class="col-sm-2">
+        <select class="form-control select-forward-text ward ward-receiver" data-group="receiver" id="shipping_pickup_receiver_ward">
+            <option>Phường, xã</option>
+        </select>
+    </div>
+</div>
+@*<div align="left">
+        <a href='#' id='lbl_success' class='btn btn-xs btn-success'>Thông tin hàng hóa</a>
+    </div>*@
+
+<br />
+<div class="row">
+    <div class="col-sm-1"></div>
+    <span class="label"> <span class="glyphicon glyphicon-shopping-cart"></span> Thông tin hàng hóa</span>
+</div>
+
+
+<div class="row">
+    <label for="shipping_pickup_product_name" class="col-sm-1 control-label">Sản phẩm&nbsp;<span style="color:#f48260;">(*)</span></label>
+    <div class="col-sm-3">
+        <input type="text" class="form-control" required id="shipping_pickup_product_name" placeholder="Tên sản phẩm" value="">
+    </div>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" id="shipping_pickup_product_code" placeholder="Mã sản phẩm" value="">
+    </div>
+    <label class="col-sm-1 control-label">Dịch vụ</label>
+    <div class="col-sm-3">
+        <select class="form-control select-forward-text" id="shipping_pickup_service_type" data-target="lblServiceType">
+            <option>Dịch vụ</option>
+            <option value="1">Chuyển Phát Nhanh</option>
+            <option value="0">Chuyển Phát Thường</option>
+        </select>
+    </div>
+
+</div>
+<div class="row">
+    <label for="shipping_pickup_cod_weight" class="col-sm-1 control-label">Khối lượng&nbsp;<span style="color:#f48260;">(*)</span></label>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" id="shipping_pickup_cod_weight" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" placeholder="Khối lượng" value="">
+    </div>
+    <label for="shipping_pickup_cod_quantity" class="col-sm-1 control-label">Số lượng&nbsp;<span style="color:#f48260;">(*)</span></label>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" id="shipping_pickup_cod_quantity" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" placeholder="Số lượng" value="">
+    </div>
+    <label for="shipping_pickup_cod_amount" class="col-sm-1 control-label">Giá trị&nbsp;<span style="color:#f48260;">(*)</span></label>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" id="shipping_pickup_cod_amount" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" placeholder="Giá trị" value="">
+    </div>
+</div>
+<div class="row">
+    @*<label class="col-sm-2 control-label">Loại hàng</label>
+        <div class="col-sm-4">
+            <select class="form-control select-forward-text" id="shipping_pickup_product_type" data-target="lblProductType">
+                <option>--Hàng hóa--</option>
+                <option value="BP">Ấn Phẩm</option>
+                <option value="BK">Hàng Hóa</option>
+            </select>
+        </div>*@
+
+
+    <label class="col-sm-1 control-label">Ngày hẹn</label>
+    <div class="col-sm-2">
+        <input type="date" class="form-control forward-text" id="shipping_pickup_contact_date" data-target="lblContactDate" value="" />
+    </div>
+    <label class="col-sm-1 control-label">Giờ hẹn</label>
+    <div class="col-sm-2">
+        <input type="time" class="form-control forward-text" id="shipping_pickup_contact_time" data-target="lblContactTime" value="" />
+    </div>
+</div>
+<script>
+    function refreshShippingUI() {
+        $('#customer_code').val('');
+        $('#customer_name').val('');
+        $('#customer_mobile').val('');
+        $('#customer_email').val('');
+        $('#short_name').val('');
+        $('#province').val('');
+        $('#district').val('');
+        $('#ward').val('');
+        $('#storeList').val();
+        $('#address').val('');
+        $('#shipping_pickup_receiver_name').val(""),
+        $('#shipping_pickup_receiver_address').val(""),
+        $('#shipping_pickup_receiver_province').val(""),
+        $('#shipping_pickup_receiver_mobile').val(""),
+        //$('#shipping_pickup_receiver_province').find('option:selected').text(),
+        $('#shipping_pickup_receiver_district').val(""),
+        //$('#shipping_pickup_receiver_district').find('option:selected').text(),
+        $('#shipping_pickup_receiver_ward').val(""),
+        //$('#shipping_pickup_receiver_ward').find('option:selected').text(),
+        //$('#shipping_pickup_product_type').val(),
+        $('#postcode_link').val(""),
+        $('#shipping_pickup_product_name').val(""),
+        $('#shipping_pickup_product_code').val(""),
+        $('#shipping_pickup_cod_amount').val(""),
+        $('#shipping_pickup_cod_quantity').val(""),
+        $('#shipping_pickup_cod_weight').val(""),
+        $('#shipping_pickup_contact_date').val(""),
+        $('#shipping_pickup_contact_time').val(""),
+        $('#shipping_pickup_service_type').val(),
+        $('#shipping_pickup_contact_name').val(""),
+         $('#shipping_pickup_contact_mobile').val(""),
+        $('#notes').val("")
+    };
+    //function savePickUp() {
+    //    var dataToSend = {
+    //        // Thông tin lấy hàng
+    //        from_address: {
+    //            _id: "",
+    //            name: $('#shipping_pickup_contact_name').val(),
+    //            address: $('#address').val(),
+    //            email: $('#customer_email').val(),
+    //            mobile: $('#shipping_pickup_contact_mobile').val(),
+    //            ward: $('#ward').find('option:selected').text(),
+    //            district: $('#district').find('option:selected').text(),
+    //            province: $('#province').find('option:selected').text(),
+    //            postcode_link: $('#postcode_link').val(),
+    //        },
+    //        // Thông tin người nhận
+    //        to_address: {
+    //            _id: "",
+    //            name: $('#shipping_pickup_receiver_name').val(),
+    //            address: $('#shipping_pickup_receiver_address').val(),
+    //            ward: $('#shipping_pickup_receiver_ward').find('option:selected').text(),
+    //            district: $('#shipping_pickup_receiver_district').find('option:selected').text(),
+    //            province: $('#shipping_pickup_receiver_province').find('option:selected').text(),
+    //            mobile: $('#shipping_pickup_receiver_mobile').val(),
+    //        },
+    //        product: {
+    //            name: $('#shipping_pickup_product_name').val(),
+    //            code: $('#shipping_pickup_product_code').val(),
+    //            quantity: $('#shipping_pickup_quantity').val(),
+    //            weight: $('#shipping_pickup_weight').val(),
+    //            description: $('#shipping_pickup_product_name').val(),
+    //            value: $('#shipping_pickup_amount').val(),
+    //            date: $('#shipping_pickup_contact_date').val(),
+    //            time: $('#shipping_pickup_contact_time').val(),
+    //        },
+    //        parcel: {},
+    //        service: {
+    //            cashpost_service: "2",
+    //            shipping_main_service: $('#shipping_pickup_service_type').val(),
+    //            shipping_add_service: $('#shipping_pickup_product_type').val()
+    //        },
+    //        notes: $('#notes').val()
+    //    }
+    //    $.ajax({
+    //        url: "/ServiceRequest/Request/SaveShippingPickupRequest",
+    //        dataType: "json",
+    //        action: "POST",
+    //        data: {
+    //            request: JSON.stringify(dataToSend)
+    //        },
+    //        success: function (data) {
+
+    //            refreshShippingUI();
+    //            $('#create-result').show();
+    //            $('#result_message').html(data.response_message);
+    //        }
+    //    });
+    //}
+    function submitSHIPPING_PICKUP() {
+        //alert($('#storeList').find('option:selected').val());
+        var dataToSend = {
+            // Địa chỉ lấy hàng
+            from_address: {
+                _id: $('#storeList').find('option:selected').val(),
+                name: $('#shipping_pickup_contact_name').val()==""?$('#customer_name').val():$('#shipping_pickup_contact_name').val(),
+                address: $('#address').val(),
+                ward: $('#ward').val(),
+                district: $('#district').val(),
+                province: $('#province').val(),
+                phone: $('#shipping_pickup_contact_mobile').val()==""?$('#customer_mobile').val():$('#shipping_pickup_contact_mobile').val(),
+                email: $('#customer_email').val(),
+                postcode_link: $('#postcode_link').val(),
+            },
+            // Người nhận
+            to_address: {
+                _id: null,
+                name: $('#shipping_pickup_receiver_name').val(),
+                address: $('#shipping_pickup_receiver_address').val(),
+                ward: $('#shipping_pickup_receiver_ward').val(),
+                district: $('#shipping_pickup_receiver_district').val(),
+                province: $('#shipping_pickup_receiver_province').val(),
+                phone: $('#shipping_pickup_receiver_mobile').val(),
+            },
+            // Sản phẩm
+            product: {
+                weight: $('#shipping_pickup_cod_weight').val(),
+                quantity: $('#shipping_pickup_cod_quantity').val(),
+                value: $('#shipping_pickup_cod_amount').val(),
+                code: $('#shipping_pickup_product_code').val(),
+                name: $('#shipping_pickup_product_name').val(),
+                description: $('#shipping_pickup_product_name').val(),
+                date: $('#shipping_pickup_contact_date').val(),
+                time: $('#shipping_pickup_contact_time').val(),
+            },
+            customer: {
+                code: $('#customer_code').val(),
+                email: $('#customer_email').val(),
+                name: $('#customer_name').val(),
+                mobile: $('#customer_mobile').val(),
+            },
+            parcel: {},
+            service: {
+                cashpost_service: "2",
+                shipping_main_service: $('#shipping_pickup_service_type').val(),
+                shipping_add_service: $('#shipping_pickup_product_type').val()
+            },
+            notes: $('#notes').val()
+        }
+
+        $.ajax({
+            url: '@Url.Content("~/ServiceRequest/Request/CreateShippingPickupRequest")',
+            type: "POST",
+            dataType: "json",
+            data: {
+                request: JSON.stringify(dataToSend)
+            },
+            success: function (data) {
+                //$('#result_message').html(data.response_message);
+                $('.create-result').fadeIn();
+                setInterval(function(){ $('.create-result').fadeOut(); }, 3000);
+                refreshShippingUI();
+            }
+        });
+    };
+    $(document).ready(function () {
+        //$("#btnSaveRequest").click(function () {
+        //    alert("F");
+        //    submitSHIPPING_PICKUP();
+        //})
+
+        $('#shipping_pickup_customer_name').change(function () {
+            $('#shipping_pickup_contact_name').val($(this).val());
+        })
+        $('#shipping_pickup_customer_mobile').change(function () {
+            $('#shipping_pickup_contact_mobile').val($(this).val());
+        })
+
+        // Định danh khách hàng.
+        $('#shipping_pickup_customer_code').change(function () {
+            $.ajax({
+                url: '@Url.Content("~/Merchant/Proxy/ListProfile")',
+                type:'POST',
+                dataType: "json",
+                data: { customer_code: $("#shipping_pickup_customer_code").val() },
+                success: function (data) {
+                    document.getElementById("shipping_pickup_customer_name").defaultValue = data.customer_name;
+                    document.getElementById("shipping_pickup_customer_mobile").defaultValue = data.customer_mobile;
+                    document.getElementById("shipping_pickup_address").defaultValue = data.address;
+                    document.getElementById("shipping_pickup_province").defaultValue = data.province;
+                }
+            });
+        })
+
+    });
+</script>

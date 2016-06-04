@@ -1,0 +1,41 @@
+﻿ @{
+    Layout = null;
+}
+<script>
+    $("#cancelAssign").click(function () {
+             var ret=confirm("Bạn có chắc chắn hủy phân hướng yêu cầu này không?");
+            if(ret)
+            {
+                    $.ajax({
+                    url: '@Url.Content("~/ServiceRequest/Request/CancelAssign")',
+                    type:'POST',
+                    dataType: "json",
+                    data: {
+                        id: $("#IdAssign").val(),
+                        notes:$("#noteReasonAssign").val()
+                    },
+                    success: function (data) {
+                        alert(data.response_message);
+                        location.reload();
+                    }
+                });
+             }
+        });
+</script>
+<div>
+    <input type="hidden" value="@ViewBag.ID" id="IdAssign" />    
+</div>
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-12 ">
+            <label class="control-label">Lý do</label>
+        </div>
+        <div class="col-sm-12">
+            <textarea id="noteReasonAssign" class="form-control"></textarea>
+        </div>
+    </div>
+</div>
+<div id="msg-result" class="alert-box " style="display: none; margin-top: 10px;"></div>
+<div class="col-sm-12" style="text-align: center;">
+</div>
+

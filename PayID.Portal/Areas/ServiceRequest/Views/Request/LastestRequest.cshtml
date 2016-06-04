@@ -1,0 +1,41 @@
+﻿@model dynamic[]    
+@{
+    Layout = null;
+}
+<style>
+    .panel{
+        padding:10px;
+    }
+</style> 
+       
+     
+        <h4>Danh sách yêu cầu gần nhất</h4>
+        <table class="table table-bordred table-striped">
+        <thead>
+            <tr>                
+                <td>STT</td>
+                <td>Đơn hàng</td>
+                <td>Sản phẩm</td>                
+                <td>Tỉnh thành</td>           
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Length; i++)
+            {
+                var req = Model[i];
+                <tr>                    
+                    <td>@(i + 1)   </td>
+                    <td>
+                        <a href=@Url.Content("/ServiceRequest/Request/Detail/" + req._id) class="linkDetail"><strong>@req._id</strong></a>. @req.tracking_code <br />
+                        @req.created_by. @req.created_at
+                    </td>
+                    <td>
+                        <b>@req.order_id. @req.product.name</b>  <br />
+                        50 g - @req.product.value đ
+                    </td>                               
+                   <td>@PayID.Portal.Areas.Metadata.Controllers.ProxyController.GetProvinceName(req.to_address.province)</td>                
+                </tr>
+            }
+        </tbody>
+    </table>
+    

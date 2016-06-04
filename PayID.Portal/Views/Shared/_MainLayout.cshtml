@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@ViewBag.Title</title>
+    <style>
+        .login {
+            margin: auto;
+            padding: 40px 0 0;
+            width: 350px;
+        }
+
+            .login form {
+                background: none repeat scroll 0 0 #FFFFFF;
+                border: 1px solid #d2d2d2;
+                font-weight: normal;
+                border-color: #d2d2d2;
+                box-shadow: 0 0 6px 1px #d2d2d2;
+                border-radius: 3px;
+            }
+
+        .container.content {
+            position: inherit;
+            min-height: 500px;
+        }
+
+        .text-muted {
+            color: #fff;
+        }
+
+        #footer {
+            background-color: #F99D1C;
+            position:fixed;
+            bottom:0;
+            width:100%;
+            height:60px;
+        }
+
+        ol .breadcrumb {
+            margin-top: 60px;
+            font-size: 12px;
+        }
+    </style>
+    <link href="~/Content/assets/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/css/styles.css" rel="stylesheet" />
+    <link href="~/var/cache/misc/assets/design/backend/css/standalone.2f4d09bb5b8a261324c6a10ec98b17101443412065.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-fileupload.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/form-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
+    <link href="~/Content/validationEngine.jquery.css" rel="stylesheet" />
+    <link href="~/Content/style-loading.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/pines-notify/pnotify.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.10.3.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-fileupload.min.js"></script>
+
+    <script src="~/Content/assets/plugins/form-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/Content/assets/plugins/form-daterangepicker/moment.min.js"></script>
+    <script src="~/Content/assets/plugins/form-daterangepicker/daterangepicker.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="~/Content/assets/plugins/clockface/js/clockface.js"></script>
+    <script src="~/Content/assets/plugins/pines-notify/pnotify.min.js"></script>
+    <script src="~/Content/assets/plugins/form-inputmask/jquery.inputmask.bundle.min.js"></script>
+    <script src="~/Scripts/jquery.validationEngine.js"></script>
+    <script src="~/Scripts/jquery.validationEngine-vi.js"></script>
+    <script src="~/Scripts/jquery.isloading.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script> <!--CreateRequest; CreateAccount-->
+    <script src="~/Scripts/CashPost/filter.js"></script>
+    <script src="~/Scripts/CashPost/common.js"></script>
+    <script src="~/Scripts/CashPost/Customer.js"></script>
+    <script src="~/Scripts/CashPost/Shipment.js"></script>
+    <script src="~/Scripts/CashPost/Lading.js"></script>
+    <script src="~/Scripts/CashPost/Po.js"></script>
+    <script src="~/Scripts/CashPost/System.js"></script>
+</head>
+<body>
+    <div>
+        <div class="cm-notification-container alert-wrap" id="Message" style="display:none; top:40px; z-index:2000;">
+            <div class="alert cm-notification-content alert-error" id="notification">
+                <button type="button" class="close cm-notification-close " data-dismiss="alert" style="right:0px;">×</button>
+                <strong id="errorType"></strong>
+                <label id="mes" style="font-weight:normal;"></label>
+            </div>
+        </div>
+
+        <div id="main_column" class="main-wrap">
+            <div class="admin-content">
+                @{Html.RenderAction("Header", "Partial", new { Area = "" });}
+            </div>
+            <div class="admin-content-wrap" style="margin:auto; background-color:#fff;">
+                @RenderBody()
+            </div>
+            <div id="footer" style="height:30px; line-height:30px; background:#F2F2F2;">
+                &nbsp;&nbsp;&nbsp;&nbsp;© 2016 PAYPOST 
+            </div>
+        </div>
+
+        <div id="tempModal" class='modal fade'>
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div id="tempContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tempModal_small" class='modal fade'>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div id="tempContainerSmall"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="tempModal_ms" class='bootbox modal fade in' data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="false">
+            <div style="width:280px;" class=" modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div style="min-height:30px; line-height:30px; text-align:center;">
+                        <div id="tempContainer_ms">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="confirmModal"></div>
+
+    </div>
+
+    <script>
+
+        var app;
+        app = app || (function () {
+            return {
+                showProcess: function () {
+                    $('#processing-modal').modal('show');
+                },
+                hideProcess: function () {
+                    $('#processing-modal').modal('hide');
+                },
+            };
+        })();
+        function SignOut() {
+
+            var ret = confirm("Bạn có muốn đăng xuất không?");
+            if (ret) {
+                window.location.href = "@Url.Content("~/Home/SignOut")";
+            }
+        }
+
+        //function jquery_sticky_footer() {
+        //    var footer = $("#footer");
+        //    var pos = footer.position();
+        //    var height = $(window).height();
+        //    height = height - pos.top;
+        //    height = height - footer.outerHeight();
+        //    if (height > 0) {
+        //        footer.css({ 'margin-top': height + 'px' });
+        //    }
+        //}
+        
+        //$(window).resize(function () {
+        //    jquery_sticky_footer();
+        //});
+        //$(window).bind("load", function () {
+        //    jquery_sticky_footer();
+        //});
+
+        $('.admin-content-wrap').css('height', ($(window).height() - 30) + 'px');
+
+
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 40) {
+                console.log($(window).scrollTop());
+                $("#header_subnav").css({ "position": "fixed" });
+                $("#header_subnav").css({ "top": "0px" });
+                $("#actions_panel").css({ "position": "fixed" });
+                $("#actions_panel").css({ "top": "37px" });
+            }
+            else {
+                $("#header_subnav").css({ "position": "" });
+                $("#header_subnav").css({ "top": "" });
+                $("#actions_panel").css({ "position": "" });
+                $("#actions_panel").css({ "top": "" });
+            }
+        });
+
+
+
+    </script>
+</body>
+
+</html>

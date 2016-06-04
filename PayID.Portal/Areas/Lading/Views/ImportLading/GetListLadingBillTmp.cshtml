@@ -1,0 +1,115 @@
+﻿@model IList<dynamic>
+    @{
+        Layout = null;
+    }
+    @if (Model.Count > 0)
+    {
+        <h4>Danh sách vận đơn của bạn</h4>
+
+        <div class="row">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span12 well">
+                        <div class="filter-bar" data-magellan-expedition="fixed">
+                            <form>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <input id="txtReceiverName" class="form-control" type="text" name="txtReceiverName" placeholder="Tên người nhận">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="date-picker-wrap">
+                                            <input id="txtMobile" type="text" class="form-control" name="txtMobile" placeholder="Số điện thoại">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input id="search_key" name="search_key" class="btn btn-primary btn-cons" type="button" value="Lọc dữ liệu" onclick="SearchLading(1)" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div style="text-align:center; margin-top:10px; display:none;" class="loading-element">
+                            <div><i class="icon-spinner icon-spin"></i>Xin vui lòng chờ giây lát...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" align="left" style="font-weight:bold;">Tổng số vận đơn thu gom: @ViewBag.total_item</div>
+        <div class="row">
+            <div align="right" style="padding-bottom:10px;">
+                <input id="approve" name="approve" onclick="CreateLadingWithFile()" class="button calculate_fee" type="button" value="Tạo vận đơn">
+                <input id="Cancel" name="Cancel" onclick="CancelAll()" class="success button save-stock" type="button" value="Hủy yêu cầu">
+            </div>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="sort-field"><i class="icon-time"></i> Thời gian tạo</th>
+                    <th><i class="icon-barcode"></i> Người nhận</th>
+                    <th><i class="icon-home"></i> Nơi nhận</th>
+                    <th><i class="icon-info"></i> Thông tin sản phẩm</th>
+                    <th class="sort-field" width="130"><i class="icon-tags"></i> Thông tin phí</th>
+                    @*<th class="sort-field"><i class="icon-dollar"></i> Tiền thu hộ</th>*@
+                    <th width="110"><i class="icon-wrench"></i> Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7">
+
+                        <input type="hidden" id="total_page" value="@ViewBag.total_page" />
+                    </td>
+                </tr>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var item = Model[i];
+                    <tr>
+                        <td align="center">@DateTime.Parse(item.DateCreated.AddHours(7).ToString()).ToString("dd/MM/yyyy HH:mm:ss")  </td>
+                        <td align="left">
+                            @item.ReceiverName
+                        </td>
+                        <td align="left">
+                            <p>  <b>ĐT:</b>&nbsp;  @item.ReceiverMobile  <p />
+                            <p>  <b>Địa chỉ:</b>&nbsp;@item.ReceiverAddress  </p>
+                            <p>@PayID.Portal.Areas.Merchant.Configuration.GetNameProvinceByProvinceCode(item.ToProvinceCode)  </p>
+                        </td>
+                        <td align="left">
+                            <p><i class='icon-shopping-cart'></i> <a href='#'>  @item.ProductName  </a></p>
+                            <p><i class='icon-tag'></i>   @item.Value.ToString("N0")   đ</p>
+                            <p><i class='icon-won'></i>   @item.Weight.ToString("N0")   gram</p>
+                        </td>
+                        <td align="left">
+                            <p>Phí vận chuyển:   @item.MainFee.ToString("N0")   đ</p>
+                            <p>Phí CoD:   @item.CodFee.ToString("N0")   đ</p>
+                            <p>Phí dịch vụ:   @item.ServiceFee.ToString("N0")  đ </p>
+                        </td>
+                        @*<td align="center">  @item.TotalFee.ToString("N0")   đ</td>*@
+                        <td>
+                            @if (item.Status == "C5" || item.Status == "C6")
+                            {
+                                <div class="btn-group btn-group-info">
+                                    <button class="btn btn-default btn-xs" type="button">Thao tác</button>
+                                    <button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle" type="button">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" onclick='DeleteLadingTmp("@item._id")'>Xóa bản ghi</a></li>
+                                        <li class="divider"></li>
+                                    </ul>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+        <input type="hidden" value="@ViewBag.Page" id="currentPage" />
+        <input type="hidden" id="total_page" value="@ViewBag.total_page" />
+
+    }
+    else
+    {
+        <div class="row" align="center">Không tìm thấy dữ liệu phù hợp</div>
+    }

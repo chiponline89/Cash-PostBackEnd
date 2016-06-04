@@ -1,0 +1,99 @@
+﻿    <div class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Mã vận đơn/yêu cầu</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="shipping_getback_lading_code" placeholder="Mã vận đơn/yêu cầu">
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="shipping_getback_customer_code" readonly="readonly" placeholder="Mã Đại lý">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 control-label">Người gửi</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="shipping_getback_customer_name" placeholder="Họ và tên Khách hàng">
+            </div>
+            <label class="col-sm-2 control-label">Điện thoại</label>
+            <div class="col-sm-3">
+                <input type="text" id="shipping_getback_customer_mobile" placeholder="Điện thoại" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 control-label">Địa chỉ gửi</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="shipping_getback_customer_address" placeholder="Địa chỉ giao hàng">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 control-label">Người nhận</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="shipping_getback_receiver_name" placeholder="Họ và tên Người nhận">
+            </div>
+            <label class="col-sm-2 control-label">Điện thoại</label>
+            <div class="col-sm-3">
+                <input type="text" id="shipping_getback__receiver_mobile" placeholder="Đthoại" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 control-label">Địa chỉ</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="shipping_getback_receiver_address" placeholder="Địa chỉ giao hàng">
+            </div>
+        </div>
+    </div>
+<script>
+    $('#shipping_getback_lading_code').change(function () {
+        app.showProcess();
+        $.ajax({
+            url: "/ServiceRequest/Request/GetPickupRequest",
+            dataType: "json",
+            data: {
+                lading_code: $('#shipping_getback_lading_code').val()
+            },
+            success: function (data) {
+                app.hideProcess();
+                if (data != null) {
+                    $('#shipping_getback_customer_code').val(data.customer_code);
+                    $('#shipping_getback_customer_name').val(data.customer_name);
+                    $('#shipping_getback_customer_mobile').val(data.customer_mobile);
+                    $('#shipping_getback_receiver_name').val(data.receiver_name);
+                    $('#shipping_getback_receiver_mobile').val(data.receiver_mobile);
+                    $('#shipping_getback_receiver_address').val(data.receiver_address + ',' + data.receiver_ward_name + ',' + data.receiver_district_name + ',' + data.receiver_province_name);
+                    $('#shipping_getback_customer_address').val(data.address + ',' + data.ward_name + ',' + data.district_name + ',' + data.province_name);
+                }
+                else {
+                    alert("Mã vận đơn không hợp lệ!");
+                }
+            }
+        });
+    });
+    function createShippingGetbackRequest() {
+        app.showProcess();
+        var dataToSend = {
+            customer_code: $('#customer_code').val(),
+            customer_email: $('#customer_email').val(),
+            customer_name: $('#customer_name').val(),
+            customer_mobile: $('#customer_mobile').val(),
+            address: $('#address').val(),
+            province: $('#province').val(),
+            province_name: $('#province').find('option:selected').text(),
+            district: $('#district').val(),
+            district_name: $('#district').find('option:selected').text(),
+            ward: $('#ward').val(),
+            ward_name: $('#ward').find('option:selected').text(),
+            lading_code: $('#shipping_getback_lading_code').val(),
+            notes: $('#notes').val()
+        }
+        $.ajax({
+            url: "/ServiceRequest/Request/CreateShippingGetbackRequest",
+            dataType: "json",
+            data: {
+                request: JSON.stringify(dataToSend)
+            },
+            success: function (data) {
+                app.hideProcess();
+                alert(data.response_message)
+            }
+        });
+    }
+</script>

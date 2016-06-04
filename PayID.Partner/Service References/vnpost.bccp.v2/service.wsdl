@@ -1,0 +1,2360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="ExchangeService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1">
+        </msb:BinaryEncoding>
+        <wsaw:UsingAddressing>
+        </wsaw:UsingAddressing>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="wsExchangeService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsaw:UsingAddressing>
+        </wsaw:UsingAddressing>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://tempuri.org/TracePostBagDataSet.xsd" />
+      <xsd:import />
+      <xsd:import namespace="http://tempuri.org/POSDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/UnitDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/MailRouteDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/DeliveryRouteDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/ItemTypeDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/ValueAddedServiceDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/CommodityTypeDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/DomesticFreightRuleDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/InternationalFreightRuleDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/DeliveryDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/RevenueDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/PayPostDataSet.xsd" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System.Data" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/Ctin.Oe.DAO" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import namespace="http://tempuri.org/ItemDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/BatchDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/MailTripDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/MailTripListDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/MailTripTransportDataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/BC37DataSet.xsd" />
+      <xsd:import namespace="http://tempuri.org/CODDataSet.xsd" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IService_GetTracePostBag_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTracePostBag" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetTracePostBag_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTracePostBagResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddTracePostBag_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddTracePostBag" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddTracePostBag_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddTracePostBagResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllPOS_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllPOS" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllPOS_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllPOSResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllUnit_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUnit" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllUnit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUnitResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllMailRoute_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllMailRoute" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllMailRoute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllMailRouteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllDeliveryRoute_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllDeliveryRoute" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllDeliveryRoute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllDeliveryRouteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddItemType_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemType" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddItemType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddValueAddedService_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddValueAddedService" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddValueAddedService_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddValueAddedServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddCommodityType_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddCommodityType" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddCommodityType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddCommodityTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddDomesticFreightRule_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddDomesticFreightRule" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddDomesticFreightRule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddDomesticFreightRuleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddInternationalFreightRule_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddInternationalFreightRule" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddInternationalFreightRule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddInternationalFreightRuleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetEMSDelivery_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetEMSDelivery" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetEMSDelivery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetEMSDeliveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateEMSDelivery_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateEMSDelivery" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateEMSDelivery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateEMSDeliveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddRevenue_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddRevenue" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddRevenue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddRevenueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_PayPost_InquiryParcelInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:PayPost_InquiryParcelInfo" />
+  </wsdl:message>
+  <wsdl:message name="IService_PayPost_InquiryParcelInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PayPost_InquiryParcelInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_PayPost_Revert_InputMessage">
+    <wsdl:part name="parameters" element="tns:PayPost_Revert" />
+  </wsdl:message>
+  <wsdl:message name="IService_PayPost_Revert_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PayPost_RevertResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_PayPost_UpdatePayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:PayPost_UpdatePayment" />
+  </wsdl:message>
+  <wsdl:message name="IService_PayPost_UpdatePayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PayPost_UpdatePaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_INQUIRY_PARCEL_INFO_InputMessage">
+    <wsdl:part name="parameters" element="tns:INQUIRY_PARCEL_INFO" />
+  </wsdl:message>
+  <wsdl:message name="IService_INQUIRY_PARCEL_INFO_OutputMessage">
+    <wsdl:part name="parameters" element="tns:INQUIRY_PARCEL_INFOResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_UPDATE_ISSUE_RESULT_InputMessage">
+    <wsdl:part name="parameters" element="tns:UPDATE_ISSUE_RESULT" />
+  </wsdl:message>
+  <wsdl:message name="IService_UPDATE_ISSUE_RESULT_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UPDATE_ISSUE_RESULTResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_PushDeliveryInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:PushDeliveryInfo" />
+  </wsdl:message>
+  <wsdl:message name="IService_PushDeliveryInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PushDeliveryInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_PayPostComparision_InputMessage">
+    <wsdl:part name="parameters" element="tns:PayPostComparision" />
+  </wsdl:message>
+  <wsdl:message name="IService_PayPostComparision_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PayPostComparisionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAcceptedItemList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAcceptedItemList" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAcceptedItemList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAcceptedItemListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetDeliveryItemList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDeliveryItemList" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetDeliveryItemList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDeliveryItemListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_OE_GetDataClient_InputMessage">
+    <wsdl:part name="parameters" element="tns:OE_GetDataClient" />
+  </wsdl:message>
+  <wsdl:message name="IService_OE_GetDataClient_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OE_GetDataClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GPS_GetDispatches_InputMessage">
+    <wsdl:part name="parameters" element="tns:GPS_GetDispatches" />
+  </wsdl:message>
+  <wsdl:message name="IService_GPS_GetDispatches_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GPS_GetDispatchesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GPS_GetIncompleteBD10sByVehicle_InputMessage">
+    <wsdl:part name="parameters" element="tns:GPS_GetIncompleteBD10sByVehicle" />
+  </wsdl:message>
+  <wsdl:message name="IService_GPS_GetIncompleteBD10sByVehicle_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GPS_GetIncompleteBD10sByVehicleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetItem" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetListItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetListItem" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetListItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetListItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddItem" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetBatch_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBatch" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetBatch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddBatch_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddBatch" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddBatch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddBatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTripToPosInDay_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripToPosInDay" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTripToPosInDay_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripToPosInDayResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTrip_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTrip" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTrip_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTripList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripList" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTripList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddMailtrip_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddMailtrip" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddMailtrip_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddMailtripResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTripEMS_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripEMS" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTripEMS_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripEMSResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateMailTripEMS_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateMailTripEMS" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateMailTripEMS_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateMailTripEMSResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTripEMSNew_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripEMSNew" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailTripEMSNew_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailTripEMSNewResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateMailTripEMSGeted_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateMailTripEMSGeted" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateMailTripEMSGeted_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateMailTripEMSGetedResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetCountMailTripEMSNew_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCountMailTripEMSNew" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetCountMailTripEMSNew_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCountMailTripEMSNewResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetDelivery_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDelivery" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetDelivery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDeliveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetListDelivery_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetListDelivery" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetListDelivery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetListDeliveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddDelivery_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddDelivery" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddDelivery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddDeliveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailtripTransport_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailtripTransport" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetMailtripTransport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMailtripTransportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddMailtripTransport_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddMailtripTransport" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddMailtripTransport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddMailtripTransportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceInfor_InputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceInfor" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceInfor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceInforResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceByStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceByStatus" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceByStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceByStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceByMailTrip_InputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceByMailTrip" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceByMailTrip_OutputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceByMailTripResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceDelivery_InputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceDelivery" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceDelivery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceDeliveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceBatch_InputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceBatch" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceBatch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceBatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceArrBarCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceArrBarCode" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceArrBarCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceArrBarCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceAll_InputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceAll" />
+  </wsdl:message>
+  <wsdl:message name="IService_dsTrackAndTraceAll_OutputMessage">
+    <wsdl:part name="parameters" element="tns:dsTrackAndTraceAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetBC37_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBC37" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetBC37_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBC37Response" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddBC37_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddBC37" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddBC37_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddBC37Response" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetBC37EMS_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBC37EMS" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetBC37EMS_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBC37EMSResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateBC37EMS_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateBC37EMS" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateBC37EMS_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateBC37EMSResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_INQUIRY_COD_IN_InputMessage">
+    <wsdl:part name="parameters" element="tns:INQUIRY_COD_IN" />
+  </wsdl:message>
+  <wsdl:message name="IService_INQUIRY_COD_IN_OutputMessage">
+    <wsdl:part name="parameters" element="tns:INQUIRY_COD_INResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_INQUIRY_COD_OUT_InputMessage">
+    <wsdl:part name="parameters" element="tns:INQUIRY_COD_OUT" />
+  </wsdl:message>
+  <wsdl:message name="IService_INQUIRY_COD_OUT_OutputMessage">
+    <wsdl:part name="parameters" element="tns:INQUIRY_COD_OUTResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_PAYMENT_COD_IN_InputMessage">
+    <wsdl:part name="parameters" element="tns:PAYMENT_COD_IN" />
+  </wsdl:message>
+  <wsdl:message name="IService_PAYMENT_COD_IN_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PAYMENT_COD_INResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_PAYMENT_COD_OUT_InputMessage">
+    <wsdl:part name="parameters" element="tns:PAYMENT_COD_OUT" />
+  </wsdl:message>
+  <wsdl:message name="IService_PAYMENT_COD_OUT_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PAYMENT_COD_OUTResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_REVERT_COD_InputMessage">
+    <wsdl:part name="parameters" element="tns:REVERT_COD" />
+  </wsdl:message>
+  <wsdl:message name="IService_REVERT_COD_OutputMessage">
+    <wsdl:part name="parameters" element="tns:REVERT_CODResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ComparisonCOD_InputMessage">
+    <wsdl:part name="parameters" element="tns:ComparisonCOD" />
+  </wsdl:message>
+  <wsdl:message name="IService_ComparisonCOD_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ComparisonCODResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IService">
+    <wsdl:operation name="GetTracePostBag">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetTracePostBag" message="tns:IService_GetTracePostBag_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetTracePostBagResponse" message="tns:IService_GetTracePostBag_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddTracePostBag">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddTracePostBag" message="tns:IService_AddTracePostBag_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddTracePostBagResponse" message="tns:IService_AddTracePostBag_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPOS">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAllPOS" message="tns:IService_GetAllPOS_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAllPOSResponse" message="tns:IService_GetAllPOS_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUnit">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAllUnit" message="tns:IService_GetAllUnit_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAllUnitResponse" message="tns:IService_GetAllUnit_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMailRoute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAllMailRoute" message="tns:IService_GetAllMailRoute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAllMailRouteResponse" message="tns:IService_GetAllMailRoute_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDeliveryRoute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAllDeliveryRoute" message="tns:IService_GetAllDeliveryRoute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAllDeliveryRouteResponse" message="tns:IService_GetAllDeliveryRoute_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddItemType">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddItemType" message="tns:IService_AddItemType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddItemTypeResponse" message="tns:IService_AddItemType_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddValueAddedService">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddValueAddedService" message="tns:IService_AddValueAddedService_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddValueAddedServiceResponse" message="tns:IService_AddValueAddedService_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCommodityType">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddCommodityType" message="tns:IService_AddCommodityType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddCommodityTypeResponse" message="tns:IService_AddCommodityType_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddDomesticFreightRule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddDomesticFreightRule" message="tns:IService_AddDomesticFreightRule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddDomesticFreightRuleResponse" message="tns:IService_AddDomesticFreightRule_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddInternationalFreightRule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddInternationalFreightRule" message="tns:IService_AddInternationalFreightRule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddInternationalFreightRuleResponse" message="tns:IService_AddInternationalFreightRule_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEMSDelivery">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetEMSDelivery" message="tns:IService_GetEMSDelivery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetEMSDeliveryResponse" message="tns:IService_GetEMSDelivery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateEMSDelivery">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/UpdateEMSDelivery" message="tns:IService_UpdateEMSDelivery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/UpdateEMSDeliveryResponse" message="tns:IService_UpdateEMSDelivery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddRevenue">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddRevenue" message="tns:IService_AddRevenue_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddRevenueResponse" message="tns:IService_AddRevenue_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_InquiryParcelInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/PayPost_InquiryParcelInfo" message="tns:IService_PayPost_InquiryParcelInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/PayPost_InquiryParcelInfoResponse" message="tns:IService_PayPost_InquiryParcelInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_Revert">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/PayPost_Revert" message="tns:IService_PayPost_Revert_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/PayPost_RevertResponse" message="tns:IService_PayPost_Revert_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_UpdatePayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/PayPost_UpdatePayment" message="tns:IService_PayPost_UpdatePayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/PayPost_UpdatePaymentResponse" message="tns:IService_PayPost_UpdatePayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_PARCEL_INFO">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/INQUIRY_PARCEL_INFO" message="tns:IService_INQUIRY_PARCEL_INFO_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/INQUIRY_PARCEL_INFOResponse" message="tns:IService_INQUIRY_PARCEL_INFO_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UPDATE_ISSUE_RESULT">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/UPDATE_ISSUE_RESULT" message="tns:IService_UPDATE_ISSUE_RESULT_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/UPDATE_ISSUE_RESULTResponse" message="tns:IService_UPDATE_ISSUE_RESULT_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PushDeliveryInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/PushDeliveryInfo" message="tns:IService_PushDeliveryInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/PushDeliveryInfoResponse" message="tns:IService_PushDeliveryInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PayPostComparision">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/PayPostComparision" message="tns:IService_PayPostComparision_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/PayPostComparisionResponse" message="tns:IService_PayPostComparision_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAcceptedItemList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAcceptedItemList" message="tns:IService_GetAcceptedItemList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAcceptedItemListResponse" message="tns:IService_GetAcceptedItemList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDeliveryItemList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetDeliveryItemList" message="tns:IService_GetDeliveryItemList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetDeliveryItemListResponse" message="tns:IService_GetDeliveryItemList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OE_GetDataClient">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/OE_GetDataClient" message="tns:IService_OE_GetDataClient_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/OE_GetDataClientResponse" message="tns:IService_OE_GetDataClient_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GPS_GetDispatches">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GPS_GetDispatches" message="tns:IService_GPS_GetDispatches_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GPS_GetDispatchesResponse" message="tns:IService_GPS_GetDispatches_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GPS_GetIncompleteBD10sByVehicle">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GPS_GetIncompleteBD10sByVehicle" message="tns:IService_GPS_GetIncompleteBD10sByVehicle_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GPS_GetIncompleteBD10sByVehicleResponse" message="tns:IService_GPS_GetIncompleteBD10sByVehicle_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetItem" message="tns:IService_GetItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetItemResponse" message="tns:IService_GetItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetListItem" message="tns:IService_GetListItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetListItemResponse" message="tns:IService_GetListItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddItem" message="tns:IService_AddItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddItemResponse" message="tns:IService_AddItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBatch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetBatch" message="tns:IService_GetBatch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetBatchResponse" message="tns:IService_GetBatch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddBatch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddBatch" message="tns:IService_AddBatch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddBatchResponse" message="tns:IService_AddBatch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripToPosInDay">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetMailTripToPosInDay" message="tns:IService_GetMailTripToPosInDay_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetMailTripToPosInDayResponse" message="tns:IService_GetMailTripToPosInDay_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTrip">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetMailTrip" message="tns:IService_GetMailTrip_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetMailTripResponse" message="tns:IService_GetMailTrip_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetMailTripList" message="tns:IService_GetMailTripList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetMailTripListResponse" message="tns:IService_GetMailTripList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMailtrip">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddMailtrip" message="tns:IService_AddMailtrip_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddMailtripResponse" message="tns:IService_AddMailtrip_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripEMS">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetMailTripEMS" message="tns:IService_GetMailTripEMS_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetMailTripEMSResponse" message="tns:IService_GetMailTripEMS_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailTripEMS">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/UpdateMailTripEMS" message="tns:IService_UpdateMailTripEMS_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/UpdateMailTripEMSResponse" message="tns:IService_UpdateMailTripEMS_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripEMSNew">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetMailTripEMSNew" message="tns:IService_GetMailTripEMSNew_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetMailTripEMSNewResponse" message="tns:IService_GetMailTripEMSNew_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailTripEMSGeted">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/UpdateMailTripEMSGeted" message="tns:IService_UpdateMailTripEMSGeted_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/UpdateMailTripEMSGetedResponse" message="tns:IService_UpdateMailTripEMSGeted_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCountMailTripEMSNew">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetCountMailTripEMSNew" message="tns:IService_GetCountMailTripEMSNew_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetCountMailTripEMSNewResponse" message="tns:IService_GetCountMailTripEMSNew_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDelivery">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetDelivery" message="tns:IService_GetDelivery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetDeliveryResponse" message="tns:IService_GetDelivery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListDelivery">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetListDelivery" message="tns:IService_GetListDelivery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetListDeliveryResponse" message="tns:IService_GetListDelivery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddDelivery">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddDelivery" message="tns:IService_AddDelivery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddDeliveryResponse" message="tns:IService_AddDelivery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMailtripTransport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetMailtripTransport" message="tns:IService_GetMailtripTransport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetMailtripTransportResponse" message="tns:IService_GetMailtripTransport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMailtripTransport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddMailtripTransport" message="tns:IService_AddMailtripTransport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddMailtripTransportResponse" message="tns:IService_AddMailtripTransport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceInfor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceInfor" message="tns:IService_dsTrackAndTraceInfor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceInforResponse" message="tns:IService_dsTrackAndTraceInfor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceByStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceByStatus" message="tns:IService_dsTrackAndTraceByStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceByStatusResponse" message="tns:IService_dsTrackAndTraceByStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceByMailTrip">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceByMailTrip" message="tns:IService_dsTrackAndTraceByMailTrip_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceByMailTripResponse" message="tns:IService_dsTrackAndTraceByMailTrip_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceDelivery">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceDelivery" message="tns:IService_dsTrackAndTraceDelivery_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceDeliveryResponse" message="tns:IService_dsTrackAndTraceDelivery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceBatch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceBatch" message="tns:IService_dsTrackAndTraceBatch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceBatchResponse" message="tns:IService_dsTrackAndTraceBatch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceArrBarCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceArrBarCode" message="tns:IService_dsTrackAndTraceArrBarCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceArrBarCodeResponse" message="tns:IService_dsTrackAndTraceArrBarCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceAll">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceAll" message="tns:IService_dsTrackAndTraceAll_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/dsTrackAndTraceAllResponse" message="tns:IService_dsTrackAndTraceAll_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBC37">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetBC37" message="tns:IService_GetBC37_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetBC37Response" message="tns:IService_GetBC37_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddBC37">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddBC37" message="tns:IService_AddBC37_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddBC37Response" message="tns:IService_AddBC37_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBC37EMS">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetBC37EMS" message="tns:IService_GetBC37EMS_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetBC37EMSResponse" message="tns:IService_GetBC37EMS_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBC37EMS">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/UpdateBC37EMS" message="tns:IService_UpdateBC37EMS_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/UpdateBC37EMSResponse" message="tns:IService_UpdateBC37EMS_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_COD_IN">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/INQUIRY_COD_IN" message="tns:IService_INQUIRY_COD_IN_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/INQUIRY_COD_INResponse" message="tns:IService_INQUIRY_COD_IN_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_COD_OUT">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/INQUIRY_COD_OUT" message="tns:IService_INQUIRY_COD_OUT_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/INQUIRY_COD_OUTResponse" message="tns:IService_INQUIRY_COD_OUT_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PAYMENT_COD_IN">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/PAYMENT_COD_IN" message="tns:IService_PAYMENT_COD_IN_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/PAYMENT_COD_INResponse" message="tns:IService_PAYMENT_COD_IN_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PAYMENT_COD_OUT">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/PAYMENT_COD_OUT" message="tns:IService_PAYMENT_COD_OUT_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/PAYMENT_COD_OUTResponse" message="tns:IService_PAYMENT_COD_OUT_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="REVERT_COD">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/REVERT_COD" message="tns:IService_REVERT_COD_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/REVERT_CODResponse" message="tns:IService_REVERT_COD_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ComparisonCOD">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ComparisonCOD" message="tns:IService_ComparisonCOD_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ComparisonCODResponse" message="tns:IService_ComparisonCOD_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ExchangeService" type="tns:IService">
+    <wsp:PolicyReference URI="#ExchangeService_policy">
+    </wsp:PolicyReference>
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="GetTracePostBag">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetTracePostBag" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTracePostBag">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddTracePostBag" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPOS">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAllPOS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUnit">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAllUnit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMailRoute">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAllMailRoute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDeliveryRoute">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAllDeliveryRoute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddItemType">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddItemType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddValueAddedService">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddValueAddedService" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCommodityType">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddCommodityType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDomesticFreightRule">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddDomesticFreightRule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddInternationalFreightRule">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddInternationalFreightRule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEMSDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetEMSDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateEMSDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/UpdateEMSDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddRevenue">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddRevenue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_InquiryParcelInfo">
+      <soap12:operation soapAction="http://tempuri.org/IService/PayPost_InquiryParcelInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_Revert">
+      <soap12:operation soapAction="http://tempuri.org/IService/PayPost_Revert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_UpdatePayment">
+      <soap12:operation soapAction="http://tempuri.org/IService/PayPost_UpdatePayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_PARCEL_INFO">
+      <soap12:operation soapAction="http://tempuri.org/IService/INQUIRY_PARCEL_INFO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UPDATE_ISSUE_RESULT">
+      <soap12:operation soapAction="http://tempuri.org/IService/UPDATE_ISSUE_RESULT" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PushDeliveryInfo">
+      <soap12:operation soapAction="http://tempuri.org/IService/PushDeliveryInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPostComparision">
+      <soap12:operation soapAction="http://tempuri.org/IService/PayPostComparision" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAcceptedItemList">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAcceptedItemList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeliveryItemList">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetDeliveryItemList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OE_GetDataClient">
+      <soap12:operation soapAction="http://tempuri.org/IService/OE_GetDataClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GPS_GetDispatches">
+      <soap12:operation soapAction="http://tempuri.org/IService/GPS_GetDispatches" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GPS_GetIncompleteBD10sByVehicle">
+      <soap12:operation soapAction="http://tempuri.org/IService/GPS_GetIncompleteBD10sByVehicle" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItem">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListItem">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddItem">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBatch">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetBatch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBatch">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddBatch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripToPosInDay">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTripToPosInDay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTrip">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTrip" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripList">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTripList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMailtrip">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddMailtrip" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripEMS">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTripEMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailTripEMS">
+      <soap12:operation soapAction="http://tempuri.org/IService/UpdateMailTripEMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripEMSNew">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTripEMSNew" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailTripEMSGeted">
+      <soap12:operation soapAction="http://tempuri.org/IService/UpdateMailTripEMSGeted" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountMailTripEMSNew">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetCountMailTripEMSNew" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetListDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailtripTransport">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailtripTransport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMailtripTransport">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddMailtripTransport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceInfor">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceInfor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceByStatus">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceByStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceByMailTrip">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceByMailTrip" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceBatch">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceBatch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceArrBarCode">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceArrBarCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceAll">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBC37">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetBC37" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBC37">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddBC37" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBC37EMS">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetBC37EMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBC37EMS">
+      <soap12:operation soapAction="http://tempuri.org/IService/UpdateBC37EMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_COD_IN">
+      <soap12:operation soapAction="http://tempuri.org/IService/INQUIRY_COD_IN" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_COD_OUT">
+      <soap12:operation soapAction="http://tempuri.org/IService/INQUIRY_COD_OUT" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAYMENT_COD_IN">
+      <soap12:operation soapAction="http://tempuri.org/IService/PAYMENT_COD_IN" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAYMENT_COD_OUT">
+      <soap12:operation soapAction="http://tempuri.org/IService/PAYMENT_COD_OUT" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="REVERT_COD">
+      <soap12:operation soapAction="http://tempuri.org/IService/REVERT_COD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ComparisonCOD">
+      <soap12:operation soapAction="http://tempuri.org/IService/ComparisonCOD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsExchangeService" type="tns:IService">
+    <wsp:PolicyReference URI="#wsExchangeService_policy">
+    </wsp:PolicyReference>
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetTracePostBag">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetTracePostBag" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTracePostBag">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddTracePostBag" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPOS">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAllPOS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUnit">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAllUnit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMailRoute">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAllMailRoute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDeliveryRoute">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAllDeliveryRoute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddItemType">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddItemType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddValueAddedService">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddValueAddedService" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCommodityType">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddCommodityType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDomesticFreightRule">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddDomesticFreightRule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddInternationalFreightRule">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddInternationalFreightRule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEMSDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetEMSDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateEMSDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/UpdateEMSDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddRevenue">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddRevenue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_InquiryParcelInfo">
+      <soap12:operation soapAction="http://tempuri.org/IService/PayPost_InquiryParcelInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_Revert">
+      <soap12:operation soapAction="http://tempuri.org/IService/PayPost_Revert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_UpdatePayment">
+      <soap12:operation soapAction="http://tempuri.org/IService/PayPost_UpdatePayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_PARCEL_INFO">
+      <soap12:operation soapAction="http://tempuri.org/IService/INQUIRY_PARCEL_INFO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UPDATE_ISSUE_RESULT">
+      <soap12:operation soapAction="http://tempuri.org/IService/UPDATE_ISSUE_RESULT" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PushDeliveryInfo">
+      <soap12:operation soapAction="http://tempuri.org/IService/PushDeliveryInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPostComparision">
+      <soap12:operation soapAction="http://tempuri.org/IService/PayPostComparision" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAcceptedItemList">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetAcceptedItemList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeliveryItemList">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetDeliveryItemList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OE_GetDataClient">
+      <soap12:operation soapAction="http://tempuri.org/IService/OE_GetDataClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GPS_GetDispatches">
+      <soap12:operation soapAction="http://tempuri.org/IService/GPS_GetDispatches" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GPS_GetIncompleteBD10sByVehicle">
+      <soap12:operation soapAction="http://tempuri.org/IService/GPS_GetIncompleteBD10sByVehicle" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItem">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListItem">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetListItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddItem">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBatch">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetBatch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBatch">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddBatch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripToPosInDay">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTripToPosInDay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTrip">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTrip" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripList">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTripList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMailtrip">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddMailtrip" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripEMS">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTripEMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailTripEMS">
+      <soap12:operation soapAction="http://tempuri.org/IService/UpdateMailTripEMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripEMSNew">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailTripEMSNew" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailTripEMSGeted">
+      <soap12:operation soapAction="http://tempuri.org/IService/UpdateMailTripEMSGeted" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountMailTripEMSNew">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetCountMailTripEMSNew" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetListDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailtripTransport">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetMailtripTransport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMailtripTransport">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddMailtripTransport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceInfor">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceInfor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceByStatus">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceByStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceByMailTrip">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceByMailTrip" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceDelivery">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceBatch">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceBatch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceArrBarCode">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceArrBarCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceAll">
+      <soap12:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBC37">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetBC37" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBC37">
+      <soap12:operation soapAction="http://tempuri.org/IService/AddBC37" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBC37EMS">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetBC37EMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBC37EMS">
+      <soap12:operation soapAction="http://tempuri.org/IService/UpdateBC37EMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_COD_IN">
+      <soap12:operation soapAction="http://tempuri.org/IService/INQUIRY_COD_IN" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_COD_OUT">
+      <soap12:operation soapAction="http://tempuri.org/IService/INQUIRY_COD_OUT" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAYMENT_COD_IN">
+      <soap12:operation soapAction="http://tempuri.org/IService/PAYMENT_COD_IN" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAYMENT_COD_OUT">
+      <soap12:operation soapAction="http://tempuri.org/IService/PAYMENT_COD_OUT" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="REVERT_COD">
+      <soap12:operation soapAction="http://tempuri.org/IService/REVERT_COD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ComparisonCOD">
+      <soap12:operation soapAction="http://tempuri.org/IService/ComparisonCOD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="httpExchangeService" type="tns:IService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetTracePostBag">
+      <soap:operation soapAction="http://tempuri.org/IService/GetTracePostBag" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTracePostBag">
+      <soap:operation soapAction="http://tempuri.org/IService/AddTracePostBag" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPOS">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAllPOS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUnit">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAllUnit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMailRoute">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAllMailRoute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDeliveryRoute">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAllDeliveryRoute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddItemType">
+      <soap:operation soapAction="http://tempuri.org/IService/AddItemType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddValueAddedService">
+      <soap:operation soapAction="http://tempuri.org/IService/AddValueAddedService" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCommodityType">
+      <soap:operation soapAction="http://tempuri.org/IService/AddCommodityType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDomesticFreightRule">
+      <soap:operation soapAction="http://tempuri.org/IService/AddDomesticFreightRule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddInternationalFreightRule">
+      <soap:operation soapAction="http://tempuri.org/IService/AddInternationalFreightRule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEMSDelivery">
+      <soap:operation soapAction="http://tempuri.org/IService/GetEMSDelivery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateEMSDelivery">
+      <soap:operation soapAction="http://tempuri.org/IService/UpdateEMSDelivery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddRevenue">
+      <soap:operation soapAction="http://tempuri.org/IService/AddRevenue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_InquiryParcelInfo">
+      <soap:operation soapAction="http://tempuri.org/IService/PayPost_InquiryParcelInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_Revert">
+      <soap:operation soapAction="http://tempuri.org/IService/PayPost_Revert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPost_UpdatePayment">
+      <soap:operation soapAction="http://tempuri.org/IService/PayPost_UpdatePayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_PARCEL_INFO">
+      <soap:operation soapAction="http://tempuri.org/IService/INQUIRY_PARCEL_INFO" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UPDATE_ISSUE_RESULT">
+      <soap:operation soapAction="http://tempuri.org/IService/UPDATE_ISSUE_RESULT" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PushDeliveryInfo">
+      <soap:operation soapAction="http://tempuri.org/IService/PushDeliveryInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PayPostComparision">
+      <soap:operation soapAction="http://tempuri.org/IService/PayPostComparision" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAcceptedItemList">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAcceptedItemList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeliveryItemList">
+      <soap:operation soapAction="http://tempuri.org/IService/GetDeliveryItemList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OE_GetDataClient">
+      <soap:operation soapAction="http://tempuri.org/IService/OE_GetDataClient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GPS_GetDispatches">
+      <soap:operation soapAction="http://tempuri.org/IService/GPS_GetDispatches" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GPS_GetIncompleteBD10sByVehicle">
+      <soap:operation soapAction="http://tempuri.org/IService/GPS_GetIncompleteBD10sByVehicle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItem">
+      <soap:operation soapAction="http://tempuri.org/IService/GetItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListItem">
+      <soap:operation soapAction="http://tempuri.org/IService/GetListItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddItem">
+      <soap:operation soapAction="http://tempuri.org/IService/AddItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBatch">
+      <soap:operation soapAction="http://tempuri.org/IService/GetBatch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBatch">
+      <soap:operation soapAction="http://tempuri.org/IService/AddBatch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripToPosInDay">
+      <soap:operation soapAction="http://tempuri.org/IService/GetMailTripToPosInDay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTrip">
+      <soap:operation soapAction="http://tempuri.org/IService/GetMailTrip" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripList">
+      <soap:operation soapAction="http://tempuri.org/IService/GetMailTripList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMailtrip">
+      <soap:operation soapAction="http://tempuri.org/IService/AddMailtrip" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripEMS">
+      <soap:operation soapAction="http://tempuri.org/IService/GetMailTripEMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailTripEMS">
+      <soap:operation soapAction="http://tempuri.org/IService/UpdateMailTripEMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailTripEMSNew">
+      <soap:operation soapAction="http://tempuri.org/IService/GetMailTripEMSNew" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailTripEMSGeted">
+      <soap:operation soapAction="http://tempuri.org/IService/UpdateMailTripEMSGeted" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCountMailTripEMSNew">
+      <soap:operation soapAction="http://tempuri.org/IService/GetCountMailTripEMSNew" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDelivery">
+      <soap:operation soapAction="http://tempuri.org/IService/GetDelivery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListDelivery">
+      <soap:operation soapAction="http://tempuri.org/IService/GetListDelivery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDelivery">
+      <soap:operation soapAction="http://tempuri.org/IService/AddDelivery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMailtripTransport">
+      <soap:operation soapAction="http://tempuri.org/IService/GetMailtripTransport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMailtripTransport">
+      <soap:operation soapAction="http://tempuri.org/IService/AddMailtripTransport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceInfor">
+      <soap:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceInfor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceByStatus">
+      <soap:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceByStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceByMailTrip">
+      <soap:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceByMailTrip" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceDelivery">
+      <soap:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceDelivery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceBatch">
+      <soap:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceBatch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceArrBarCode">
+      <soap:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceArrBarCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dsTrackAndTraceAll">
+      <soap:operation soapAction="http://tempuri.org/IService/dsTrackAndTraceAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBC37">
+      <soap:operation soapAction="http://tempuri.org/IService/GetBC37" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBC37">
+      <soap:operation soapAction="http://tempuri.org/IService/AddBC37" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBC37EMS">
+      <soap:operation soapAction="http://tempuri.org/IService/GetBC37EMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBC37EMS">
+      <soap:operation soapAction="http://tempuri.org/IService/UpdateBC37EMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_COD_IN">
+      <soap:operation soapAction="http://tempuri.org/IService/INQUIRY_COD_IN" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="INQUIRY_COD_OUT">
+      <soap:operation soapAction="http://tempuri.org/IService/INQUIRY_COD_OUT" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAYMENT_COD_IN">
+      <soap:operation soapAction="http://tempuri.org/IService/PAYMENT_COD_IN" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAYMENT_COD_OUT">
+      <soap:operation soapAction="http://tempuri.org/IService/PAYMENT_COD_OUT" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="REVERT_COD">
+      <soap:operation soapAction="http://tempuri.org/IService/REVERT_COD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ComparisonCOD">
+      <soap:operation soapAction="http://tempuri.org/IService/ComparisonCOD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>

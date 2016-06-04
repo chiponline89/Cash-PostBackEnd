@@ -1,0 +1,175 @@
+﻿<div class="form-content">
+    <form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="account-setting-form" id="infoForm">
+        <div class="alert-area"></div>
+        <input type="hidden" name="action" value="setting-account">
+        <div class="roww">
+            <h5>Mã khách hàng: <span style="font-weight:bold;text-shadow:2px; color:red" class="text-justify">@ViewBag.profile._id</span> </h5>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_company_name">Phân loại<small class="validate">*</small></label>
+                        <select id="customer_type" class="form-control" required>  
+                            <option value="B">Doanh nghiệp</option>                          
+                            <option value="P">Cá nhân</option>                          
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_company_name">Tên Công ty<small class="validate">*</small></label>
+                        <input type="text" class="form-control" placeholder="Tên Công ty" name="account[company_name]" id="setting_account_company_name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_company_short_name">Tên viết tắt<small class="validate">*</small></label>
+                        <input type="text" class="form-control" placeholder="Tên viết tắt của Công Ty" name="account[company_name]" id="setting_account_company_short_name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_company_contract">Số hợp đồng<small class="validate">*</small></label>
+                        <input type="text" class="form-control" placeholder="Số hợp đồng" id="setting_account_company_contract" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="payment_account_tax">Mã số thuế:</label>
+                        <input type="text" maxlength="20" name="payment_account_tax" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" class="form-control" id="payment_account_tax" placeholder="" value="" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_name">Họ tên người đại diện<small class="validate">*</small></label>
+                        <input class="form-control" type="text" placeholder="Họ tên đầy đủ của bạn" name="account[fullname]" id="setting_account_name" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_email">Địa chỉ email <small class="validate">*</small></label>
+                        <input class="form-control" type="email" placeholder="Địa chỉ email" name="setting_account_email" id="setting_account_email" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_phone">Điện thoại liên hệ<small class="validate">*</small> <i class="icon-question-sign has-tip tip-right" data-tooltip title="Nhấn phím [tab] hoặc dấu cách để thêm số liên hệ"></i></label>
+                        <input class="form-control" maxlength="13" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" id="setting_account_phone" name="setting_account_phone" type="text" required>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                @*<div class="row">
+                                <div class="col-sm-12">
+                                    <label for="setting_account_birthday">Ngày sinh</label>
+                                    <input type="date"
+                                           id="setting_account_birthday"
+                                           name="date"
+                                           placeholder="dd/mm/yyyy" class="form-control" required
+                                           onkeyup="
+                    var v = this.value;
+                    if (v.match(/^\d{2}$/) !== null) {
+                        this.value = v + '/';
+                    } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+                        this.value = v + '/';
+                    }"
+                                           maxlength="10">
+                                </div>
+
+                            </div>*@
+                @*<div class="row">
+                        <div class="col-sm-12">
+                            <label for="setting_account_sex">Giới tính</label>
+                            <input class="form-control" type="text" placeholder="Giới tính" name="account[sex]" id="setting_account_sex" value="" required>
+
+                        </div>
+                    </div>*@
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_email">Địa chỉ<small class="validate">*</small></label>
+                        <input class="form-control" type="text" placeholder="Địa chỉ " name="setting_account_address" id="setting_account_address" required>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="product_to_city"><i class="icon-home"></i> Tỉnh thành</label>
+                        <select class="form-control" id="account_drop_province" data-target="lblProvince" required>
+                            @if (Model.Length > 1)
+                            {
+                                <option value="00">Áp dụng Toàn quốc</option>
+                            }
+                            @foreach (dynamic u in Model)
+                            {
+                                <option value="@u.UnitCode">@u.UnitCode - @u.UnitName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="product_to_district">Quận huyện</label>
+                        <select id="account_drop_district" name="district_drop" class="form-control" required></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="setting_account_sex">Phân loại khách hàng</label>
+                    </div>
+                    <div>
+                        <div class="col-sm-6">
+                            <label><input type="radio" class="fee_config" id="payment_customer_debt" name="payment_customer_type" value="0" required>Nợ</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label><input type="radio" class="fee_config" id="payment_customer_cash" name="payment_customer_type" value="1" required>Tiền mặt</label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="info-result" style="display:none">
+                        <div data-alert class="alert alert-success alert-dismissable info-result" style="display:none">
+                            Cập nhật thành công!
+                        </div>
+                    </div>
+
+                    <div class="row btn-save-account">
+                        <div class="col-sm-12">
+                            <label for="btSave">&nbsp;</label>
+                            <button id="btSave" class="btn btn-primary"><i class="icon-ok"></i>Lưu</button>
+                            &nbsp; <button type="reset" class="btn btn-default secondary">Nhập lại</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $("#infoForm").validate({
+        lang: 'vi',
+        rules: {
+            setting_account_email: {
+                required: true,
+                email: true
+            },
+        },
+        messages: {
+            setting_account_email: "Vui lòng nhập đúng định dạng email.",
+        },
+        submitHandler: function (form) {
+          if(permission!="" && permission.indexOf("21")==-1)
+          {
+              alert("Bạn chưa được phân quyền sử dụng chức năng sửa thông tin doanh nghiệp");
+          }
+          else{
+            SaveInfo();
+           }
+        }
+    });
+</script>

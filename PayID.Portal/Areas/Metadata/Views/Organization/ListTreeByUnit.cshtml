@@ -1,0 +1,61 @@
+﻿@model List<PayID.Portal.Models.ListTree>
+
+@{
+    int iMargin = int.Parse(ViewBag.Margin.ToString());
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    bool isAdd = false;
+    foreach (var item in Model)
+    {
+        if (item.UnitCode.Length == 6 && isAdd == false)
+        {
+            isAdd = true;
+            iMargin = iMargin + 20;
+        }
+
+        <table class="table table-tree table-middle" style="margin:0px;">
+            <tbody>
+                <tr class="cm-row-status-">
+                    <td>
+                        <input type="hidden" value="@item.UnitName" id="po-name-@item.UnitCode" />
+                        <input type="hidden" value="@iMargin" id="Margin-@item.UnitCode" />
+                        <input type="hidden" value="@item.UnitLink" id="hUnitLink-@item.UnitCode" />
+                        <input type="hidden" value="@item.UnitParent" id="hUnitParent-@item.UnitCode" />
+                        <input type="hidden" value="@item.UnitName" id="hUnitName-@item.UnitCode" />
+                        <input type="hidden" value="@item.ProvinceCode" id="hProvinceCode-@item.UnitCode" />
+
+                        @if (item.UnitCode.Length == 6)
+                        {
+                            <span style="padding-left: @(iMargin + "px"); cursor:pointer;" onclick="Po.ListTree('@item.UnitCode', '0', '@item.UnitLink', '@item.UnitParent', '@item.UnitName')">
+                                <span class="row-status">@item.UnitName</span>
+                            </span>
+                        }
+                        else
+                        {
+                            <span onclick="Po.ListTree('@item.UnitCode', '@(iMargin)', '@item.UnitLink', '@item.UnitParent', '@item.UnitName')" style="padding-left: @(iMargin + "px");">
+                                <span alt="Expand the sublist of items" title="Expand the sublist of items" id="on_po_@item.UnitCode" class="cm-combination">
+                                    <span class="exicon-expand"></span>
+                                </span>
+                                <span alt="Collapse the sublist of items" title="Collapse the sublist of items" id="off_po_@item.UnitCode" class="cm-combination hidden">
+                                    <span class="exicon-collapse"></span>
+                                </span>
+                                <span style="cursor:pointer;" class="row-status">@item.UnitName</span>
+                            </span>
+                        }
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="value_po_@item.UnitCode" />
+        <div class="" id="po_@item.UnitCode">
+
+        </div>
+    }
+}
+else
+{
+    <span style="padding-left: @((iMargin + 20) + "px"); color:red;">Không có dữ liệu</span>
+}

@@ -1,0 +1,237 @@
+﻿
+@{
+    if (Session["profile"] == null)
+    {
+        PayID.Portal.Common.Service.AccountService data = new PayID.Portal.Common.Service.AccountService();
+        var profile = data.GetAccountByUserName(User.Identity.Name);
+        Session["profile"] = profile;
+    }
+
+    var oProfile = (PayID.Portal.Models.Account)Session["profile"];
+}
+
+<div id="header" class="header">
+    <div class="navbar-admin-top">
+        <!--Navbar-->
+        <div class="navbar navbar-inverse" id="header_navbar">
+            <div class="navbar-inner">
+                <div class="nav-ult">
+                    <li class="nav-company">
+                        <a href="#" target="_blank" title="Trang chủ">
+                            <img src="../../Content/img/Logo_Cash@Post.png" style="width:150px;" />
+                        </a>
+                    </li>
+
+                    <ul class="nav">
+                        <li class="dropdown vendor-submenu">
+                            <a class=" dropdown-toggle" data-toggle="dropdown">
+                                <span>@(oProfile.UnitName)</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <ul class="nav hover-show navbar-right">
+                        @if (Session["profile"] != null && (oProfile.UnitCode.Length == 2))
+                        {
+                            <li class="dropdown dropdown-top-menu-item">
+                                <a id="elm_menu_design" href="#" class="dropdown-toggle design" data-toggle="dropdown">
+                                    Cấu hình đơn vị
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Content("~/Metadata/Organization/")">Danh sách đơn vị</a></li>
+                                    @*<li><a href="@Url.Content("~/Systems/Setting/WorkflowUnit")">Cấu hình Cấp, đơn vị xử lý</a></li>*@
+                                    <li><a href="@Url.Content("~/Systems/Setting/Workflow")">Cấu hình Luồng xử lý</a></li>
+                                </ul>
+
+                            </li>
+                            <li>
+                                @*<a href="@Url.Content("~/Systems/Decentral/")">Phân quyền</a>*@
+                                <a href="javascript:void(0)">Phân quyền</a>
+                                @*<ul class="dropdown-menu">
+                                    <li><a href="@Url.Content("~/Systems/Decentral/")">Phân quyền theo cấp đơn vị</a></li>
+                                    <li><a href="@Url.Content("~/Systems/Decentral/")">Phân quyền theo người dùng</a></li>
+                                </ul>*@
+                            </li>
+                                                
+                        }
+
+                       
+
+                    <li class="divider-vertical"></li>
+                    <li class="dropdown dropdown-top-menu-item">
+
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-white icon-user"></i>
+                            <b class="caret"></b>
+                        </a>
+
+
+                        <ul class="dropdown-menu pull-right">
+                            <li class="disabled">
+                                <a><strong>Tài khoản</strong><br>@(oProfile.FullName)</a>
+                            </li>
+                            <li class="divider"></li>
+
+                            <li><a href="#">Chỉnh sửa hồ sơ</a></li>
+                            <li><a href="@Url.Action("Index","Account")">Thoát</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="subnav cm-sticky-scroll" data-ce-top="41" data-ce-padding="0" id="header_subnav">
+            @*<div class="search pull-right">
+
+                <form id="global_search" method="get" action="" class="cm-processed-form">
+                    <input type="hidden" name="dispatch" value="search.results">
+                    <input type="hidden" name="compact" value="Y">
+                    <button class="icon-search cm-tooltip " type="submit" title="Tìm kiếm sản phẩm, khách hàng, đơn đặt hàng và trang CMS" id="search_button">Đi</button>
+                    <label for="gs_text"><input type="text" class="cm-autocomplete-off" id="gs_text" name="q" value="" autocomplete="off"></label>
+                    <input type="hidden" name="security_hash" class="cm-no-hide-input" value="88caf4d412c65ca6642df3724659a17a">
+                </form>
+            </div>*@
+            <ul class="nav hover-show nav-pills">
+                <li><a href="#" class="home"><i class="icon-home"></i></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Điều tin
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="sales_reports">
+                            <a href="@Url.Content("~/ServiceRequest/Request/List?status=C0")">
+                                <span>Quản lý Tin</span>
+                                <span class="hint">Xem, tìm kiếm danh sách yêu cầu</span>
+                            </a>
+                        </li>
+                        <li class="view_orders">
+                            <a href="@Url.Content("~/ServiceRequest/Request/CreateRequest")">
+                                <span>Tạo tin</span>
+                                <span class="hint">
+                                    Tạo thêm yêu cầu lấy, gom hàng
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Vận đơn
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="categories">
+                            <a class=" " href="@Url.Content("~/Lading/Home/Index")">
+                                <span>Quản lý vận đơn</span>
+                                <span class="hint">Xem, tìm kiếm danh sách vận đơn</span>
+                            </a>
+
+                        </li>
+                        <li class="products">
+                            <a class=" " href="@Url.Content("~/Lading/ImportLading/Index")">
+                                <span>Tạo vận đơn theo File</span>
+                                <span class="hint">Tạo, thêm mới danh sách vận đơn theo File Excel</span>
+                            </a>
+
+                        </li>
+                        @*<li class="products">
+                            <a class=" " href="@Url.Content("~/Lading/TrackTrace/Index")">
+                                <span>Lịch sử vận đơn</span>
+                                <span class="hint">Theo dõi lịch sử, hành trình của vận đơn</span>
+                            </a>
+
+                        </li>
+                        <li class="products">
+                            <a class=" " href="@Url.Content("~/Lading/TrackTrace/LadingTrackTrace")">
+                                <span>Tìm kiếm vận đơn</span>
+                                <span class="hint">Thống kê, tìm kiếm vận đơn</span>
+                            </a>
+
+                        </li>*@
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Quản lý khách hàng
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="customers">
+                            <a class=" " href="@Url.Content("~/Merchant/Home/Index")">
+                                <span>Danh sách khách hàng</span>
+                                <span class="hint">Xem, tìm kiếm danh sách Khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="customers">
+                            <a class=" " href="@Url.Content("~/Merchant/Home/StoreManagement")">
+                                <span>Danh sách kho hàng</span>
+                                <span class="hint">Xem, tìm kiếm danh sách khách hàng</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Báo cáo
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="seo dropdown-submenu">
+                            <a href="javascript:void(0)">
+                                <span>Thống kê đơn hàng</span>
+                                <span class="hint">Thống kê đơn hàng theo Khách hàng, trạng thái đơn hàng...</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li class="  "><a href="@Url.Content("~/Report/Home/Index?opt=tkvdtt")">Theo tên khách hàng</a></li>
+                                <li class="  "><a href="@Url.Content("~/Report/Home/Index?opt=tkvdtg")">Điều tin thu gom</a></li>
+                                <li class="  "><a href="@Url.Content("~/Report/Home/Index?opt=tkvdtg")">Đã được phát hành</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="seo dropdown-submenu">
+                            <a href="javascript:void(0)">
+                                <span>Báo cáo quản lý vận đơn</span>
+                                <span class="hint">Báo cáo tổng hợp vận đơn, chi tiết vận đơn</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Content("~/Report/Home/Index?opt=vd")">Chi tiết vận đơn</a></li>
+                                <li><a href="@Url.Content("~/Report/Home/Index?opt=thvd")">Tổng hợp vận đơn</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="seo dropdown-submenu">
+                            <a href="javascript:void(0)">
+                                <span>Báo cáo quản lý thanh toán</span>
+                                <span class="hint">Báo cáo tổng hợp thanh toán, chi tiết thanh toán</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Content("~/Report/Home/Index?opt=thu")">Chi tiết giao dịch thanh toán</a></li>
+                                <li><a href="@Url.Content("~/Report/Home/Index?opt=thuth")">Tổng hợp giao dịch thanh toán</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="seo dropdown-submenu">
+                            <a href="javascript:void(0)">
+                                <span>Báo cáo quản lý đơn hàng</span>
+                                <span class="hint">Báo cáo tổng hợp đơn hàng, chi tiết đơn hàng</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Content("~/Report/Home/Index?opt=dh")">Chi tiết quản lý đơn hàng</a></li>
+                                <li><a href="@Url.Content("~/Report/Home/Index?opt=dhth")">Tổng hợp quản lý đơn hàng</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!--header_subnav-->
+        </div>
+    </div>
+    <!--header-->
+</div>

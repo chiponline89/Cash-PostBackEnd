@@ -1,0 +1,173 @@
+﻿<div class="row text-left">
+    <a href="#" class="btn btn-block btn-small add-store"><span class="label label-info"><i style="margin-right:3px;"></i>Thêm địa chỉ lấy hàng</span></a>
+</div>
+<div class="row" hidden="hidden" id="add_more_store">
+    <div class="form-horizontal" id="store-info-id">
+        <form class="cmxform" id="commentForm" method="post" action="novalidate">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_name">Tên kho hàng:</label>
+                        <input type="text" name="store_name" id="store_name" class="form-control error" placeholder="Tên kho hàng" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_manager_name">Người đại diện:</label>
+                        <input type="text" name="store_manager_name" id="store_manager_name" class="form-control" placeholder="Họ tên người quản lý kho" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_manager_mobile">Điện thoại liên hệ:</label>
+                        <input type="text" name="store_manager_mobile" maxlength="11" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" id="store_manager_mobile" class="form-control" placeholder="Điện thoại của quản lý kho" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_manager_email">Hòm thư liên hệ:</label>
+                        <input type="email" name="store_manager_email" id="store_manager_email" class="form-control" placeholder="Email liên hệ quản lý kho">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_to_address">Địa chỉ:</label>
+                        <input type="text" placeholder="Đỉa chỉ, số nhà, phường xã..." class="form-control" name="store_to_address" id="store_to_address"
+                               data-target="#preview-to-address">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="province_drop">Tỉnh/Thành phố:</label>
+                        <select id="province_drop" class="form-control" data-target="lblProvince">
+                            @if (Model.Length > 1)
+                            {
+                                <option value="00">Áp dụng Toàn quốc</option>
+                            }
+                            @foreach (dynamic u in Model)
+                            {
+                                <option value="@u.UnitCode">@u.UnitCode - @u.UnitName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="id_drop_district">Quận/Huyện:</label>
+                        <select id="id_drop_district" class="form-control" name="id_drop_district"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="drop_pos_store">Bưu cục thu gom:</label>
+                        <select class="form-control" id="drop_pos_store" name="drop_pos_store">
+                            <option>Bưu cục</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" hidden="hidden">
+                    <div class="col-sm-6">
+                        <input type="text" name="store_id" id="store_id" placeholder="" value="" class="hide">
+                    </div>
+                </div>
+                <div class="alert alert-success alert-dismissable store-result" style="display:none">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong> Cập nhật thành công !</strong>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="btSave">&nbsp;</label>
+                        <button id="btSaveStore" type="submit" class="btn btn-primary"><i class="icon-ok"></i>Lưu</button>
+                        &nbsp;<button type="reset" class="btn btn-default">Nhập lại</button>
+                    </div>
+                </div>
+                <br />
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="table-responsive">
+                <table id="mytable" class="table table-bordred table-striped">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã kho</th>
+                            <th>Tên kho</th>
+                            <th>Địa chỉ</th>
+                            <th>Người đại diện</th>
+                            <th>Điện thoại</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listStore"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#commentForm").validate({
+        lang: 'vi',
+        submitHandler: function (form) {
+            SaveStore();
+        }
+    });
+
+    $().ready(function () {
+        var click = 0;
+        $(".add-store").click(function () {
+          if(permission!="" && permission.indexOf("13")==-1)
+          {
+              alert("Bạn chưa được phân quyền sử dụng chức năng thêm địa chỉ lấy hàng");
+          }
+          else{
+            if (click == 1) {
+                $('#add_more_store').hide();
+                click = 0;
+            }
+            else {
+                $('#add_more_store').show();
+                click = 1;
+                add_new_store();
+                $(".store-result").hide();
+            }
+         }
+        });
+
+        $("#commentForm").validate({
+            rules: {
+                store_name: "required",
+                store_manager_name: "required",
+                store_to_address: "required",
+                store_manager_mobile: "required",
+                province_drop: "required",
+                id_drop_district: "required",
+                store_manager_email: {
+                    required: true,
+                    email: true
+                },
+            },
+            messages: {
+                store_name: "Vui lòng nhập tên kho hàng.",
+                store_manager_name: "Vui lòng nhập tên quản lý.",
+                store_manager_mobile: "Vui lòng nhập điện thoại.",
+                store_manager_email: "Vui lòng nhập đúng định dạng email.",
+                store_to_address: "Vui lòng nhập địa chỉ.",
+                province_drop: "Bạn chưa chọn tỉnh.",
+                id_drop_district: "Bạn chưa chọn huyện.",
+
+            }
+        });
+    });
+
+</script>

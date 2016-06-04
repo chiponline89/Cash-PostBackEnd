@@ -1,0 +1,70 @@
+﻿@{
+    Layout = null;
+}
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    var item = Model[i];
+    <tr>
+        <td align="left" valign="middle">
+            @if (item.IsChecked != null && item.IsChecked == true)
+            {
+                <input type='checkbox' checked="checked" id="cate_@item._id" onchange="CheckPermission(@item._id)" class='toggle-single user' data-id="@item._id" value='@item.ModuleCode'>
+                <span style="vertical-align:text-bottom;"><b>@item.ModuleName</b></span>
+            }
+            else
+            {
+                <input type='checkbox' id="cate_@item._id" onchange="Permission(@item._id)" class='toggle-single user' data-id="@item._id" value='@item.ModuleCode'>
+                <span style="vertical-align:text-bottom;"><b>@item.ModuleName</b></span>
+            }
+        </td>
+        <td>
+            @if (item.detail != null)
+            {
+                foreach (dynamic ite in item.detail)
+                {
+                    <ul id="check-list-box" class="list-group checked-list-box">
+                        <li class="list-group-item" style="cursor: pointer;">
+                            @if (ite.IsChecked != null && ite.IsChecked == true)
+                            {
+                                <input type="checkbox" checked="checked" id="ck_@ite._id" data-id="@ite._id" data-cate="@item._id" class="checkUser" value="@ite.FuncCode" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="ck_@ite._id" data-id="@ite._id" data-cate="@item._id" class="checkUser" value="@ite.FuncCode" />
+                            }
+                            <span style="vertical-align:text-bottom;">@ite.FuncName</span>
+                        </li>
+                    </ul>
+                }
+            }
+        </td>
+    </tr>
+}
+
+<script>
+     function Permission(id) {
+          $('.checkUser').each(function (index, obj) {
+            if(document.getElementById("cate_"+id).checked==false)
+             {
+               if ($(this).data("cate")==id) {
+                  if(document.getElementById("ck_"+$(this).data("id")).checked==true)
+                  {
+                     document.getElementById("ck_"+$(this).data("id")).checked = false;
+                  }
+                }
+            }
+            else
+           {
+              if ($(this).data("cate")==id) {
+                if(document.getElementById("ck_"+$(this).data("id")).checked==false)
+                {
+                   document.getElementById("ck_"+$(this).data("id")).checked = true;
+                }
+              }
+            }
+         });
+       }
+
+</script>
+

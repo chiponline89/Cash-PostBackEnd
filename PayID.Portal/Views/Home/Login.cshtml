@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+@section TopMenu{
+
+}
+<div class="row">
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Đăng nhập</div>
+            <div class="panel-body">
+                <form method="post" role="form">
+                    <fieldset>
+                        <div class="row">
+                            <div class="center-block">
+                                <img class="profile-img" src="~/Content/img/user-login.png" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-10  col-md-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-user"></i>
+                                        </span>
+                                        <input type="hidden" id="redirect" name="redirect" value="@ViewBag.redirect" />
+                                        <input type="hidden" id="login" name="redirect" value="@ViewBag.login" />
+                                        <input id="userid" name="userid" class="form-control" placeholder="Tài khoản đăng nhập" required autofocus />
+                                    </div>
+                                </div>
+                                @*<div class="text-center"><h3 style="margin-top: 0px; margin-top: 0px; font-size: 16px; font-weight: bold;">ĐĂNG NHẬP HỆ THỐNG</h3></div>*@
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-lock"></i>
+                                        </span>
+                                        <input id="password" name="password" type="password" class="form-control" placeholder="Mật khẩu đăng nhập" required />
+                                    </div>
+                                </div>
+                                <div class="login-false" hidden="hidden" style="color: #d9534f">
+                                    <span class="help-block">Sai tên đăng nhập hoặc mật khẩu.</span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" title="Ghi nhớ tài khoản đăng nhập" />Ghi nhớ tài khoản đăng nhập
+                                </div>                              
+                                <div class="form-group">
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit" style="width:100%;">Đăng nhập</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="panel-footer"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $().ready(function () {
+        var v_login = $("#login").val();
+        if (v_login == false)
+        {
+            $(".login-false").show();
+        }
+       var reMember = "@ViewBag.Remember";
+        console.log(reMember);
+        if (reMember != null || reMember != "" || reMember != undefined) {
+            if (reMember == "True") {
+                $("#userid").val("@ViewBag.UserName");
+                $("#remember").prop('checked', true);
+            }
+        }
+        else {
+            $("#userid").val("");
+        }
+    });
+</script>

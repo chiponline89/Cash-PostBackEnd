@@ -1,0 +1,206 @@
+﻿@model PayID.Portal.Models.Lading
+
+<form id="LadingEdit">
+    <div>
+        <input type="hidden" value="@Model.ProductName" id="IdProductName" />
+        <input type="hidden" value="@Model.Value" id="IdProductValue" />
+        <input type="hidden" value="@Model.Weight" id="IdProductWeight" />
+        <input type="hidden" value="@Model.Quantity" id="IdProductQuantity" />
+        <input type="hidden" value="@Model.ProductDescription" id="IdProductDescr" />
+        <input type="hidden" value="@Model.ReceiverName" id="IdReceiverName" />
+        <input type="hidden" value="@Model.ReceiverMobile" id="IdReceiverMobile" />
+        <input type="hidden" value="@Model.ReceiverAddress" id="IdReceiverAddress" />
+        <input type="hidden" value="@Model.ToProvinceCode" id="IdToProvinceCode" />
+        <input type="hidden" value="@Model.FromProvinceCode" id="IdFromProvinceCode" />
+        <input type="hidden" value="@Model.MainFee" id="IdMainFee" />
+        <input type="hidden" value="@Model.ServiceFee" id="IdServiceFee" />
+        <input type="hidden" value="@Model.CodFee" id="IdCodFee" />
+        <input type="hidden" value="@Model.TotalFee" id="IdTotalFee" />
+
+        <input type="hidden" id="txtId" value="@Model._id" name="@Model._id" />
+        <input type="hidden" id="idServiceCode" value="@Model.ServiceCode" name="@Model.ServiceCode" />
+    </div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h2 class="modal-title">Sửa vận đơn</h2>
+    </div>
+    <div class="modal-body" style="padding:15px !important;">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin sản phẩm</span>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Tên sản phẩm</label>
+                                @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control validate[required]", @placeholder = "Tên sản phẩm" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Tổng giá trị sản phẩm (VNĐ)</label>
+                                @Html.TextBoxFor(x => x.Value, new { @class = "form-control", @placeholder = "Tổng giá trị sản phẩm", @onchange = "Lading.ChangeEvent()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Số lượng</label>
+                                @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", @placeholder = "Số lượng" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Trọng lượng (gram)</label>
+                                @Html.TextBoxFor(x => x.Weight, new { @class = "form-control", @placeholder = "Số lượng", @onchange = "Lading.ChangeEvent()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Mô tả sản phẩm</label>
+                                @Html.TextAreaFor(x => x.ProductDescription, new { @class = "form-control", @placeholder = "Mô tả sản phẩm" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin người nhận</span>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Tên người nhận</label>
+                                @Html.TextBoxFor(x => x.ReceiverName, new { @class = "form-control validate[required]", @placeholder = "Tên người nhận" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Số điện thoại</label>
+                                @Html.TextBoxFor(x => x.ReceiverMobile, new { @class = "form-control validate[required]", @placeholder = "Số điện thoại" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Địa chỉ</label>
+                                @Html.TextAreaFor(x => x.ReceiverAddress, new { @class = "form-control validate[required]", @placeholder = "Địa chỉ" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Tỉnh, Thành phố nhận</label>
+                                @Html.DropDownListFor(x => x.ToProvinceCode, (IEnumerable<SelectListItem>)ViewBag.ListProvince, new { @class = "form-control validate[required]", @onchange = "Lading.ChangeEvent()" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="calculate_fee">
+                    <div class="table-responsive">
+                        <table border="1" class="table table-striped table-bordered datatables dataTable no-footer">
+                            <thead>
+                                <tr class="tr_head">
+                                    <td>Cước vận chuyển</td>
+                                    <td>Phí thu hộ (COD)</td>
+                                    <td>Phí dịch vụ</td>
+                                    <td>Tổng tiền thu hộ<br>(Người nhận trả)</td>
+                                    <td>Thời gian<br>vận chuyển</td>
+                                </tr>
+                            </thead>
+                            <tbody class="tbody">
+                                <tr>
+                                    @if (Model.MainFee != null)
+                                    {
+                                        <td><div id="idtthcuocchinh" align="right">@Model.MainFee.ToString("N0")</div></td>
+                                    }
+                                    else
+                                    {
+                                        <td><div id="idtthcuocchinh" align="right">0</div></td>
+                                    }
+                                    @if (Model.CodFee != null)
+                                    {
+                                        <td><div id="idtthcuoccod" align="right">@Model.CodFee.ToString("N0")</div></td>
+                                    }
+                                    else
+                                    {
+                                        <td><div id="idtthcuoccod" align="right">0</div></td>
+                                    }
+                                    @if (Model.ServiceFee != null)
+                                    {
+                                        <td><div id="idtthcuocthem" align="right">@Model.ServiceFee.ToString("N0")</div></td>
+                                    }
+                                    else
+                                    {
+                                        <td><div id="idtthcuocthem" align="right">0</div></td>
+                                    }
+                                    @if (Model.TotalFee != null)
+                                    {
+                                        <td><div id="tthtongthuho" align="right">@Model.TotalFee.ToString("N0")</div></td>
+                                    }
+                                    else
+                                    {
+                                        <td><div id="tthtongthuho" align="right">0</div></td>
+                                    }
+                                    <td><span></span> <sup> giờ</sup></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" id="btnUnitProcess" onclick="Lading.SaveLading()" class="btn btn-primary ">Cập nhật</a>
+        <button style="float: right;" type="button" class="btn btn-default btn-close" data-dismiss="modal">Hủy</button>
+    </div>
+</form>
+
+<script>
+    $("#Weight").inputmask("decimal", {
+        radixPoint: ".",
+        groupSeparator: ",",
+        digits: 2,
+        autoGroup: true,
+        rightAlign: false
+    });
+
+    $("#Value").inputmask("decimal", {
+        radixPoint: ".",
+        groupSeparator: ",",
+        digits: 2,
+        autoGroup: true,
+        rightAlign: false
+    });
+
+    $("#Quantity").inputmask("decimal", {
+        radixPoint: ".",
+        groupSeparator: ",",
+        digits: 2,
+        autoGroup: true,
+        rightAlign: false
+    });
+
+    $("#Amount").inputmask("decimal", {
+        radixPoint: ".",
+        groupSeparator: ",",
+        digits: 2,
+        autoGroup: true,
+        rightAlign: false
+    });
+</script>

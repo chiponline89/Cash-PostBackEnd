@@ -1,0 +1,130 @@
+﻿<style>
+    .dropdown-submenu {
+        position: relative;
+    }
+
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -6px;
+            margin-left: -1px;
+            -webkit-border-radius: 0 6px 6px 6px;
+            -moz-border-radius: 0 6px 6px;
+            border-radius: 0 6px 6px 6px;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu > a:after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #ccc;
+            margin-top: 5px;
+            margin-right: -10px;
+        }
+
+        .dropdown-submenu:hover > a:after {
+            border-left-color: #fff;
+        }
+
+        .dropdown-submenu.pull-left {
+            float: none;
+        }
+
+            .dropdown-submenu.pull-left > .dropdown-menu {
+                left: -100%;
+                margin-left: 10px;
+                -webkit-border-radius: 6px 0 6px 6px;
+                -moz-border-radius: 6px 0 6px 6px;
+                border-radius: 6px 0 6px 6px;
+            }
+</style>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Phân hướng xủ lý</h3>
+</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-3">
+                @*@if (((dynamic)Session["profile"]).unit_code.Length != 4 && ((dynamic)Session["profile"]).unit_code !="00")
+                    {*@
+                <div class="dropdown form-group">
+                    <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
+                        Chọn đơn vị xử lý <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" id="unitTree"></ul>
+
+                </div>
+                @*  }*@
+            </div>
+            <div class="col-lg-9">
+                <h5 id="selected_unit_name"></h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h6>Nội dung</h6>
+                <textarea id="comment" rows="5"></textarea>
+                <br />
+                <a href="#" id="btnAssign" class="btn btn-primary">Xác nhận</a>
+            </div>
+        </div>
+    </div>
+</div>
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Content("/ServiceRequest/Proxy/UnitString")',
+                    dataType: 'json',
+                    data: { unitCode: '@(((dynamic)Session["profile"]).unit_code)' },
+                    success: function (result) {
+                        $('#unitTree').html(result);
+                        $('.parentKey').click(function (i) {
+                            var self = this;
+                            var id = self.getAttribute("keyVal").valueOf();
+                            var text = self.getAttribute("keyText").valueOf();
+                            $('#selected_unit_name').html(text);
+                            $('#selected_unit_name').attr("code", id);
+                            $('#selected_unit_name').attr("text", self.getAttribute("unitText").valueOf());
+                            return false;
+
+                        });
+                    },
+                    error: function (ex) {
+                    }
+                });
+                $('#btnAssign').click(function () {
+                    var ids = '';
+                    $(".chkMe").each(function (index) {
+                        if ($(this).is(":checked")) {
+                            ids += $(this).data("requestid") + '|';
+                        }
+                    });
+                    var unit_code = $('#selected_unit_name').attr("code");
+                    var unit_name = $('#selected_unit_name').html();
+                    var notes = $('#comment').val();
+                    alert(notes);
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Content("/ServiceRequest/Request/Assign")',
+                        dataType: 'json',
+                        data: { ids: ids, notes: notes, unit_code: unit_code, unit_name: unit_name },
+                        success: function (result) {
+                            alert(result.response_message);
+                            location.reload();
+                        },
+                        error: function (ex) {
+                        }
+                    });
+                })
+            });
+        </script>

@@ -1,0 +1,66 @@
+﻿<div class="row">
+    <div class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Mã giao dịch</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="payment_check_transaction_code" placeholder="Mã Giao dịch">
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="payment_check_customer_code" readonly="readonly" placeholder="Mã Đại lý">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 control-label">Tên đại lý</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="payment_check_customer_name" placeholder="Tên đại lý">
+            </div>
+            <label class="col-sm-2 control-label">Điện thoại</label>
+            <div class="col-sm-3">
+                <input type="text" id="payment_check_customer_mobile" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 control-label">Số tiền</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="payment_check_amount" placeholder="Số tiền GD">
+            </div>
+            <label class="col-sm-2 control-label">Lúc</label>
+            <div class="col-sm-3">
+                <input type="datetime-local" id="payment_check_transaction_time" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 control-label">Họ và tên KH</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="payment_check_payee_name" placeholder="Họ và tên Khách hàng">
+            </div>
+            <label class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-3">
+                <input type="text" id="payment_check_payee_email" placeholder="Email KH" class="form-control" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function createPaymentCheckRequest() {
+        $.ajax({
+            url: "/ServiceRequest/Request/CreatePaymentCheckRequest",
+            dataType: "json",
+            data: {
+                transaction_code: $('#payment_check_transaction_code').val(),
+                customer_code: $('#payment_check_customer_code').val(),
+                customer_name: $('#payment_check_customer_name').val(),
+                customer_mobile: $('#payment_check_customer_mobile').val(),
+                amount: $('#payment_check_amount').val(),
+                transaction_time: $('#payment_check_transaction_time').val(),
+                payee_name: $('#payment_check_payee_name').val(),
+                payee_email: $('#payment_check_payee_email').val(),
+                notes: $('#notes').val()
+            },
+            success: function (data) {
+                alert(data.response_message);
+                return;
+            }
+        });
+    }
+</script>

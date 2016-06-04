@@ -1,0 +1,159 @@
+﻿@{
+    Layout = null;
+
+}
+
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 0;
+    }
+
+    body {
+        line-height: 2;
+    }
+</style>
+
+<input type="hidden" id="total_page" value="@ViewBag.total_page" />
+<input type="hidden" id="total_item" value="@ViewBag.total_item" />
+<input type="hidden" value="@ViewBag.Page" id="currentPage" />
+
+@*@if (ViewBag.listLading.Count > 0)
+    {*@
+
+
+    <div style="border-bottom: dashed 1px #000; height: 30px; margin-bottom:20px;">&nbsp;</div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table-striped table-condensed">
+        <tr>
+            <td colspan="13" align="right">
+                <a href="@Url.Action("ReportFormNameTH", new { id = "PDF" })" title="Xuất PDF"><img src="~/Content/img/pdf.png" /></a>
+                <a href="@Url.Action("ReportFormNameTH", new { id = "Excel" })" title="Xuất Excel"> <img src="~/Content/img/excel.png" /></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" valign="top" width="80">
+                <div style="width:auto; text-transform:uppercase;font-weight:bold;" align="left">Tổng công ty bưu điện Việt Nam</div>
+                <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">BƯU ĐIỆN TỈNH/TP:</span><span id="bdtp"></span></div>
+                <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">BƯU ĐIỆN HUYỆN/TT:</span><span id="bdtt"></span></div>
+                <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">BƯU CỤC(PO):</span><span id="bdto"></span></div>
+            </td>
+            <td colspan="9" align="center" valign="top">
+                <label style="font-size: 16px;padding-left:30px; font-weight:bold;">DANH SÁCH TỔNG HỢP ĐƠN HÀNG NHẬN YÊU CẦU TỪ KHÁCH HÀNG</label>
+                <div style="font-size: 13px;">
+                    Từ ngày &nbsp;<span id="preview-from-date">
+                        .....
+                    </span> đến ngày <span id="preview-to-date">
+                        .....
+                    </span>
+                    <div style="text-align: center; line-height: 1.5; padding-bottom: 40px;">
+                        <div style="font-size: 13px;">
+                            Trạng thái : <span id="labelstatus"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+
+<tr style="border-bottom: 1px solid rgb(221, 221, 221);font-weight:bold">
+    <td align="center" style="font-size: 13px;">
+        STT
+    </td>
+    <td align="center" style="font-size: 13px;">
+        Mã Khách Hàng
+    </td>
+    <td align="center" style="font-size: 13px;">
+        Tên Khách Hàng
+    </td>
+    <td align="center" style="font-size: 13px;">
+        Trạng thái
+    </td>
+    <td align="center" style="font-size: 13px;">
+        Số lượng đơn hàng
+    </td>
+    <td align="left" style="font-size: 13px;" width="150">
+        Tổng giá trị đơn hàng
+    </td>
+    <td align="center" style="font-size: 13px;">
+        Tổng tiền nhờ thu
+    </td>
+</tr>
+@for (int i = 0; i < Model.Count; i++)
+{
+    var t = Model[i];
+    <tr>
+        <td align="center" style="font-size: 12px;">
+            @(i + 1)
+        </td>
+        <td align="center" style="font-size: 12px;">
+            @t.customercode
+        </td>
+        <td align="center" style="font-size: 12px;">
+            @t.customername
+        </td>
+        <td align="center" style="font-size: 12px;">
+            @t.system_status
+        </td>
+        <td align="center" style="font-size: 12px;" width="200">
+            @t.landing_count
+        </td>
+        <td align="center" style="font-size: 12px;" width="200">
+            @t.value
+        </td>
+        @if (t.collectvalue != null)
+        {
+            <td align="center" style="font-size: 12px;">
+                @t.collectvalue
+            </td>
+        }
+        else
+        {
+            <td align="center" style="font-size: 12px;">
+                -
+            </td>
+        }
+    </tr>
+}
+
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var status = $('#status').val();
+        var customerName = $("#buscode").val();
+        var province = $("#province").val();
+        var district = $("#district").val();
+        var pos = $("#pos").val();
+        if (customerName == "") {
+            $('#customerName').html('Tất cả')
+        } else {
+            $('#customerName').html(customerName);
+        }
+        $('#preview-from-date').html($('#f_date').val());
+        $('#preview-to-date').html($('#t_date').val());
+        if (province == "") {
+            $('#bdtp').html('');
+        } else {
+            $('#bdtp').html($('#province option:selected').text());
+        }
+        if (district == "") {
+            $('#bdtt').html('');
+        } else {
+            $('#bdtt').html($('#district option:selected').text());
+        }
+        if (pos == "") {
+            $('#bdto').html('');
+        } else {
+            $('#bdto').html($('#pos option:selected').text());
+        }
+        if (status == "0") {
+            $("#labelstatus").html("Tất Cả");
+        }
+        else {
+            $("#labelstatus").html($('#status option:selected').text());
+        }
+
+    })
+</script>

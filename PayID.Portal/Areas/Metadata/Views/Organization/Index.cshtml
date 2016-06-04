@@ -1,0 +1,175 @@
+﻿@*@section TopMenu{
+
+        <li><a href=@Url.Content("/Metadata/Home/")>Trang chủ</a></li>
+        <li class="active"><a href="#">Đơn vị trực thuộc</a></li>
+        <li><a href="#contact">Đơn vị hành chính</a></li>
+    }*@
+<input type="text" id="current-parent-unit-code" style="display:none" />
+<input type="text" id="current-unit-code" style="display:none" />
+<input type="text" id="current-unit-link" style="display:none" />
+
+<input type="hidden" id="CurrentUnitCode" />
+<input type="hidden" id="CurrentUnitLink" />
+<input type="hidden" id="CurrentParentUnitCode" />
+
+<div class="actions cm-sticky-scroll" data-ce-top="41" data-ce-padding="37" id="actions_panel">
+    <div class="title pull-left">
+        <h2 style="font-family:-webkit-body;" title="Dashboard">Danh sách đơn vị</h2>
+    </div>
+</div>
+<div class="sidebar" id="elm_sidebar">
+    @{Html.RenderAction("ListTree", "Organization", new { @Area = "Metadata" });}
+</div>
+<div class="content ufa">
+    <div class="content-wrap">
+        <div class="row marginLR" style="margin-top:-10px;">
+            <div class="card" id="NameUnit" style="margin-bottom:-18px; box-shadow:none; display:none;">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active" style="width:100%;">
+                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
+                            <h2 style="font-weight:bold;" id="po-Name"></h2>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane active" id="home">
+                <div class="panel-body">
+                    @Html.Partial("UnitInfo")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*<input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />
+    <input type="hidden" value="@(((dynamic)Session["profile"]).funcCategory)" id="permissionCate" />*@
+<script>
+    var permission = $('#permission').val();
+    var permissionCate = $('#permissionCate').val();
+
+    $(document).ready(function () {
+        @*$('.create-result').fadeOut();
+        $('.alert_pos').fadeOut();
+        var unit_code = '@(((dynamic)Session["profile"]).unit_code)';
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UnitString")',
+            dataType: 'json',
+            data: { unitCode: unit_code },
+            success: function (result) {
+
+                $('#uniTree').html(result);
+                $('.parentKey').click(function (i) {
+                    var self = this;
+                    $("#posID").val(self.getAttribute("keyVal").valueOf());
+                    var id = self.getAttribute("keyVal").valueOf();
+                    var addr = self.getAttribute("keyAddr").valueOf();
+                    //$('#unitcode').val(id);
+                    //$('#unit_info_code').val(id);
+                    //$('#unit_info_name').val($(this).html());
+                    //$('#unit_name_heading').html($(this).html());
+                    $('#divkeyVal').val(id);
+                    $('#unit_info_address').val(addr);
+                    $('#unit_info_address').val(self.getAttribute("keyFullName").valueOf());
+                    $("#unit_info_postcode").empty();
+                    $.ajax({
+                        url: '@Url.Action("GetPosByUnitCode")',
+                        dataType: "json",
+                        data: { unitcode: id },
+                        cache: false,
+                        success: function (data) {
+                            $('#unit_info_postcode').html("<option value=''>Chọn bưu cục</option>");
+                            jQuery.each(data, function (i, val) {
+                                if (val._id != '') {
+                                    $('#unit_info_postcode').html($('#unit_info_postcode').html() + "<option value='" + val._id + "'>" + val._id + '-' + val.POSName + "</option>");
+                                }
+                            });
+                            $("#divpos").show();
+                            $("#current-unit-code").val(id);
+                            $("#current-parent-unit-code").val(id);
+                            $("#current-unit-link").val(self.getAttribute("keyfullcode").valueOf());
+                            setTimeout(function () { refreshUserListByUnit(id); }, 500);
+
+                            $('#divInfo').hide();
+                            $('#divUsers').show();
+                            $('#divAreas').hide();
+                            $('#divAddUser').hide();
+                            $('#divMoreArea').hide();
+                            $('.create-result').fadeOut();
+                            $('.alert_pos').fadeOut();
+                            return;
+                        }
+                    });
+                    return false;
+
+                });
+                $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+                $('.tree li.parent_li > span').on('click', function (e) {
+                    var children = $(this).parent('li.parent_li').find(' > ul > li');
+                    if (children.is(":visible")) {
+                        children.hide('fast');
+                        $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+                    }
+                    else {
+                        children.show('fast');
+                        $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+                    }
+                    e.stopPropagation();
+                });
+                var children = $('.tree li.parent_li > span').parent('li.parent_li').find(' > ul > li');
+                children.hide();
+            },
+            error: function (ex) {
+            }
+        });*@
+    });
+
+    function refreshUserList() {
+        refreshUserListByUnit($("#current-unit-code").val());
+    }
+
+    function refreshUserListByUnit(id) {
+        $.ajax({
+            url: '@Url.Action("ListUsers")',
+            dataType: 'html',
+            cache: false,
+            data: { unitCode: id },
+            success: function (result) {
+                $("#listUsers").html(result);
+                $('#divUsers').show();
+            },
+            error: function (ex) {
+                alert(ex);
+            }
+        })
+    }
+    function refreshUserRoleList() {
+        $.ajax({
+            url: '@Url.Action("ListUserRole")',
+            dataType: 'html',
+            data: { unitCode: $('#unitcode').val() },
+            success: function (result) {
+                $("#listUserRole").html(result);
+            },
+            error: function (ex) {
+                alert(ex);
+            }
+        });
+    }
+    function refreshUnitInfo() {
+        $.ajax({
+            url: '@Url.Action("ListUnitInfo")',
+            dataType: 'html',
+            data: { unitCode: $('#unitcode').val() },
+            success: function (result) {
+                $("#listUnitInfo").html(result);
+            },
+            error: function (ex) {
+                alert(ex);
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,264 @@
+﻿<style>
+    .area_fixed {
+        position: fixed;
+        top: 160px;
+        z-index: 1000;
+        right: 110px;
+    }
+
+    .area_validate {
+        position: fixed;
+        top: 140px;
+        z-index: 1000;
+        right: 110px;
+    }
+
+    .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+        padding: 5px;
+        line-height: 1.428571429;
+        vertical-align: top;
+        border-top: 1px solid #dddddd;
+        background-color: floralwhite;
+    }
+</style>
+<div class="row">
+    <div class="form-horizontal" role="form" id="divMain">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Cấp đơn vị</label>
+            <div class="col-sm-8">
+                <select id="unit_info" class="form-control">
+                    <option value=" ">Chọn cấp đơn vị</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Nhóm người dùng</label>
+            <div class="col-sm-8">
+                <select id="user_group" class="form-control">
+                    <option value=" ">Chọn nhóm người dùng</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </div>
+    <div class="legend-user-info" id="divUsers" style="padding-top:15px;">
+        <fieldset>
+            @*Thông tin tài khoản*@
+            <legend>Danh sách chức năng</legend>
+            <table id="mytable" class="table table-bordred table-striped">
+                <tbody id="listuserfunctions"></tbody>
+            </table>
+        </fieldset>
+    </div>
+
+</div>
+<div class="area_fixed" align="right">
+    <div class="row" id="updateUserAreas">
+        <div class="form-group" align="right">
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-success btn-md save-userrole">Cập nhật</button>
+            </div>
+        </div>
+        <div class="alert alert-info alert-autocloseable-info" id="alert_user_info" style="display:none">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong id="msgError" style="margin-top:15px;"> Cập nhật thành công !</strong>
+            <label id="mes"></label>
+        </div>
+    </div>
+</div>
+<div class="area_validate" align="right">
+    <div class="row" id="ValidateUserAreas">
+        <div class="alert alert-info alert-autocloseable-info" id="alert_validate" style="display:none">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong id="msgErrors" style="margin-top:15px;"> Cập nhật thành công !</strong>
+
+        </div>
+    </div>
+</div>
+<script>
+    $("#updateUserAreas").hide();
+    function hideResult()
+    {
+        $('.create-result').fadeOut();
+    }
+    function loadUserUnitCode() {
+        $.ajax({
+            url: '@Url.Action("GetPosByUnitCode")',
+            dataType: "json",
+            data: { unitcode: unit_code},
+            success: function (data) {
+
+                $('#unit_info').html("<option value=''>Chọn cấp đơn vị</option>");
+                jQuery.each(data, function (i, val) {
+                    if (val._id >0) {
+                        $('#unit_info').html($('#unit_info').html() + "<option value='" + val._id + "'>" + val.POSName + "</option>");
+                    }
+                });
+
+                return;
+            }
+        });
+        return false;
+    };
+    loadUserUnitCode();
+
+     function ShowAlertResult(typeMes, mes) {
+        if (typeMes == "Success") {
+            $("#alert_user_info").removeClass("alert-info");
+            $("#alert_user_info").removeClass("alert-danger");
+            $("#alert_user_info").addClass("alert-success");
+        } else {
+            $("#alert_user_info").removeClass("alert-info");
+            $("#alert_user_info").removeClass("alert-success");
+            $("#alert_user_info").addClass("alert-danger");
+        }
+        // alert(mes);
+        $("#msgError").html(mes);
+        //$("#mes").html(mes);
+
+        $("#alert_user_info").show();
+
+        window.setTimeout(function () {
+            $("#alert_user_info").hide();
+        }, 5000);
+    }
+    function ShowAlertValidate(typeMes, mes) {
+        if (typeMes == "Success") {
+            $("#alert_validate").removeClass("alert-info");
+            $("#alert_validate").removeClass("alert-danger");
+            $("#alert_validate").addClass("alert-success");
+        } else {
+            $("#alert_validate").removeClass("alert-info");
+            $("#alert_validate").removeClass("alert-success");
+            $("#alert_validate").addClass("alert-danger");
+        }
+
+        $("#msgErrors").html(mes);
+      $("#alert_validate").show();
+       $("#ValidateUserAreas").show();
+        window.setTimeout(function () {
+            $("#alert_validate").hide();
+        }, 5000);
+    }
+    function validate()
+    {
+       if($("#unit_info").val()=="")
+       {
+           ShowAlertValidate("Fail","Chưa chọn cấp đơn vị");
+           return false;
+       }
+      if($("#user_group").val()=="")
+       {
+           ShowAlertValidate("Fail","Chưa chọn nhóm người dùng để phân quyền");
+           return false;
+       }
+       return true;
+    }
+    $(document).ready(function () {
+    var unitcode='@(((dynamic)Session["profile"]).unit_code)';
+
+       $('#unit_info').change(function () {
+          if(permissionCate!="" && permissionCate.indexOf("7")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng phân quyền");
+                 $('#unit_info').val('');
+             }
+            else{
+
+              $.ajax({
+               url: '@Url.Action("GetUserGroup")',
+               dataType: "json",
+               data:{unit_type:$("#unit_info").val()},
+               success: function (data) {
+
+                $('#user_group').html("<option value=''>Chọn nhóm người dùng</option>");
+                jQuery.each(data, function (i, val) {
+                    if (val._id >0) {
+                        $('#user_group').html($('#user_group').html() + "<option value='" + val._id + "'>" + val.POSName + "</option>");
+                    }
+                });
+
+                return;
+              }
+           });
+
+            }
+           }
+        );
+
+       $('#user_group').change(function () {
+            if(permissionCate!="" && permissionCate.indexOf("7")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng phân quyền");
+                  $('#user_group').val('');
+             }
+            else{
+                $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetUserFunctionList")',
+                dataType: 'html',
+                 data: { unit_code:  $('#user_group').val(), unit_type:$("#unit_info").val()},
+                success: function (data) {
+                   $("#listuserfunctions").html(data);
+                   $("#updateUserAreas").show();
+                },
+                error: function (ex) {
+                   alert("Có lỗi xảy ra trong quá trình lấy dữ liệu!");
+                 }
+               });
+            }
+           }
+        );
+
+
+    });
+
+    $('.save-userrole').click(function () {
+        var ids = '';
+        $('.checkUser').each(function (index, obj) {
+            if ($(this).is(":checked")) {
+                ids = ids + $(this).data("id") + "|";
+            }
+        });
+        var cate='';
+        $('.user').each(function (index, obj) {
+            if ($(this).is(":checked")) {
+                cate = cate + $(this).data("id") + "|";
+            }
+        });
+        var rect=confirm("Bạn có chắc chắn với những thiết lập quyền đã chọn?");
+      if(rect)
+      {
+         $.ajax({
+            url: '@Url.Content("~/Systems/Decentral/SaveUserRole")',
+            type: 'POST',
+            dataType: "json",
+            data: {
+                id: ids,
+                cate:cate,
+                unit_code: $("#user_group").val(),
+                unit_type: $("#unit_info").val()
+            },
+            success: function (data) {
+                if(data.response_code=="00")
+                {
+                    //$("#alert_info").show();
+                    ShowAlertResult("Success",data.response_message)
+                }
+                else
+                 {
+                      ShowAlertResult("Fail",data.response_message)
+                 }
+            }
+        });
+       // location.reload();
+      }
+    });
+
+
+</script>

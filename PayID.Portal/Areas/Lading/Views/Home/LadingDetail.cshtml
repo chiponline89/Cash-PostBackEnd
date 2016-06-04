@@ -1,0 +1,113 @@
+﻿@model PayID.Portal.Models.Lading
+
+
+<div class="actions cm-sticky-scroll" data-ce-top="41" data-ce-padding="37" id="actions_panel">
+    <div class="title pull-left">
+        <h2 style="font-family:-webkit-body;" title="Dashboard">Chi tiết vận đơn</h2>
+    </div>
+</div>
+
+<div class="content ufa">
+    <input type="hidden" id="txtMaVD" value="@Model.Code" />
+    <div class="content-wrap">
+        <div class="row" style="margin-left:0px; margin-right:0px;">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Hành trình vận đơn</span>
+                    <div id="hanhtrinhvandon">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-left:0px; margin-right:0px;">
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin người gửi</span>
+                    <div class="preview-content">
+                        <p>Họ tên: @Model.SenderName</p>
+                        <p>Số điện thoại: @Model.SenderMobile</p>
+                        <p>Địa chỉ: @Model.SenderAddress</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin người nhận</span>
+                    <div class="preview-content">
+                        <p>Họ tên: @Model.ReceiverName</p>
+                        <p>Số điện thoại: @Model.ReceiverMobile</p>
+                        <p>Địa chỉ: @Model.ReceiverAddress</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-left:0px; margin-right:0px;">
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin hàng hóa</span>
+                    <div class="preview-content">
+                        <p>Tên hàng hóa: @Model.ProductName</p>
+                        <p>Số lượng: @Model.Quantity.ToString("N0")</p>
+                        <p>Giá trị: @Model.Value.ToString("N0") đ</p>
+                        <p>Mô tả: @Model.ProductDescription</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Cước phí</span>
+                    <div class="preview-content price-screen">
+                        <div class="price-line clear">
+                            <p>Cước vận chuyển (đ): @Model.MainFee.ToString("N0") đ</p>
+                        </div>
+                        <div class="price-line clear">
+                            <p>Cước COD (đ): @Model.CodFee.ToString("N0") đ</p>
+                        </div>
+                        <div class="price-line clear">
+                            <p>Cước dịch vụ cộng thêm (đ): @Model.ServiceFee.ToString("N0") đ</p>
+                        </div>
+                        <div class="price-line clear total-price">
+
+                            @if (Model.CollectValue != null)
+                            {
+                                <p>Tổng tiền thu hộ (đ): @Model.CollectValue.ToString("N0") đ</p>
+                            }
+                            else
+                            {
+                                if (Model.ServiceCode != null && Model.ServiceCode == "COD")
+                                {
+                                    <p>Tổng tiền thu hộ (đ): @Model.Value.ToString("N0") đ</p>
+                                }
+                                else
+                                {
+                                    <p>Tổng tiền thu hộ (đ):0 đ</p>
+                                }
+
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("LadingTrackTrace")',
+            type: 'POST',
+            dataType: 'html',
+            data: { code: $("#txtMaVD").val() },
+            beforeSend: function () {
+                $('.loading-element').show();
+            }
+        })
+  .success(function (result) {
+      $('.loading-element').hide();
+      $('#hanhtrinhvandon').html(result);
+  })
+    });
+</script>

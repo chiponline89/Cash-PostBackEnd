@@ -1,0 +1,62 @@
+﻿@{
+    Layout = null;
+}
+@foreach (dynamic c in ViewBag.unit_info)
+{
+    <tr>
+        <td>#</td>
+        <td>@c.name</td>
+        <td>@c.phone</td>
+        <td>@c.path</td>
+        <td>@c.time</td>
+        <td>@c.status</td>
+        <td>@c.note</td>
+        <td class="text-center">
+            <a data-id="@c._id" data-name="@c.name" data-phone="@c.phone" data-path="@c.path" data-time="@c.time" data-status="@c.status" data-note="@c.note" class='btn btn-info btn-xs unit-info-edit' href="#"> <span class="glyphicon"></span> Sửa </a>
+            <a href="#" data-idx="@c._id" class="btn btn-danger btn-xs unit-info-remove"><span class="glyphicon "></span> Xóa</a>
+        </td>
+    </tr>
+}
+<script>
+    $(document).ready(function () {
+        $('.unit-info-remove').click(function () {          
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UnitInfoRemove")',
+                dataType: 'json',
+                data:
+                    {
+                        p:  $(this).data("idx")
+                    },
+                success: function (data)
+                {
+                    refreshUnitInfo();
+                },
+                error: function (ex) {
+                }
+            });
+            return false;
+        });
+        $('.unit-info-edit').click(function () {            
+            document.getElementById("unitinfo_id").value = $(this).data("id");
+            document.getElementById("unit_info_name").value = $(this).data("name");
+            document.getElementById("unit_info_phone").value = $(this).data("phone");
+            document.getElementById("unit_info_path").value = $(this).data("path");
+            document.getElementById("unit_info_time").value = $(this).data("time");
+            document.getElementById("unit_info_status").value = $(this).data("status");
+            document.getElementById("unit_info_note").value = $(this).data("note");
+        });
+
+        // Thêm phân quyền
+        $('.add-unit-info').click(function () {
+            document.getElementById("unitinfo_id").value = "";
+            document.getElementById("unit_info_name").value = "";
+            document.getElementById("unit_info_phone").value = "";
+            document.getElementById("unit_info_path").value = "";
+            document.getElementById("unit_info_time").value = "";
+            document.getElementById("unit_info_status").value = "";
+            document.getElementById("unit_info_note").value = "";
+        });
+
+    });
+</script>

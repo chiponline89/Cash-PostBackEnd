@@ -1,0 +1,16 @@
+﻿@*@section TopMenu{
+<li class="active"><a href=@Url.Content("~/ServiceRequest/Home")>Trang chủ</a></li>
+<li><a href=@Url.Content("~/ServiceRequest/Request/CreateRequest")>Tạo yêu cầu</a></li>
+<li><a href=c/ServiceRequest/Request")>Phân hướng xử lý</a></li>
+}*@
+
+<ol class="breadcrumb">
+    <li><a href=@Url.Content("~/Merchant/Home/")>Trang chủ</a></li>
+    <li class="active">Phân hướng xử lý yêu cầu</li>
+</ol>
+<div id="requestList" class="col-lg-5">
+    @Html.Action("ListRequest", "Request")
+</div>
+<div class="col-lg-7">
+    @Html.Partial("Assign")
+</div>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>HttpClientExtensions</id>
+    <version>1.0.2</version>
+    <title>HttpClientExtensions</title>
+    <authors>Alexander Persson</authors>
+    <owners>Alexander Persson</owners>
+    <licenseUrl>http://alexanderpersson.se/license/</licenseUrl>
+    <projectUrl>http://alexanderpersson.se/nuget/httpclientextensions/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A small extension lib to easy return json or html mapped to an object instead of writting own boilerplate</description>
+    <releaseNotes>Support for 8.1</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>Http json html mapper</tags>
+    <dependencies>
+      <dependency id="Microsoft.Net.Http" version="2.2.18" />
+      <dependency id="Newtonsoft.Json" version="6.0.1" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,403 @@
+﻿@model dynamic[]
+@{
+    Layout = null;
+}
+<style>
+    th {
+        font-weight: bold;
+    }
+</style>
+<input type="hidden" id="total_page" value="@ViewBag.total_page" />
+<input type="hidden" id="total_item" value="@ViewBag.total_item" />
+<input type="hidden" value="@ViewBag.Page" id="currentPage" />
+
+@if (Model.Length <= 0)
+{
+    <div class="row" align="center" style="padding:10px 0; color:#808080;">
+        Không tìm thấy dữ liệu phù hợp.
+    </div>
+}
+
+<div class="row">
+    <div class="table-responsive">
+    <table class="table table-bordred table-striped">
+        <thead>
+            <tr>
+                <td><input type="checkbox" id="chkAll" /></td>
+                <td>STT</td>
+                <td>Mã KH</td>
+                <td>Đơn hàng</td>
+                <td>Ngày tạo</td>
+                <td>Sản phẩm</td>
+                <td>Thông tin lấy hàng</td>
+                <td>Đv xử lý</td>
+                <td>Tỉnh phát</td>
+                <td>Khối lượng</td>
+                <td>Trạng thái</td>
+                <td>../.</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < Model.Length; i++)
+            {
+                var req = Model[i];
+                <tr>
+                    @if (Convert.ToInt32(req.system_status.Substring(1, req.system_status.Length - 1)) < 11 || req.system_status == "C25")
+                    {
+                        if (req.system_status != "C2" && req.system_status != "C8" && req.system_status != "C7")
+                        {
+                            <td>
+                                @if (req.is_assigned != null && req.is_assigned > 0)
+                                {
+                                    <input type="checkbox" class="checkMe" data-id="@req._id" data-assign="@req.is_assigned" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="checkMe" data-id="@req._id" data-assign="" />
+                                }
+                            </td>
+                            <td>@(i + 1 + @ViewBag.Page)</td>
+                            <td><a href=@Url.Content("~/Merchant/Home/ProfileConfiguration/" + req.customer.code)>@req.customer.code</a></td>
+                            if (req.RefCode != null)
+                            {
+                                <td>
+                                    Mã tin: <a href=@Url.Content("~/ServiceRequest/Request/Detail/" + req._id)>@req._id</a>
+                                    <br />
+                                    Vận đơn: <a href=@Url.Content("~/Lading/Home/LadingDetail/" + req.RefCode)>@req.RefCode</a><br />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Mã tin: <a href=@Url.Content("~/ServiceRequest/Request/Detail/" + req._id)>@req._id</a>
+                                    <br />
+                                    Vận đơn: <a href=@Url.Content("~/Lading/Home/LadingDetail/" + req.tracking_code)>@req.tracking_code</a><br />
+                                </td>
+                            }
+                            <td>
+                                @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy HH:mm:ss") <br />
+                                @req.created_by
+                            </td>
+                            if (req.parcel != null && req.parcel.weight != null)
+                            {
+                                <td>
+                                    <b>@req.product.name. @req.product.code </b>  <br />
+                                    @req.parcel.weight g - @req.product.value đ
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <b>@req.product.name. @req.product.code </b>  <br />
+                                    @req.product.weight g - @req.product.value đ
+                                </td>
+                            }
+                            <td width="100">
+                                <b>@req.from_address.name</b>. @req.from_address.phone <br />
+                                @req.from_address.address @*, @req.from_address.ward, @req.from_address.district, @req.from_address.province*@
+                            </td>
+                            <td>
+                                @req.current_assigned <br />
+                                @req.current_postman
+                            </td>
+                            <td>@PayID.Portal.Areas.Metadata.Controllers.ProxyController.GetProvinceName(req.to_address.province)</td>
+                            if (req.system_status == "C6" || req.system_status == "C5")
+                            {
+                                if (req.parcel != null && req.parcel.weight != null)
+                                {
+                                    <td>
+                                        <input type="text" maxlength="12" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" class="text-control forward-text" id="weight_@req._id" onkeypress="UpdateWeight(@req._id)" placeholder="Khối lượng" value="@req.parcel.weight" />
+                                        @*<button class="btn-require btn-default" onclick="UpdateWeight(@req._id)"><i class="icon-check"></i></button>*@
+                                        <label id="msgRslt_@req._id" style="color:#efa640; font-weight: bold; font-size:11px;"></label>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <input type="text" maxlength="12" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" class="text-control forward-text" id="weight_@req._id" onkeypress="UpdateWeight(@req._id)" placeholder="Khối lượng" value="@req.product.weight" />
+                                        @*<button class="btn-require btn-default" onclick="UpdateWeight(@req._id)"><i class="icon-check"></i></button>*@
+                                        <label id="msgRslt_@req._id" style="color: #efa640; font-weight: bold; font-size: 11px; "></label>
+                                    </td>
+                                }
+                            }
+                            else
+                            {
+                                <td>&nbsp;</td>
+                            }
+                            <td>
+                                <span id='lbl_success' class='btn btn-xs btn-success'>
+                                    @PayID.Portal.Areas.Merchant.Configuration.GetStatusDescriptionByStatusCode(string.Format("{0}", req.system_status))
+                                </span> <br />
+                                @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy")
+                            </td>
+                            if (req.system_status == "C5")
+                            {
+                                <td>
+                                    <a href=@Url.Content("~/ServiceRequest/Request/NavigateRequest/" + req._id) class='btn btn-xs btn-primary'>Điều tin</a>
+                                </td>
+                            }
+                            else
+                            {
+                                if (req.system_status == "C6")
+                                {
+                                    <td>
+                                        <a onclick="LoadCancelAssign(@req._id)" class='btn btn-xs btn-primary'>Hủy điều tin</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        }
+                        else if (req.system_status == "C7")
+                        {
+                            <td>
+                                <input type="checkbox" disabled class="checkOther" data-id="@req._id" />
+                            </td>
+                            <td>@(i + 1 + @ViewBag.Page)</td>
+                            <td><a href=@Url.Content("~/Merchant/Home/ProfileConfiguration/" + req.customer.code)>@req.customer.code</a></td>
+                            if (req.RefCode != null)
+                            {
+                                <td>
+                                    Mã tin: <a href=@Url.Content("~/ServiceRequest/Request/Detail/" + req._id)>@req._id</a>
+                                    <br />
+                                    Vận đơn: <a href=@Url.Content("~/Lading/Home/LadingDetail/" + req.RefCode)>@req.RefCode</a><br />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Mã tin: <a href=@Url.Content("~/ServiceRequest/Request/Detail/" + req._id)>@req._id</a>
+                                    <br />
+                                    Vận đơn: <a href=@Url.Content("~/Lading/Home/LadingDetail/" + req.tracking_code)>@req.tracking_code</a><br />
+                                </td>
+                            }
+                            <td>
+                                @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy HH:mm:ss") <br />
+                                @req.created_by
+                            </td>
+                            if (req.parcel != null && req.parcel.weight != null)
+                            {
+                                <td>
+                                    <b>@req.product.name. @req.product.code </b>  <br />
+                                    @req.parcel.weight g - @req.product.value đ
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <b>@req.product.name. @req.product.code </b>  <br />
+                                    @req.product.weight g - @req.product.value đ
+                                </td>
+                            }
+                            <td>
+                                <b>@req.from_address.name</b>. @req.from_address.phone <br />
+                                @req.from_address.address. @req.from_address.province @*, @req.from_address.ward, @req.from_address.district, @req.from_address.province*@
+                            </td>
+                            <td>
+                                @req.current_assigned.ToString().Substring(0, 14) <br />
+                                <b>Xác nhận bởi:</b> @req.current_assigned.ToString().Substring(15, 12)<br />  
+                                @if (req.current_postman != null && req.current_postman!="")
+                                {
+                                    <b>Bưu tá thu gom:</b>
+                                    @req.current_postman
+                                }
+                                
+                            </td>
+                            <td>@PayID.Portal.Areas.Metadata.Controllers.ProxyController.GetProvinceName(req.to_address.province)</td>
+                            <td></td>
+                            <td>
+                                <span id='lbl_success' class='btn btn-xs btn-success'>
+                                    @PayID.Portal.Areas.Merchant.Configuration.GetStatusDescriptionByStatusCode(string.Format("{0}", req.system_status))
+                                </span>
+                                <br />
+                                @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy")
+                            </td>
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td>
+                                <input type="checkbox" disabled class="checkOther" data-id="@req._id" />
+                            </td>
+                            <td>@(i + 1 + @ViewBag.Page)</td>
+                            <td><a href=@Url.Content("~/Merchant/Home/ProfileConfiguration/" + req.customer.code)>@req.customer.code</a></td>
+                            if (req.RefCode != null)
+                            {
+                                <td>
+                                    Mã tin:@req._id
+                                    <br />
+                                    Vận đơn:<a href=@Url.Content("~/Lading/Home/LadingDetail/" + req.RefCode)>@req.RefCode</a><br />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Mã tin:@req._id
+                                    <br />
+                                    Vận đơn:<a href=@Url.Content("~/Lading/Home/LadingDetail/" + req.tracking_code)>@req.tracking_code</a><br />
+                                </td>
+                            }
+                            <td>
+                                @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy HH:mm:ss") <br />
+                                @req.created_by
+                            </td>
+                            if (req.parcel != null && req.parcel.weight != null)
+                            {
+                                <td>
+                                    <b>@req.product.name. @req.product.code </b>  <br />
+                                    @req.parcel.weight g - @req.product.value đ
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <b>@req.product.name. @req.product.code </b>  <br />
+                                    @req.product.weight g - @req.product.value đ
+                                </td>
+                            }
+                            <td>
+                                <b>@req.from_address.name</b>. @req.from_address.phone <br />
+                                @req.from_address.address. @req.from_address.province @*, @req.from_address.ward, @req.from_address.district, @req.from_address.province*@
+                            </td>
+                            <td>
+                                @req.current_assigned <br />
+                                @req.current_postman
+                            </td>
+                            <td>@PayID.Portal.Areas.Metadata.Controllers.ProxyController.GetProvinceName(req.to_address.province)</td>
+                            <td></td>
+                            <td>
+                                <span id='lbl_success' class='btn btn-xs btn-success'>
+                                    @PayID.Portal.Areas.Merchant.Configuration.GetStatusDescriptionByStatusCode(string.Format("{0}", req.system_status))
+                                </span>
+                                <br />
+                                @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy")
+                            </td>
+                            <td></td>
+                        }
+                    }
+                    else
+                    {
+                        <td>
+                            <input type="checkbox" disabled class="checkOther" data-id="@req._id" />
+                        </td>
+                        <td>@(i + 1 + @ViewBag.Page)</td>
+                        <td><a href=@Url.Content("~/Merchant/Home/ProfileConfiguration/" + req.customer.code)>@req.customer.code</a></td>
+                        if (req.RefCode != null)
+                        {
+                            <td>
+                                Mã tin:@req._id
+                                <br />
+                                Vận đơn:<a href=@Url.Content("~/Lading/Home/LadingDetail/" + req.RefCode)>@req.RefCode</a><br />
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Mã tin:@req._id
+                                <br />
+                                Vận đơn:<a href=@Url.Content("~/Lading/Home/LadingDetail/" + req.tracking_code)>@req.tracking_code</a><br />
+                            </td>
+                        }
+                        <td>
+                            @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy HH:mm:ss") <br />
+                            @req.created_by
+                        </td>
+                        <td>
+                            <b>@req.product.name. @req.product.code </b>  <br />
+                            @req.parcel.weight g - @req.product.value đ
+                        </td>
+                        <td>
+                            <b>@req.from_address.name</b>. @req.from_address.phone <br />
+                            @req.from_address.address. @req.from_address.province @*, @req.from_address.ward, @req.from_address.district, @req.from_address.province*@
+                        </td>
+                        <td>
+                            @req.current_assigned <br />
+                            @req.current_postman
+                        </td>
+                        <td>@PayID.Portal.Areas.Metadata.Controllers.ProxyController.GetProvinceName(req.to_address.province)</td>
+
+                        <td></td>
+
+                        <td>
+                            <span id='lbl_success' class='btn btn-xs btn-success'>
+                                @PayID.Portal.Areas.Merchant.Configuration.GetStatusDescriptionByStatusCode(string.Format("{0}", req.system_status))
+                            </span>
+                            <br />
+                            @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy")
+                        </td>
+                        <td></td>
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table></div>
+</div>
+<style>
+    .btn-default .dropdown-menu {
+        color: #000 !important;
+    }
+
+        .btn-default .dropdown-menu li > a:hover,
+        .btn-default .dropdown-menu li > a:focus {
+            background-color: #000 !important;
+            color: #fff !important;
+        }
+
+    .btn-group-primary .dropdown-menu {
+        background-color: #3784c5 !important;
+    }
+
+        .btn-group-primary .dropdown-menu li > a:hover,
+        .btn-group-primary .dropdown-menu li > a:focus {
+            background-color: #428bca !important;
+        }
+
+    .btn-group-success .dropdown-menu {
+        background-color: #51b351 !important;
+    }
+
+        .btn-group-success .dropdown-menu li > a:hover,
+        .btn-group-success .dropdown-menu li > a:focus {
+            background-color: #5cb85c !important;
+        }
+
+    .btn-group-info .dropdown-menu {
+        background-color: #4ebbdb !important;
+    }
+
+        .btn-group-info .dropdown-menu li > a:hover,
+        .btn-group-info .dropdown-menu li > a:focus {
+            background-color: #5bc0de !important;
+        }
+
+    .btn-group-warning .dropdown-menu {
+        background-color: #efa640 !important;
+    }
+
+        .btn-group-warning .dropdown-menu li > a:hover,
+        .btn-group-warning .dropdown-menu li > a:focus {
+            background-color: #f0ad4e !important;
+        }
+
+    .btn-group-danger .dropdown-menu {
+        background-color: #d64742 !important;
+    }
+
+        .btn-group-danger .dropdown-menu li > a:hover,
+        .btn-group-danger .dropdown-menu li > a:focus {
+            background-color: #d9534f !important;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#chkAll').change(function () {
+            $('.checkMe').prop("checked", $(this).is(":checked"));
+        });
+
+    })
+
+</script>

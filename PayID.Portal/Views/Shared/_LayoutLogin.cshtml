@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <style>
+        .login {
+            margin: auto;
+            padding: 40px 0 0;
+            width: 350px;
+        }
+            .login form {
+                background: none repeat scroll 0 0 #FFFFFF;
+                border: 1px solid #d2d2d2;
+                font-weight: normal;
+                border-color: #d2d2d2;
+                box-shadow: 0 0 6px 1px #d2d2d2;
+                border-radius: 3px;
+            }
+        .content {
+            position: inherit;
+            min-height: 500px;
+        }
+        .content {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;          
+            padding: 80px 5px 0px 20px;
+            position: inherit;          
+        }
+        #footer {
+            position: absolute;
+            margin-bottom: 0;
+            margin-top: 20px;
+            width: 100%;
+            height: 60px;
+            background-color: #f5f5f5;
+        }
+        .panel-footer {
+            padding: 1px 15px;
+            color: #A0A0A0;
+        }
+
+        .profile-img {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 10px;
+            display: block;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+        }
+        
+    </style>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700&subset=vietnamese,latin' rel='stylesheet' type='text/css'>
+    <link href=@Url.Content("/Content/bootstrap.css") rel="stylesheet">
+    <link href="~/Content/bff.css" rel="stylesheet" />
+    <link href=@Url.Content("/Content/styles.css") rel="stylesheet">
+    <link href=@Url.Content("/Content/fonts/font-awesome.css") rel="stylesheet">
+    <script src=@Url.Content("/Scripts/jquery-1.10.2.js")></script>
+    <script src=@Url.Content("/Scripts/jquery-ui.js")></script>
+    <script src=@Url.Content("/Scripts/bootstrap.min.js")></script>
+    <script src=@Url.Content("/ckeditor/ckeditor.js")></script>
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+        fieldset {
+            min-width: 0;
+            padding: 0;
+            margin: 0;
+            border: 0;
+            box-shadow:none;
+        }
+        .panel {
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+            box-shadow: 0px 0px 0px 2px #fff;
+        }
+        .panel-default > .panel-heading {
+            color: #777;
+            background-color: #004a91;
+            border-color: #ddd;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        </style>
+</head>
+<body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href=@Url.Content("/")>
+                    <span style="color: #004a91;font-weight:bold;">CASH</span><span style="color: #f99d1c; font-weight: bold;">@@</span>
+                    <span style="color: #004a91; font-weight:bold;">POST</span> <span style="color: #fff; font-weight: normal; ">BACKEND</span>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    @*<li><a href=@Url.Content("/")>Trang chủ</a></li>*@
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li class="dropdown">
+                            <a href=@Url.Content("/Merchant/Home/Index") class="dropdown-toggle" data-toggle="dropdown">Quản lý doanh nghiệp <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/Merchant/Home">Danh sách doanh nghiệp</a></li>
+                                <li><a href="/Merchant/Home">Cập nhật thông tin kho</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Yêu cầu dịch vụ <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/ServiceRequest/Request/CreateRequest">Tạo yêu cầu</a></li>
+                                <li><a href="/ServiceRequest/Request/List?status=C1">Danh sách chưa điều</a></li>
+                                <li><a href="/ServiceRequest/Request/List?status=C6">Danh sách đang xử lý</a></li>
+                                <li><a href="/ServiceRequest/Request/List?status=C10">Danh sách KH hẹn lại</a></li>
+                                <li><a href="/ServiceRequest/Request/List">Tìm kiếm yêu cầu</a></li>                                
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Danh mục <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/Metadata/Organization/">Danh sách đơn vị</a></li>
+                                <li><a href="/Metadata/Organization/">Đơn vị hành chính</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cấu hình</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/Systems/Setting/Workflow">Cấu hình Luồng xử lý</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href=#>@User.Identity.Name</a>
+                        </li>
+                        <li>
+                            <a href=@Url.Content("/Home/SignOut")>Thoát</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+
+    <!-- Begin page content -->
+    <div class="content">
+        @RenderBody()
+    </div> <!-- /container -->
+
+    <div id="footer">
+        <div class="container">
+            <p class="text-muted" style="font-weight:bold; color:white;">Cash@@POST Backend System.</p>
+        </div>
+    </div>
+    <div hidden="hidden">
+        @RenderSection("TopMenu", true)
+    </div>
+    @*<script src="~/Scripts/bff.js"></script>
+        <script>
+            $(document).foundation();
+        </script>*@
+</body>
+</html>

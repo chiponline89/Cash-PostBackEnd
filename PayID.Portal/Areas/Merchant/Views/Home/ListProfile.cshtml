@@ -1,0 +1,57 @@
+﻿@model List<PayID.Portal.Models.BusinessProfile>
+
+<table id="tblcontent" class="table table-striped table-bordered datatables dataTable no-footer">
+    <thead>
+        <tr class="tr_head">
+            <td>#</td>
+            <td>Mã khách hàng</td>
+            <td>Thông tin chung</td>
+            <td>Mã hợp đồng</td>
+            <td>Trạng thái</td>
+            <td>...</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="6">
+                <span>Chọn điều kiện Tìm kiếm để hiển thị dữ liệu</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+   
+    function SearchProfiles(p, size) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ListProfile")',
+            dataType: 'html',
+            data:
+            {
+                email: $("#email").val(),
+                shortname: $("#shortname").val(),
+                code: $("#buscode").val(),
+                type: $("#filterType").val(),
+                page: p,
+                pagesize: size
+            },
+            success: function (data) {
+                $("#content").html(data);                
+                $('#limit').val(size);
+                $('#currentPage').val(p);
+                if (p == 1) refreshPaging();
+            },
+            error: function (ex) {
+                alert('Không tìm được thông tin!' + ex);
+            }
+        });
+        return true;
+
+    }
+    $('#limit').change(function () {
+        //alert("b");
+        $('#currentOption').val($('#limit').val());
+        SearchProfiles($('#currentIndex').val(), $('#limit').val());
+    });
+</script>

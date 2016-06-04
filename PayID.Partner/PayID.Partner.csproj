@@ -1,0 +1,631 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AFB979A5-10CE-4C0D-B982-1258A8CA035A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PayID.Partner</RootNamespace>
+    <AssemblyName>PayID.Partner</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\partner\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>ADCA6C315D4765231EEAC4318F2D3E4A37B8288F</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>PayID.Partner_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PayID.Intergration">
+      <HintPath>..\..\..\..\Samples\SourceCode_Bàn_Giao\Cashpost\Admin\PayID.Portal\bin\PayID.Intergration.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\bccp_ws\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\vnpost.bccp.v2\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service References\vnpost.bccp\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\vnpost.cod\Reference.cs" />
+    <Compile Include="Service References\vnpost.cod\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="VnPOSTDataSyncing.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="PayID.Partner_TemporaryKey.pfx" />
+    <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <None Include="Properties\DataSources\System.Data.DataTable.datasource" />
+    <None Include="Service References\bccp_ws\paycode.wsdl" />
+    <None Include="Service References\vnpost.bccp.v2\Arrays1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\BatchDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\BC37DataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\CODDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\CommodityTypeDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\Ctin.Css.ExchangeService1.wsdl" />
+    <None Include="Service References\vnpost.bccp.v2\Ctin.Oe.DAO1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\DeliveryDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\DeliveryRouteDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\DomesticFreightRuleDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\InternationalFreightRuleDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\ItemDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\ItemTypeDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\MailRouteDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\MailTripDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\MailTripListDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\MailTripTransportDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddBatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddBC37Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddCommodityTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddDeliveryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddDomesticFreightRuleResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddInternationalFreightRuleResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddItemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddItemTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddMailtripResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddMailtripTransportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddRevenueResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddTracePostBagResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.AddValueAddedServiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.BatchDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.BC37DataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.CODDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.CommodityTypeDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.ComparisonCODResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.DeliveryDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.DeliveryRouteDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.DomesticFreightRuleDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.dsTrackAndTraceAllResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.dsTrackAndTraceArrBarCodeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.dsTrackAndTraceBatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.dsTrackAndTraceByMailTripResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.dsTrackAndTraceByStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.dsTrackAndTraceDeliveryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.dsTrackAndTraceInforResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetAcceptedItemListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetAllDeliveryRouteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetAllMailRouteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetAllPOSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetAllUnitResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetBatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetBC37EMSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetBC37Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetCountMailTripEMSNewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetDeliveryItemListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetDeliveryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetEMSDeliveryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetItemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetListDeliveryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetListItemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetMailTripEMSNewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetMailTripEMSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetMailTripListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetMailTripResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetMailTripToPosInDayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetMailtripTransportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GetTracePostBagResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GPS_GetDispatchesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.GPS_GetIncompleteBD10sByVehicleResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.INQUIRY_COD_INResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.INQUIRY_COD_OUTResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.INQUIRY_PARCEL_INFOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.InternationalFreightRuleDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.ItemDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.ItemTypeDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.MailRouteDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.MailTripDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.MailTripListDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.MailTripTransportDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.Messages.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.OE_GetDataClientResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.PAYMENT_COD_INResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.PAYMENT_COD_OUTResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.PayPostComparisionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.PayPostDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.PayPost_InquiryParcelInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.PayPost_RevertResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.PayPost_UpdatePaymentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.POSDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.PushDeliveryInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.RevenueDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.REVERT_CODResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.TracePostBagDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.UnitDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.UpdateBC37EMSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.UpdateEMSDeliveryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.UpdateMailTripEMSGetedResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.UpdateMailTripEMSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.UPDATE_ISSUE_RESULTResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayID.Partner.vnpost.bccp.v2.ValueAddedServiceDataSet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\PayPostDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\POSDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\RevenueDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\service1.wsdl" />
+    <None Include="Service References\vnpost.bccp.v2\service3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\service31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\service32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\System.Data1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\TracePostBagDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\UnitDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp.v2\ValueAddedServiceDataSet1.xsd" />
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.BCCP_GetTraceBySMSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.GetLogisticInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.GetLogisticPackagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.GetParcelInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.GetParcelPackagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.GetPostInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.GetPUDInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.GetUPSInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.GetVNQInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_Acceptance_ItemsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_BatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_BD10Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_BD8Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_CustomerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_Delivery_ItemsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_ItemsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_Items_ArrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_Items_By_DataCode_PublicResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_Items_OEResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_Items_OE_PublicResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_Items_PublicResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_Item_StatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_KHL_CodeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_KHL_Code_ByProvinceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\PayID.Partner.vnpost.bccp.TrackAndTrace_OrderResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\vnpost.bccp\TrackAndTrace.wsdl" />
+    <None Include="Service References\vnpost.cod\Service.wsdl" />
+    <None Include="System.Data.DataSet.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\bccp_ws\" />
+    <WCFMetadataStorage Include="Service References\vnpost.bccp.v2\" />
+    <WCFMetadataStorage Include="Service References\vnpost.bccp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\bccp_ws\paycode.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\bccp_ws\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\bccp_ws\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\bccp_ws\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PayID.Common\PayID.Common.csproj">
+      <Project>{ebbf6288-a4a6-4d36-98c8-2cea4b19c2fa}</Project>
+      <Name>PayID.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PayID.DataHelper\PayID.DataHelper.csproj">
+      <Project>{9706996a-e00d-4d59-a8ed-6d51c96152e8}</Project>
+      <Name>PayID.DataHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PayID.Portal\PayID.Portal.csproj">
+      <Project>{2f487624-5357-4f4a-891d-6f09168dc5c8}</Project>
+      <Name>PayID.Portal</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\vnpost.bccp\TrackAndTrace.disco" />
+    <None Include="Service References\vnpost.bccp\configuration91.svcinfo" />
+    <None Include="Service References\vnpost.bccp\configuration.svcinfo" />
+    <None Include="Service References\vnpost.bccp\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\vnpost.bccp.v2\configuration91.svcinfo" />
+    <None Include="Service References\vnpost.bccp.v2\configuration.svcinfo" />
+    <None Include="Service References\vnpost.bccp.v2\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Service References\vnpost.cod\configuration.svcinfo" />
+    <Content Include="Service References\vnpost.cod\configuration91.svcinfo" />
+    <Content Include="Service References\vnpost.cod\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service References\vnpost.cod\Service.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

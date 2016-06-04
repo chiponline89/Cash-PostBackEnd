@@ -1,0 +1,406 @@
+﻿@model dynamic
+<style>
+    .modal-dialog {
+        width: 800px;
+    }
+</style>
+@section TopMenu{
+    <li><a href=@Url.Content("/ServiceRequest/Home")>Trang chủ</a></li>
+    <li class="active"><a href=@Url.Content("/ServiceRequest/Request/CreateRequest")>Tạo yêu cầu</a></li>
+    <li><a href=@Url.Content("/ServiceRequest/Request")>Phân hướng xử lý</a></li>
+}
+<ol class="breadcrumb">
+    <li><a href=@Url.Content("/Merchant/Home/")>Trang chủ</a></li>
+    <li class="active">Chi tiết yêu cầu</li>
+</ol>
+<style>
+    h6, .h6 {
+        font-size: 20px;
+        color: #004a91;
+        font-family: 'Lato', sans-serif;
+    }
+</style>
+
+
+<div class="panel with-nav-tabs panel-primary">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12" align="right">
+                <h7>@ViewBag.Local</h7>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12" align="center">
+                <h6> Mã yêu cầu: @Model._id/@Model.tracking_code  - Trạng thái: @ViewBag.StatusDescription</h6>
+            </div>
+        </div>
+        <br />
+
+        <fieldset id="detail">
+            <legend>Thông tin lấy hàng</legend>
+            <div class="1body" style="padding: 5px;">
+                <div class="row">
+                    <label for="address" class="col-sm-1 control-label">Địa chỉ</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control forward-text" id="address" placeholder="Địa chỉ" value="@Model.from_address.address">
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control select-forward-text province province-general" data-group="general" id="province">
+                            <option>Tỉnh/Thành phố</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control select-forward-text district district-general" data-group="general" id="district">
+                            <option>Quân/huyện</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control select-forward-text ward ward-general" data-group="general" id="ward">
+                            <option>Phường/xã</option>
+                        </select>
+                    </div>
+                </div>
+                @Html.Partial("ShippingPickupDetail", (PayID.DataHelper.DynamicObj)Model)
+            </div>
+            <div class="col-lg-12 row">
+                <div class="alert alert-success alert-dismissable create-result" style="display:none;">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong id="result_message">Cập nhật thành công!</strong>
+                </div>
+            </div>
+            @if (Model.system_status == "C7")
+            {
+                @*<div class="row" style="display:none;">
+                    <input type="submit" id="btnSave" class="btn btn-primary pull-right" value="Lưu thay đổi" />
+                </div>*@
+            }else
+            {
+                <div class="row">
+                    <input type="submit" id="btnSave" class="btn btn-primary pull-right" value="Lưu thay đổi" />
+                </div>
+            }
+        </fieldset>
+        <div class="row" style="padding-top:30px;">
+            <fieldset>
+                <legend>Lịch sử phân hướng</legend>
+                <table class="table table-striped custab">
+                    <thead>
+                        <tr>
+                            <th width="200">Từ đơn vị</th>
+                            <th>Đến đơn vị</th>
+                            <th>Tên bưu cục được chỉ định</th> @*Họ tên người được chỉ định*@
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (dynamic assi in Model.assigned_to)
+                        {
+
+                            <tr>
+                                <td>@assi.assign_by </td>
+                                <td>@assi.assign_to_id</td>
+                                <td> @Html.Raw(assi.assign_to_full_name)</td>
+                                @if (assi.notes != null)
+                                {
+                                    <td>@assi.notes</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>Hành trình vận đơn</legend>
+                <table class="table table-striped custab">
+                    <thead>
+                        <tr>
+                            <th width="200">Đơn vị</th>
+                            <th>Nội dung</th>
+                            <th>Thời gian</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (dynamic comm in Model.comments)
+                        {
+                            <tr>
+                                <td>@comm.by</td>
+                                <td>@Html.Raw(comm.comment)</td>
+                                <td>@DateTime.ParseExact(comm.at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />
+<script>
+     var permission = $('#permission').val();
+    $(document).ready(function () {
+        //$('.form-detail').hide();
+        function changeService(serviceCode) {
+            $("#cbTypes option").hide();
+            $("#cbTypes option").each(function (index) {
+                var service = $(this).data("service");
+                if (service == serviceCode || service == "NONE") {
+                    $(this).show();
+                }
+            });
+        }
+        $('#cbServices').change(function () {
+            changeService($(this).val());
+        });
+        $('#cbTypes').change(function () {
+            var service = '';
+            $("#cbTypes option").each(function (index) {
+                if ($(this).is(":selected")) {
+                    service = $(this).data("service");
+                }
+            });
+            var type = $(this).val();
+            //alert(service + "|" + type);
+            $('.form-detail').hide();
+            $('.form-detail').each(function (index) {
+                if ($(this).data("service") == service && $(this).data("type") == type)
+                    $(this).show();
+            });
+        });
+        changeService($('#request_service').val());
+
+        var panels = $('.vote-results');
+        var panelsButton = $('.dropdown-results');
+        panels.hide();
+
+        //Click dropdown
+        panelsButton.click(function () {
+            //get data-for attribute
+            var dataFor = $(this).attr('data-for');
+            var idFor = $(dataFor);
+
+            //current button
+            var currentButton = $(this);
+            idFor.slideToggle(400, function () {
+                //Completed slidetoggle
+                if (idFor.is(':visible')) {
+                    currentButton.html('Hide Results');
+                }
+                else {
+                    currentButton.html('View Results');
+                }
+            })
+        });
+        $('.province').change(function () {
+            var group = $(this).data("group");
+            $.ajax({
+                url: '@Url.Content("~/Metadata/Proxy/ListDistricts")',
+                dataType: "json",
+                data: { provinceCode: $(this).val() },
+                success: function (data) {
+                    //alert(data);
+                    $('.district-' + group).html('');
+                    var listString = '<option>--Quận, huyện--</option>';
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.DistrictCode + "'>" + val.DistrictName + "</option>";
+                    });
+                    $('.district-' + group).html(listString);
+                    return;
+                }
+            });
+        });
+
+        $('.district').change(function () {
+            var group = $(this).data("group");
+            $.ajax({
+                url: '@Url.Content("~/Metadata/Proxy/ListWards")',
+                dataType: "json",
+                data: { districtCode: $(this).val() },
+                success: function (data) {
+                    //alert(data);
+                    $('.ward-' + group).html('');
+                    var listString = '<option>--Phường, xã--</option>';
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.WardCode + "'>" + val.WardName + "</option>";
+                    });
+                    $('.ward-' + group).html(listString);
+                    return;
+                }
+            });
+        });
+
+        $.ajax({
+            url: '@Url.Content("~/Systems/Proxy/Workflow_ListNextProcessUnit")',
+            dataType: "json",
+            data: {
+                unit_code: '@(((dynamic)Session["profile"]).unit_code)',
+                service: 'SHIPPING',
+                type: 'PICKUP'
+            },
+            success: function (data) {
+                //alert(data);
+                $('#cbUnitProcess').html('');
+                $('#processForm').hide();
+                var listString = '';
+                if (data.length > 0) $('#processForm').show();
+                jQuery.each(data, function (i, val) {
+                    listString +=
+                        "<option value='" + val._id + "' data-link='" + val.unit_link + "'>" + val._id + " - " + val.name + "</option>";
+                });
+                $('#cbUnitProcess').html(listString);
+                return;
+            }
+        });
+        $('#cbUnitProcess').change(function () {
+            var pm = $('#cbUnitProcess').val();
+            $.ajax({
+                url: '@Url.Content("~/ServiceRequest/Request/ListPostMan")',
+                dataType: "json",
+                data: {
+                    id: pm,
+                },
+                success: function (data) {
+                    app.hideProcess();
+                    $('#cbPostMan').html('');
+                    var listString = "<option value=''>Chọn bưu tá</option>";
+                    jQuery.each(data, function (i, val) {
+                        listString = listString + "<option value='" + val._id + "'>" + val.full_name + "</option>";
+                    });
+                    $('#cbPostMan').html(listString);
+                    return;
+                    //alert(data.response_message);
+                    //location.reload();
+                }
+            });
+        });
+        $('#btnUnitProcess').click(function () {
+            var unit_link = $('#cbUnitProcess option:selected').data("link");
+            var unit_title = $('#cbUnitProcess option:selected').html();
+            app.showProcess();
+            $.ajax({
+                url: '@Url.Content("~/ServiceRequest/Request/Assign")',
+                dataType: "json",
+                data: {
+                    ids: '@Model._id',
+                    notes: $('#noteUnitProcess').val(),
+                    unit_code: unit_link,
+                    unit_name: unit_title,
+                    pm: $('#cbPostMan').val()
+                },
+                success: function (data) {
+                    app.hideProcess();
+                    alert(data.response_message);
+                    location.reload();
+                }
+            });
+        });
+        $.ajax({
+            url: '@Url.Content("~/Metadata/Proxy/ListProvinces")',
+            dataType: "json",
+            data: {
+            },
+            success: function (data) {
+                $('.province').html('');
+                var listString = "<option value='00'>--Tỉnh, thành--</option>";
+                jQuery.each(data, function (i, val) {
+                    listString = listString + "<option value='" + val.ProvinceCode + "'>" + val.ProvinceName + "</option>";
+                });
+                $('.province').html(listString);
+                $('#province').val('@Model.from_address.province');
+                loadDistricts('@Model.from_address.province', 'general', '@Model.from_address.district', '@Model.from_address.ward')
+
+                $('#shipping_pickup_receiver_province').val('@Model.to_address.province');
+                loadDistricts('@Model.to_address.province', 'receiver', '@Model.to_address.district', '@Model.to_address.ward')
+                return;
+            }
+        });
+        $(function () {
+            $('#shipping_pickup_amount').keyup(function () {
+                $(this).val(formatAmount($(this).val()));
+            });
+            $('#shipping_pickup_weight').keyup(function () {
+                $(this).val(formatAmount($(this).val()));
+            });
+            $('#shipping_pickup_quantity').keyup(function () {
+                $(this).val(formatAmount($(this).val()));
+            });
+
+        });
+        function formatAmountNoDecimals(number) {
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(number)) {
+                number = number.replace(rgx, '$1' + '.' + '$2');
+            }
+            return number;
+        }
+        function formatAmount(number) {
+            number = number.replace(/[^0-9]/g, '');
+            number = number.replace(/\./g, '.');
+            x = number.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            return formatAmountNoDecimals(x1) + x2;
+        }
+        function loadWards(districtCode, group, value) {
+
+            $.ajax({
+                url: '@Url.Content("~/Metadata/Proxy/ListWards")',
+                dataType: "json",
+                data: { districtCode: districtCode },
+                success: function (data) {
+                    //alert(data);
+                    $('.ward-' + group).html('');
+                    var listString = "<option value=''>--Phường, xã--</option>";
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.WardCode + "'>" + val.WardName + "</option>";
+                    });
+                    $('.ward-' + group).html(listString);
+                    if (value) {
+                        $('.ward-' + group).val(value);
+                    }
+                    return;
+                }
+            });
+        }
+
+        function loadDistricts(provinceCode, group, value, ward) {
+            $.ajax({
+                url: '@Url.Content("~/Metadata/Proxy/ListDistricts")',
+                dataType: "json",
+                data: { provinceCode: provinceCode },
+                success: function (data) {
+                    $('.district-' + group).html('');
+                    var listString = "<option value=''>--Quận, huyện--</option>";
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.DistrictCode + "'>" + val.DistrictName + "</option>";
+                    });
+                    $('.district-' + group).html(listString);
+                    if (value) {
+                        $('.district-' + group).val(value);
+                        loadWards(value, group, ward);
+                    }
+                    return;
+                }
+            });
+        }
+        $('#btnSave').click(function () {
+           if(permission!="" && permission.indexOf("|7|")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng sửa tin");
+             }
+          else{
+            saveSHIPPING_PICKUP();
+            setTimeout(function() {location.reload();}, 500);
+           }
+        })
+    })
+</script>

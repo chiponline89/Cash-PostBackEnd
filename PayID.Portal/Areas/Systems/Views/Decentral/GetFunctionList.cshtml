@@ -1,0 +1,92 @@
+﻿@{
+    Layout = null;
+}
+@*<style>
+        .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+            padding: 5px;
+            line-height: 1.428571429;
+            vertical-align: middle;
+            border-top: 1px solid #dddddd;
+        }
+    </style>*@
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    var item = Model[i];
+    <tr>
+        <td align="left" valign="middle">
+            @if (item.IsChecked != null && item.IsChecked == true)
+            {
+                <input type='checkbox' checked="checked" id="category_@item._id" onchange="CheckPermission(@item._id)" class='toggle-single' data-id="@item._id" value='@item.ModuleCode'>
+                <span style="vertical-align:text-bottom;"><b>@item.ModuleName</b></span>
+            }
+            else
+            {
+                if (((dynamic)Session["profile"]).unit_code != "00")
+                {
+                    <input type='checkbox' disabled id="category_@item._id" onchange="CheckPermission(@item._id)" class='toggle-single' data-id="@item._id" value='@item.ModuleCode'>
+                    <span style="vertical-align:text-bottom;"><b>@item.ModuleName</b></span>
+                }
+                else
+                {
+                    <input type='checkbox' id="category_@item._id" onchange="CheckPermission(@item._id)" class='toggle-single' data-id="@item._id" value='@item.ModuleCode'>
+                    <span style="vertical-align:text-bottom;"><b>@item.ModuleName</b></span>
+                }
+            }
+        </td>
+        <td>
+            @if (item.detail != null)
+            {
+                foreach (dynamic ite in item.detail)
+                {
+                    <ul id="check-list-box" class="list-group checked-list-box">
+                        <li class="list-group-item" style="cursor: pointer;">
+                            @if (ite.IsChecked != null && ite.IsChecked == true)
+                            {
+                                <input type="checkbox" checked="checked" id="chk_@ite._id" data-id="@ite._id" data-cate="@item._id" class="checkMe" value="@ite.FuncCode" />
+                            }
+                            else
+                            {
+                                if (((dynamic)Session["profile"]).unit_code != "00")
+                                {
+                                    <input type="checkbox" disabled id="chk_@ite._id" data-id="@ite._id" data-cate="@item._id" class="checkMe" value="@ite.FuncCode" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" id="chk_@ite._id" data-id="@ite._id" data-cate="@item._id" class="checkMe" value="@ite.FuncCode" />
+                                }
+                            }
+                            <span style="vertical-align:text-bottom;">@ite.FuncName</span>
+                        </li>
+                    </ul>
+                }
+            }
+        </td>
+    </tr>
+}
+
+<script>
+     function CheckPermission(id) {          
+         $('.checkMe').each(function (index, obj) {
+            if(document.getElementById("category_"+id).checked==false)
+             {
+               if ($(this).data("cate")==id) {
+                  if(document.getElementById("chk_"+$(this).data("id")).checked==true)
+                  {
+                     document.getElementById("chk_"+$(this).data("id")).checked = false;
+                  }
+                }
+            }
+            else
+           {
+              if ($(this).data("cate")==id) {
+                if(document.getElementById("chk_"+$(this).data("id")).checked==false)
+                {
+                   document.getElementById("chk_"+$(this).data("id")).checked = true;
+                }
+              }
+            }
+         });
+       }
+</script>
+

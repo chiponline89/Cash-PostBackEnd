@@ -1,0 +1,512 @@
+﻿@model dynamic[]
+@*@section TopMenu{
+
+    <li class="active"><a href="#">Trang chủ</a></li>
+    <li><a href="#about">Danh mục</a></li>
+    <li><a href="#contact">Thông tin doanh nghiệp</a></li>
+}*@
+<ol class="breadcrumb">
+    <li><a href=@Url.Content("/Merchant/Home/")>Trang chủ</a></li>
+    <li class="active">Cập nhật thông tin kho</li>
+</ol>
+<style>
+    select {
+        /*margin: 0 0 1rem 0;*/
+        padding: 0.5rem;
+    }
+
+    form .row .row {
+        margin: 0 -0.5em;
+    }
+
+    option {
+        font-weight: normal;
+    }
+
+    option {
+        font: inherit;
+    }
+
+    button:hover, button:focus, .button:hover, .button:focus {
+        background-color: #3071a9;
+        border-color: #3071a9;
+    }
+
+    button:hover, button:focus, .button:hover, .button:focus {
+        background-color: #3071a9;
+        border-color: #3071a9;
+    }
+
+    .large-2 {
+        position: relative;
+        width: 16.6667%;
+    }
+
+    .column, .columns {
+        float: left;
+        padding-left: 0.9375em;
+        padding-right: 0.9375em;
+        position: relative;
+    }
+
+    h6, .h6 {
+        font-size: 20px;
+        color: #004a91;
+        font-family: 'Lato', sans-serif;
+    }
+</style>
+
+<input type="hidden" value="@ViewBag.unit" id="hidden_unit_code" />
+<div class="row">
+    <div class="col-lg-12" align="center">
+        <h6>Quản lý kho hàng</h6>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12" id="divProvince">
+        <div class="row">
+            <div class="col-sm-4" align="right">
+                <label for="store_manager_name">Là kho hàng của tỉnh/thành phố: </label>
+            </div>
+            <div class="col-sm-4">
+                <select id="drop_province_of" class="form-control">
+                    @if (Model.Length > 1)
+                    {
+                        <option value="00">Áp dụng Toàn quốc</option>
+                    }
+                    @foreach (dynamic u in Model)
+                    {
+                        <option value="@u.UnitCode">@u.UnitCode - @u.UnitName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-4" align="right">
+                <a href="#" class="add-store" style="text-decoration:none;" id="addStoreMn"><span class="label label-info"><i style="margin-right:3px;"></i>THÊM KHO HÀNG</span></a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" hidden="hidden" id="add_more_store">
+    <div class="form-horizontal" id="store-info-id">
+        <form class="cmxform" id="commentForm" method="post" action="novalidate">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="drop_customer">Khách hàng&nbsp;<span style="color:#f48260;">(*)</span></label>
+                        <select id="drop_customer" class="form-control error" required>
+                            @foreach (dynamic c in ViewBag.CustomerList)
+                            {
+                                <option value="@c._id">@c._id - @c.general_full_name</option>;
+                            }
+                            <option value="">Chọn khách hàng</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_name">Tên kho hàng:&nbsp;<span style="color:#f48260;">(*)</span></label>
+                        <input type="text" name="store_name" id="store_name" class="form-control error" placeholder="Tên kho hàng" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_manager_name">Người đại diện:&nbsp;<span style="color:#f48260;">(*)</span></label>
+                        <input type="text" name="store_manager_name" id="store_manager_name" class="form-control error" placeholder="Họ tên người quản lý kho" value="" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_manager_mobile">Điện thoại liên hệ:&nbsp;<span style="color:#f48260;">(*)</span></label>
+                        <input type="text" name="store_manager_mobile" maxlength="11" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" id="store_manager_mobile" class="form-control error" placeholder="Điện thoại của quản lý kho" value="" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_manager_email">Hòm thư liên hệ:</label>
+                        <input type="text" name="store_manager_email" id="store_manager_email" class="form-control" placeholder="Email liên hệ quản lý kho" onkeyup="checkEmail('store_manager_email')">
+                    </div>
+                </div>
+                @*<div class="row">
+                        <div class="col-sm-12">
+                            <label for="chkDefault">Kho hàng mặc định:</label>
+                            <input type="checkbox" id="chkDefault" value="1">
+                        </div>
+                    </div>*@
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="store_to_address">Địa chỉ:&nbsp;<span style="color:#f48260;">(*)</span></label>
+                        <input type="text" placeholder="Đỉa chỉ, số nhà, phường xã..." class="form-control error" name="store_to_address" id="store_to_address"
+                               data-target="#preview-to-address" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="drop_province_store_mng">Tỉnh/Thành phố:&nbsp;<span style="color:#f48260;">(*)</span></label>
+                        <select id="drop_province_store_mng" class="form-control error" data-target="lblProvince" required>
+                            @if (Model.Length > 1)
+                            {
+                                <option value="00">Áp dụng Toàn quốc</option>
+                            }
+                            @foreach (dynamic u in Model)
+                            {
+                                <option value="@u.UnitCode">@u.UnitCode - @u.UnitName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="drop_district_store_mng">Quận/Huyện:&nbsp;<span style="color:#f48260;">(*)</span></label>
+                        <select id="drop_district_store_mng" class="form-control error" name="id_drop_district" required></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="id_pos">Bưu cục thu gom:</label>
+                        <select class="form-control error" id="drop_pos_store_mng" name="id_pos"></select>
+                    </div>
+                </div>
+
+                <div class="row" hidden="hidden">
+                    <div class="col-sm-6">
+                        <input type="text" name="store_id" id="store_id" placeholder="" value="" class="hide">
+                    </div>
+                </div>               
+
+                <div class="row">
+                    <div class="col-sm-12" style="padding-top:36px;">
+                        <label for=" btsave">
+                        &nbsp;</label>
+                        <button id="btSaveStore" type="submit" class="btn btn-primary"><i class="icon-ok"></i>Lưu</button>
+                        <input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />
+                        &nbsp; <button type="button" onclick="ResetForm()" class="btn btn-default">Nhập lại</button>
+                    </div>
+                </div>
+                <br />
+
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="alert alert-success alert-dismissable info-result-mng" style="display:none">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong> Cập nhật thành công !</strong>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="alert alert-success alert-dismissable info-result-msg" style="display:none">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong> Email bị sai định dạng</strong>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordred table-striped">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã kho</th>
+                            <th>Tên kho</th>
+                            <th>Địa chỉ</th>
+                            <th>Quận/huyện</th>
+                            <th>Tỉnh</th>
+                            <th>Người đại diện</th>
+                            <th>Điện thoại</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listStoreByProvince"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />
+<script>
+    var permission = $('#permission').val();
+    function validateEmailAddress(EmailId) {
+        var expr = /^[a-zA-Z0-9._]+[a-zA-Z0-9]+@@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/;
+        if (expr.test(EmailId)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    function checkEmail(element)
+    {
+        $(".info-result-mng").hide();
+        if ($("#" + element).val() != "") {
+            if (!validateEmailAddress($("#" + element).val())) {
+                var emails = document.getElementById("store_manager_email");
+                $(".info-result-msg").fadeIn();
+                emails.focus();
+                return false;
+            }
+        }
+       $(".info-result-msg").hide();
+       return true;
+    }
+    $(document).ready(function () {
+        var myunitcode = $("#hidden_unit_code").val();
+        StoreByProvince();
+        GetDistrictByProvinceCode();
+        $('#drop_province_of').change(function () {
+            StoreByProvince();
+        });
+        // Begin Danh mục Tỉnh huyện
+        //$.ajax({
+        //    url: "/Metadata/Proxy/ListProvinces",
+        //    dataType: "json",
+        //    data: {
+        //    },
+        //    success: function (data) {
+        //        $('#drop_province_store_mng').html('<option>Tỉnh thành nhận</option>');
+        //        jQuery.each(data, function (i, val) {
+        //            $('#drop_province_store_mng').html($('#drop_province_store_mng').html() +
+        //              "<option value='" + val.ProvinceCode + "'>" + val.ProvinceName + "</option>");
+        //        });
+        //        if (myunitcode != "00")
+        //        { document.getElementById("drop_province_store_mng").value = myunitcode; }
+
+        //        return;
+        //    }
+        //});
+        //$.ajax({
+        //    url: "/Metadata/Proxy/ListProvinces",
+        //    dataType: "json",
+        //    data: {
+        //    },
+        //    success: function (data) {
+        //        $('#drop_province_of').html('<option>Tỉnh thành nhận</option>');
+        //        jQuery.each(data, function (i, val) {
+        //            $('#drop_province_of').html($('#drop_province_of').html() +
+        //              "<option value='" + val.ProvinceCode + "'>" + val.ProvinceName + "</option>");
+        //        });
+        //        if (myunitcode != "00")
+        //        { document.getElementById("drop_province_of").value = myunitcode; }
+        //         StoreByProvince();
+        //        return;
+        //    }
+
+        //});
+
+        $('#drop_province_store_mng').change(function () {
+            GetDistrictByProvinceCode();
+        })
+        $("#drop_district_store_mng").change(function () {
+            $("#drop_pos_store_mng").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetPosJson")',
+                dataType: 'json',
+                data: { DistrictId: $("#drop_district_store_mng").val() },
+                success: function (states) {
+                    $("#drop_pos_store_mng").append('<option></option>');
+                    $.each(states, function (i, state) {
+                        $("#drop_pos_store_mng").append('<option value="' + state.Value + '">' + state.Value + '-' + state.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    $("#drop_pos_store_mng").append('<option>' + "Bưu cục" + '</option>');
+                }
+            });
+            return false;
+        })
+
+
+        // Thêm kho hàng
+        $('.add-store').click(function () {
+            add_new_store_mng();
+        });
+
+    });
+
+    function add_new_store_mng() {
+        //$(".info-result-mng").hide();
+        document.getElementById("store_id").value = "";
+        document.getElementById("store_name").value = "";
+        document.getElementById("store_manager_name").value = "";
+        document.getElementById("store_manager_mobile").value = "";
+        document.getElementById("store_manager_email").value = "";
+        document.getElementById("store_to_address").value = "";
+        document.getElementById("drop_province_store_mng").value = "";
+        document.getElementById("drop_district_store_mng").value = "";
+        document.getElementById("drop_pos_store_mng").value = "";
+        document.getElementById("drop_customer").value = "";
+    }
+    function ResetForm() {
+        $("#drop_customer").val("");
+        $("#store_name").val("");
+        $("#store_manager_name").val("");
+        $("#store_manager_email").val("");
+        $("#store_to_address").val("");
+        $("#drop_province_store_mng").val("");
+        $("#id_drop_district").val("");
+        $("#drop_pos_store_mng").val("");
+       //hide message
+       $("#drop_customer-error").hide();
+       $("#store_name-error").hide();
+       $("#store_manager_name-error").hide();
+       $("#store_manager_mobile-error").hide();
+       $("#store_to_address-error").hide();
+       $("#drop_district_store_mng-error").hide();
+    }
+    // Load District By ProvinceCode.
+    function GetDistrictByProvinceCode() {
+        $.ajax({
+            url: '@Url.Content("~/Metadata/Proxy/ListDistricts")',
+            type: 'POST',
+            dataType: "json",
+            data: { provinceCode: $("#drop_province_store_mng").val() },
+            success: function (data) {
+                $('#drop_district_store_mng').html('<option>--Quận, huyện--</option>');
+                jQuery.each(data, function (i, val) {
+                    $('#drop_district_store_mng').html($('#drop_district_store_mng').html() +
+                        "<option value='" + val.DistrictCode + "'>" + val.DistrictName + "</option>");
+                });
+            }
+        });
+    }
+    // Load kho theo mã tỉnh.
+    function StoreByProvince() {
+        $.ajax({
+            url: '@Url.Action("ListStoreByProvince", "Home")',
+            type: 'POST',
+            dataType: 'html',
+            data: { province_code: $("#drop_province_of").val() },
+        })
+           .success(function (result) {
+               $('#listStoreByProvince').html(result);
+           })
+    }
+    function SaveStoreMng() {
+        var t = "0";
+        if ($("#store_manager_email").val() != "") {
+            //alert($("#store_manager_email").val());
+            if(checkEmail("store_manager_email"))
+            {
+                t = "1";
+            } else {
+                t = "2";
+            }
+        }
+        //alert(t);
+        if (t == "1" || t == "0") {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("save_store_mng")',
+                dataType: 'json',
+                data: {
+                    customer_code: $('#drop_customer').val(),
+                    unitcode: $('#hidden_unit_code').val(),
+                    _id: $("#store_id").val(),
+                    store_name: $("#store_name").val(),
+                    store_manager_name: $("#store_manager_name").val(),
+                    store_manager_mobile: $("#store_manager_mobile").val(),
+                    store_manager_email: $("#store_manager_email").val(),
+                    store_to_address: $("#store_to_address").val(),
+                    province_code: $("#drop_province_store_mng").val(),
+                    district_code: $("#drop_district_store_mng").val(),
+                    postcode: $("#drop_pos_store_mng").val()
+                },
+                success: function (data) {
+                    $(".info-result-mng").fadeIn();
+                    setInterval(function(){ $(".info-result-mng").fadeOut(); }, 5000);
+                    add_new_store_mng();
+                    StoreByProvince();
+                },
+                error: function (ex) {
+
+                }
+            });
+            return false;
+        } else {
+            var emails = document.getElementById("store_manager_email");
+            $(".info-result-msg").fadeIn();
+            emails.focus();
+            return false;
+        }
+    }
+    var click = 0;
+    $(".add-store").click(function () {
+     if(permission!="" && permission.indexOf("13")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức thêm kho");
+             }
+          else{
+        var addStore = document.getElementById("addStoreMn");
+        if (click == 1) {
+            $('#add_more_store').hide();
+            click = 0;
+            addStore.innerHTML = "<span class='label label-info'><i style='margin-right:3px;'></i>THÊM KHO HÀNG</span>";
+        }
+        else {
+            $('#add_more_store').show();
+            click = 1;
+            addStore.innerHTML = "<span class='label label-info'><i style='margin-right:3px;'></i>ẨN THÊM KHO HÀNG</span>";
+        }
+    }
+    });
+
+    $("#commentForm").validate({
+        lang: 'vi',
+        submitHandler: function (form) {
+            SaveStoreMng();
+        }
+    });
+
+    $("#commentForm").validate({
+        rules: {
+            store_name: "required",
+            store_manager_name: "required",
+            store_to_address: "required",
+            store_manager_mobile: "required",
+            drop_province_store_mng: "required",
+            drop_district_store_mng: "required",
+            store_manager_email: {
+                required: true,
+                email: true
+            },
+        },
+        messages: {
+            store_name: "Vui lòng nhập tên kho hàng.",
+            store_manager_name: "Vui lòng nhập tên quản lý.",
+            store_manager_mobile: "Vui lòng nhập điện thoại.",
+            store_manager_email: "Vui lòng nhập đúng định dạng email.",
+            store_to_address: "Vui lòng nhập địa chỉ.",
+            drop_province_store_mng: "Bạn chưa chọn tỉnh.",
+            drop_district_store_mng: "Bạn chưa chọn huyện.",
+
+        }
+    });
+
+    function setvalue() {
+        var myunitcode = $("#hidden_unit_code").val();
+        if (myunitcode != '00') {
+            //  $("#drop_province_of").prop("disabled", true);
+            //   $("#drop_province_store_mng").prop("disabled", true);
+        }
+    }
+    $(document).ready(function () {
+        setvalue();
+
+    });
+</script>
+

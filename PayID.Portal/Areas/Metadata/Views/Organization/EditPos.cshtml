@@ -1,0 +1,118 @@
+﻿@model PayID.Portal.Models.Post
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    @if(!string.IsNullOrEmpty(Model.PosCode))
+    {
+        <h2 id="modaltitle" class="modal-title">@("Sửa thông tin đơn vị " + Model.PosName)</h2>
+    }
+    else
+    {
+        <h2 id="modaltitle" class="modal-title">@("Thêm mới đơn vị")</h2>
+    }
+    
+</div>
+@using (Ajax.BeginForm("UpdatePost", "Organization", new { Area = "Metadata" }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "Po.PostOnsuccess" }, new { @id = "fEditPost", @autocomplete = "off" }))
+{
+    <div class="modal-body" style="padding:0px !important;">
+        <div class="alert alert-info" style="margin-bottom:0px !important; border-width:0px;">
+            @Html.HiddenFor(x => x.UnitCode)
+            @Html.HiddenFor(x => x.PosCode)
+            @Html.HiddenFor(x=>x.Id)
+            <div class="panel-body">
+
+                @if (!string.IsNullOrEmpty(Model.PosCode))
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="UserName">Mã đơn vị&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                @Html.TextBoxFor(x => x.PosCode, new { @autocomplete = "off", @class = "form-control validate[required, funcCall[common.CheckCharSpecial], custom[onlyNumberSp], maxSize[6], minSize[6]]", @placeholder = "Mã đơn vị", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="PosCode">Mã đơn vị&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                @Html.TextBoxFor(x => x.PosCode, new { @autocomplete = "off", @class = "form-control validate[required, funcCall[common.CheckCharSpecial], custom[onlyNumberSp], maxSize[6], minSize[6]]", @placeholder = "Mã đơn vị" })
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="PosName">Tên đơn vị&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @Html.TextBoxFor(x => x.PosName, new { @autocomplete = "off", @class = "form-control validate[required, funcCall[common.CheckCharSpecial]]", @placeholder = "Tên đơn vị" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Fax">Số Fax</label>
+                            @Html.TextBoxFor(x => x.Fax, new { @autocomplete = "off", @class = "form-control validate[funcCall[common.CheckCharSpecial]]", @placeholder = "Số Fax" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Tel">Số điện thoại</label>
+                            @Html.TextBoxFor(x => x.Tel, new { @autocomplete = "off", @class = "form-control validate[required, funcCall[common.CheckMobileNumber]]", @placeholder = "Số điện thoại" })
+                        </div>
+                    </div>
+                </div>
+
+                <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Địa chỉ</span>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.HiddenFor(x=>x.ProvinceCode)
+                            <label for="FullName">Tỉnh, Thành phố&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @Html.DropDownListFor(x => x.ProvinceCode, (IEnumerable<SelectListItem>)ViewBag.ListProvince, new { @class = "form-control validate[required]", @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="FullName">Quận, Huyện&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @Html.DropDownListFor(x => x.DistrictCode, (IEnumerable<SelectListItem>)ViewBag.ListDistrict, new { @class = "form-control validate[required]", @onchange = "common.DistrictChange('DistrictCode','CommuneCode','PickUpHamlet','','ProvinceCode','Street','Address')" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="FullName">Xã, Phường&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @Html.DropDownListFor(x => x.CommuneCode, (IEnumerable<SelectListItem>)ViewBag.ListWard, new { @class = "form-control validate[required]", @onchange = "common.SetAddress('ProvinceCode','DistrictCode','CommuneCode','','Street','Address')" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="FullName">Địa chỉ&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @Html.TextAreaFor(x => x.Address, new { @class = "validate[required] form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="modal-footer">
+    <div class="row">
+        <div class="col-md-6" style="text-align:left;">
+            <button type="button" onclick="Po.SubmitPost()" class="btn btn-primary"><i class="fa fa-check"></i> Lưu</button>
+        </div>
+        <div class="col-md-6" style="float:right;">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Thoát</button>
+        </div>
+    </div>
+</div>

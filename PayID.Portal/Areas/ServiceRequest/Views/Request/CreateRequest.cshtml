@@ -1,0 +1,972 @@
+﻿@model PayID.Portal.Models.Shipment
+
+<div class="actions cm-sticky-scroll" data-ce-top="41" data-ce-padding="37" id="actions_panel">
+    <div class="title pull-left">
+        <h2 style="font-family:-webkit-body;" title="Dashboard">Tạo Tin</h2>
+    </div>
+    <div class="btn-bar btn-toolbar dropleft pull-right">
+
+        <div class="adv-buttons">
+            <div class="btn-group ">
+                <a class="btn btn-primary" href="javascipt:void(0);" onclick="Shipment.RefreshForm()" title="Tạo mới">
+                    <i class="fa fa-refresh"></i> Tạo mới
+                </a>
+            </div>
+        </div>
+        <button type="button" onclick="Shipment.SubmitShipment()" style="float:right;" id="btnSaveRequest"  class="btn btn-primary cm-submit">
+            <i class="fa fa-save"></i> Lưu
+        </button>
+    </div>
+</div>
+@using (Ajax.BeginForm("CreateRequest", "Request", new { Area = "ServiceRequest" }, new AjaxOptions { HttpMethod = "POST", OnSuccess = "Shipment.OnSuccess" }, new { @id = "fShipment" }))
+{
+    @Html.HiddenFor(x=>x.Id)
+    <div class="content ufa">
+        <div class="content-wrap">
+            <div class="row" style="margin-left:0px; margin-right:0px;">
+                <div class="col-md-4">
+                    <div class="alert alert-info">
+                        <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin khách hàng</span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Mã Khách hàng</label>
+                                    <div class="input-group">
+                                        @Html.HiddenFor(x => x.CustomerCode)
+                                        <input type="text" id="CustomerCodeSearch" class="form-control" placeholder="Mã khách hàng" onchange="Shipment.CustomerChange()" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-pns" id="btnSearchCus" onclick="Customer.GetCustomer()" type="button"><i class="fa fa-fw fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="@Model.CustomerName">Tên Khách hàng&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                    @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control validate[required]", @placeholder = "Tên khách hàng" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.CustomerShortName">Tên viết tắt</label>
+                                    @Html.TextBoxFor(x => x.CustomerShortName, new { @class="form-control", @placeholder="Tên viết tắt"  })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.CustomerMobile">Số điện thoại&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                    @Html.TextBoxFor(x => x.CustomerMobile, new { @class = "form-control validate[required]", @placeholder = "Số điện thoại", maxlength = "11" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="@Model.CustomerEmail">Email</label>
+                                    @Html.TextBoxFor(x => x.CustomerEmail, new { @class = "form-control", @placeholder = "Địa chỉ email" })
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Địa chỉ lấy hàng</span>
+                        <div class="row" style="display:none;">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="@Model.PostCode">Mã bưu chính</label>
+                                    @Html.TextBoxFor(x => x.PostCode, new { @class = "form-control forward-text", @placeholder = "Mã bưu chính" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="@Model.StoreId">Kho</label>
+                                    @Html.DropDownListFor(x => x.StoreId, (IEnumerable<SelectListItem>)ViewBag.ListStore, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="@Model.PostCodeLink">BC gắn kết</label>
+                                    @Html.TextBoxFor(x => x.PostCodeLink, new { @placeholder = "Bưu cục gắn kết", @class = "form-control forward-text" })
+                                    @Html.HiddenFor(x => x.StoreName)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.ContactName">Người liên hệ</label>
+                                    @Html.TextBoxFor(x => x.ContactName, new { @placeholder = "Người liên hệ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.ContactMobile">Điện thoại</label>
+                                    @Html.TextBoxFor(x => x.ContactMobile, new { @class = "form-control", @maxlength = "11", @placeholder = "Số điện thoại" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.PickUpContactDate">Ngày hẹn</label>
+                                    @Html.TextBoxFor(x => x.PickUpContactDate, new { @class = "form-control forward-text", @type="date" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.PickUpContactTime">Giờ hẹn</label>
+                                    @Html.TextBoxFor(x => x.PickUpContactTime, new { @class = "form-control forward-text", @type="time" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.PickUpProvince">Tỉnh, Thành phố<span style="color:#f48260;">(*)</span></label>
+                                    @Html.DropDownListFor(x => x.PickUpProvince, (IEnumerable<SelectListItem>)ViewBag.ListProvince, new { @class = "form-control validate[required]", @onchange = "common.ProvinceChange('PickUpProvince','PickUpDistrict','PickUpWard','PickUpHamlet','','PickUpStreet','PickUpAddress')" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.PickUpDistrict">Quận, Huyện<span style="color:#f48260;">(*)</span></label>
+                                    @Html.DropDownListFor(x => x.PickUpDistrict, (IEnumerable<SelectListItem>)ViewBag.ListDistrict, new { @class = "form-control validate[required]", @onchange = "common.DistrictChange('PickUpDistrict','PickUpWard','PickUpHamlet','','PickUpProvince','PickUpStreet','PickUpAddress')" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="@Model.PickUpWard">Phường, Xã<span style="color:#f48260;">(*)</span></label>
+                                    @Html.DropDownListFor(x => x.PickUpWard, (IEnumerable<SelectListItem>)ViewBag.ListWard, new { @class = "form-control validate[required]", @onchange = "common.SetAddress('PickUpProvince','PickUpDistrict','PickUpWard','','PickUpStreet','PickUpAddress')" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="@Model.PickUpStreet">Địa chỉ&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                    @Html.TextAreaFor(x => x.PickUpStreet, new { @class = "form-control forward-text validate[required]", @placeholder = "Địa chỉ", @onchange = "common.SetAddress('PickUpProvince','PickUpDistrict','PickUpWard','','PickUpStreet','PickUpAddress')" })
+                                    @Html.HiddenFor(x => x.PickUpAddress)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="alert alert-info">
+                                <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin người nhận</span>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="@Model.ReceiverName">Họ và tên&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                            @Html.TextBoxFor(x => x.ReceiverName, new { @class = "form-control validate[required]", @placeholder = "Họ và tên" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="@Model.ReceiverMobile">Số điện thoại&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                            @Html.TextBoxFor(x => x.ReceiverMobile, new { @class = "form-control validate[required]", @maxlength = "11", @placeholder = "Số điện thoại" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="@Model.ReceiverProvince">Tỉnh, Thành phố<span style="color:#f48260;">(*)</span> </label>
+                                            @Html.DropDownListFor(x => x.ReceiverProvince, (IEnumerable<SelectListItem>)ViewBag.ListProvince, new { @class = "form-control validate[required]", @onchange = "common.ProvinceChange('ReceiverProvince','ReceiverDistrict','ReceiverWard','ReceiverHamlet','','ReceiverStreet','ReceiverAddress')" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="@Model.ReceiverDistrict">Quận, Huyện<span style="color:#f48260;">(*)</span> </label>
+                                            @Html.DropDownListFor(x => x.ReceiverDistrict, (IEnumerable<SelectListItem>)ViewBag.ListDistrict, new { @class = "form-control validate[required]", @onchange = "common.DistrictChange('ReceiverDistrict','ReceiverWard','ReceiverHamlet', '','ReceiverProvince','ReceiverStreet','ReceiverAddress')" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="@Model.ReceiverWard">Xã, Phường<span style="color:#f48260;">(*)</span> </label>
+                                            @Html.DropDownListFor(x => x.ReceiverWard, (IEnumerable<SelectListItem>)ViewBag.ListWard, new { @class = "form-control validate[required]", @onchange = "common.SetAddress('ReceiverProvince','ReceiverDistrict','ReceiverWard','','ReceiverStreet','ReceiverAddress')" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="@Model.ReceiverStreet">Địa chỉ&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                            @Html.TextAreaFor(x => x.ReceiverStreet, new { @class = "form-control validate[required]", @placeholder = "Địa chỉ", @onchange = "common.SetAddress('ReceiverProvince','ReceiverDistrict','ReceiverWard','','ReceiverStreet','ReceiverAddress')" })
+
+                                            @Html.HiddenFor(x => x.ReceiverAddress)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-info">
+                                <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin hàng hóa</span>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="@Model.ProductName">Tên sản phẩm&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                            @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control validate[required]", @placeholder = "Tên sản phẩm" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="@Model.sWeight">Khối lượng(gram)</label>
+                                            @Html.TextBoxFor(x => x.sWeight, new { @class = "form-control validate[min[0]]", @placeholder = "Khối lượng" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="@Model.sQuantity" class="control-label">Số lượng</label>
+                                            @Html.TextBoxFor(x => x.sQuantity, new { @class = "form-control validate[min[0]]", @placeholder = "Số lượng" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="@Model.sAmount">Giá trị</label>
+                                            @Html.TextBoxFor(x => x.sAmount, new { @class = "form-control validate[min[0]]", @placeholder = "Giá trị" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="@Model.ServiceType">Dịch vụ</label>
+                                            @Html.DropDownListFor(x => x.ServiceType, (IEnumerable<SelectListItem>)ViewBag.ServiceType, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="@Model.Description" class="control-label">Nội dung trao đổi</label>
+                                            @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Nội dung trao đổi" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="contentLastestRequest">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" hidden="hidden">
+                <label class="col-sm-2 control-label">Dịch vụ</label>
+                <div class="col-sm-4">
+                    <select id="cbServices" class="form-control">
+                        <option value="SHIPPING">Vận chuyển</option>
+                        @*<option value="PAYMENT">Thanh toán</option>
+                            <option value="SUPPORT">Hỗ trợ Khách hàng</option>*@
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label">Yêu cầu</label>
+                <div class="col-sm-4">
+                    <select id="cbTypes" class="form-control">
+                        <option value="PICKUP" data-service="SHIPPING">Thu gom</option>
+                        @*<option value="GETBACK" data-service="SHIPPING">Rút bưu gửi</option>
+                            <option value="FORWARD" data-service="SHIPPING">Chuyển tiếp</option>
+                            <option value="C2" data-service="SHIPPING">Hủy</option>
+                            <option value="CHECK" data-service="PAYMENT">Tra soát giao dịch</option>
+                            <option value="GENERAL" data-service="SUPPORT">Hỗ trợ KH</option>*@
+                    </select>
+                </div>
+            </div>
+
+            @*<div class="form-detail" data-service="SHIPPING" data-type="PICKUP">
+                    @Html.Partial("ShippingPickup")
+                </div>
+                <div class="form-detail" data-service="PAYMENT" data-type="CHECK">
+                    @Html.Partial("PaymentCheck")
+                </div>
+                <div class="form-detail" data-service="SHIPPING" data-type="GETBACK">
+                    @Html.Partial("ShippingGetback")
+                </div>
+                <div class="form-detail" data-service="SHIPPING" data-type="C2">
+                    @Html.Partial("ShippingCancel")
+                </div>
+                <div class="form-detail" data-service="SUPPORT" data-type="GENERAL">
+                    @Html.Partial("SupportGeneral")
+                </div>*@
+            @*<div class="row">*@
+            @*<label for="address" class="col-sm-1 control-label"></label>
+                <div class="col-lg-6">
+                    <textarea id="notes" class="form-control" placeholder="Nội dung trao đổi"></textarea>
+                </div>*@
+            @*<div class="col-lg-5">*@
+            @*<div class="col-lg-2">
+                    <button id="btnReset" type="reset" class="btn btn-default pull-right btn_reset_request">Tạo lại</button>
+                </div>*@
+            @*<div class="col-lg-3">
+                <button id="btnSaveRequest" type="submit" class="btn btn-info">Tạo yêu cầu</button>*@
+            @*<input class="submit btn btn-primary pull-right" type="submit" value="Submit">*@
+            @*<input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />*@
+            @*</div>
+                    </div>
+                </div>*@
+
+            <div class="alert alert-danger alert-dismissable error-result col-lg-12" style="display:none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong id="result_message">Validate.</strong>
+            </div>
+            <div class="alert alert-info alert-dismissable create-result col-lg-12" style="display:none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong id="result_message">Cập nhật thành công!</strong>
+            </div>
+            @*</form>*@
+
+            <div class="row">
+                <div class="col-lg-12" id="lastestRequest">
+
+                </div>
+            </div>
+            @*<input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />*@
+        </div>
+    </div>
+}
+<script>
+    $("#sWeight").inputmask("decimal", {
+        radixPoint: ".",
+        groupSeparator: ",",
+        digits: 2,
+        autoGroup: true,
+        rightAlign: false
+    });
+
+    $("#sQuantity").inputmask("decimal", {
+        radixPoint: ".",
+        groupSeparator: ",",
+        digits: 2,
+        autoGroup: true,
+        rightAlign: false
+    });
+
+    $("#sAmount").inputmask("decimal", {
+        radixPoint: ".",
+        groupSeparator: ",",
+        digits: 2,
+        autoGroup: true,
+        rightAlign: false
+    });
+
+    common.SetDateTime("PickUpContactDate", "PickUpContactTime");
+    //var permission = $('#permission').val();
+    //if (permission != "" && permission.indexOf("22") == -1) {
+    //    $('.error-result').fadeIn();
+    //    $('#result_messages').html("Bạn chưa được phân quyền chức năng tạo yêu cầu");
+    //}
+
+    //$('#btnSaveRequest').click(function () {
+    //    if (permission != "" && permission.indexOf("22") == -1) {
+    //        alert("Bạn chưa được phân quyền sử dụng chức năng tạo yêu cầu");
+    //    }
+    //    else {
+    //        if (validate()) {
+    //            submitSHIPPING_PICKUP();
+    //        }
+    //    }
+    //});
+    function validateEmailAddress(EmailId) {
+        var expr = /^[a-zA-Z0-9._]+[a-zA-Z0-9]+@@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/;
+        if (expr.test(EmailId)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    function validate() {
+        if ($("#customer_name").val() == "") {
+            $('.error-result').fadeIn();
+            $('#result_message').html("Bạn phải nhập họ tên khách hàng");
+            $('#result_messages').html("Bạn phải nhập họ tên khách hàng");
+            document.getElementById("customer_name").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#customer_mobile").val() == "") {
+            $('.error-result').fadeIn();
+            $('#result_message').html("Bạn phải nhập số điện thoại khách hàng");
+            $('#result_messages').html("Bạn phải nhập số điện thoại khách hàng");
+            document.getElementById("customer_mobile").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#customer_email").val() != "" && !validateEmailAddress($("#customer_email").val())) {
+            $('.error-result').fadeIn();
+            $('#result_message').html("Email khách hàng sai định dạng");
+            $('#result_messages').html("Email khách hàng sai định dạng");
+            document.getElementById("customer_email").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#address").val() == "") {
+            $('#result_message').html("Bạn phải nhập địa chỉ lấy hàng");
+            $('#result_messages').html("Bạn phải nhập địa chỉ lấy hàng");
+            $('.error-result').fadeIn();
+            document.getElementById("address").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#province").val() == "") {
+            $('#result_message').html("Bạn phải nhập tỉnh thành phố lấy hàng");
+            $('#result_messages').html("Bạn phải nhập tỉnh thành phố lấy hàng");
+            $('.error-result').fadeIn();
+            document.getElementById("province").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#district").val() == "") {
+            $('#result_message').html("Bạn phải nhập thông tin Quận/Huyện nơi lấy hàng");
+            $('#result_messages').html("Bạn phải nhập Quận/Huyện lấy hàng");
+            $('.error-result').fadeIn();
+            document.getElementById("district").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#ward").val() == "") {
+            $('#result_message').html("Bạn phải nhập thông tin Phường/xã nơi lấy hàng");
+            $('#result_messages').html("Bạn phải nhập Phường/xã lấy hàng");
+            $('.error-result').fadeIn();
+            document.getElementById("ward").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#shipping_pickup_receiver_name").val() == "") {
+            $('#result_message').html("Bạn phải nhập tên người nhận");
+            $('#result_messages').html("Bạn phải nhập tên người nhận");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_receiver_name").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#shipping_pickup_receiver_mobile").val() == "") {
+            $('#result_message').html("Bạn phải nhập số điện thoại người nhận");
+            $('#result_messages').html("Bạn phải nhập số điện thoại người nhận");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_receiver_mobile").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+        if ($("#shipping_pickup_receiver_address").val() == "") {
+            $('#result_message').html("Bạn phải nhập địa chỉ người nhận");
+            $('#result_messages').html("Bạn phải nhập địa chỉ người nhận");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_receiver_address").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#shipping_pickup_receiver_province").val() == "") {
+            $('#result_message').html("Bạn phải nhập tỉnh thành nhận");
+            $('#result_messages').html("Bạn phải nhập tỉnh thành nhận");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_receiver_province").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#shipping_pickup_receiver_district").val() == "") {
+            $('#result_message').html("Bạn phải nhập thông tin Quận/Huyện của người nhận");
+            $('#result_messages').html("Bạn phải nhập Quận/Huyện người nhận");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_receiver_district").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#shipping_pickup_receiver_ward").val() == "") {
+            $('#result_message').html("Bạn phải nhập Phường/xã người nhận");
+            $('#result_messages').html("Bạn phải nhập thông tin Phường/xã của người nhận");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_receiver_ward").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#shipping_pickup_product_name").val() == "") {
+            $('#result_message').html("Bạn phải nhập tên sản phẩm");
+            $('#result_messages').html("Bạn phải nhập tên sản phẩm");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_product_name").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+        if ($("#shipping_pickup_cod_weight").val() == "") {
+            $('#result_message').html("Bạn phải nhập trọng lượng sản phẩm");
+            $('#result_messages').html("Bạn phải nhập trọng lượng sản phẩm");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_cod_weight").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#shipping_pickup_cod_quantity").val() == "") {
+            $('#result_message').html("Bạn phải nhập số lượng sản phẩm");
+            $('#result_messages').html("Bạn phải nhập số lượng sản phẩm");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_cod_quantity").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        if ($("#shipping_pickup_cod_amount").val() == "") {
+            $('#result_message').html("Bạn phải nhập giá trị sản phẩm");
+            $('#result_messages').html("Bạn phải nhập giá trị sản phẩm");
+            $('.error-result').fadeIn();
+            document.getElementById("shipping_pickup_cod_amount").focus();
+            return false;
+        }
+        else {
+            $('.error-result').fadeOut();
+        }
+
+        return true;
+    }
+
+    $("#btnReset").click(function () {
+        $('.error-result').fadeOut();
+        refreshShippingUI();
+    });
+
+    //$("#createRequestForm").validate({
+    //    lang: 'vi',
+    //    rules: {
+    //        customer_name: { required: true },
+    //        address: { required: true },
+    //        province: { required: true },
+    //        email: { email: true },
+    //    },
+    //    messages:
+    //    {
+    //        customer_name: { required: "Vui lòng nhập đầy đủ thông tin." },
+    //        address: { required: "Vui lòng nhập đầy đủ thông tin." },
+    //        province: { required: "Vui lòng nhập đầy đủ thông tin." },
+    //        email: { email: "Vui lòng nhập đúng định dạng email." },
+    //    },
+    //    submitHandler: function (form) {
+
+    //        submitSHIPPING_PICKUP();
+    //    }
+    //});
+
+
+    function createRequest() {
+        var type = $('#cbTypes').val();
+        var btnCommit = "SHIPPING_" + type;
+        if (btnCommit == "SHIPPING_PICKUP") {
+        };
+        if (btnCommit == "SHIPPING_GETBACK") {
+            createShippingGetbackRequest();
+        };
+        if (btnCommit == "SHIPPING_CANCEL") {
+            createShippingCancelRequest();
+        };
+        if (btnCommit == "PAYMENT_CHECK") {
+            createPaymentCheckRequest();
+        };
+        if (btnCommit == "SUPPORT_GENERAL") {
+            createSupportGeneral();
+        }
+        return true;
+    };
+    function getDateTime() {
+        //2013/10/04 08:51:32
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours();
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        if (month.toString().length == 1) {
+            var month = '0' + month;
+        }
+        if (day.toString().length == 1) {
+            var day = '0' + day;
+        }
+        if (hour.toString().length == 1) {
+            var hour = '0' + hour;
+        }
+        if (minute.toString().length == 1) {
+            var minute = '0' + minute;
+        }
+        if (second.toString().length == 1) {
+            var second = '0' + second;
+        }
+        var datenow = year + '-' + month + '-' + day;
+        var timenow = hour + ':' + minute;
+        $('#shipping_pickup_contact_date').val(datenow);
+        $('#shipping_pickup_contact_time').val(timenow);
+    }
+
+    $(document).ready(function () {
+
+
+        getDateTime();
+        //$('#storeList').hide();
+        $.ajax({
+            url: '@Url.Content("~/Metadata/Proxy/ListProvinces")',
+            type: 'POST',
+            dataType: "json",
+            data: {
+            },
+            success: function (data) {
+                $('.province').html('');
+                var listString = "<option value=''>Tỉnh/thành phố</option>";
+                jQuery.each(data, function (i, val) {
+                    listString = listString + "<option value='" + val.ProvinceCode + "'>" + val.ProvinceName + "</option>";
+                });
+                $('.province').html(listString);
+                return;
+            }
+        });
+        $('.form-detail').hide();
+        function changeService(serviceCode) {
+            $("#cbTypes option").hide();
+            $("#cbTypes option").each(function (index) {
+                var service = $(this).data("service");
+                if (service == serviceCode || service == "NONE") {
+                    $(this).show();
+                }
+            });
+        }
+        // FORMAT AMOUNT INPUT
+        $(function () {
+            $('#shipping_pickup_cod_amount').keyup(function () {
+                $(this).val(formatAmount($(this).val()));
+            });
+
+            $('#shipping_pickup_cod_weight').keyup(function () {
+                $(this).val(formatAmount($(this).val()));
+            });
+            $('#shipping_pickup_cod_quantity').keyup(function () {
+                $(this).val(formatAmount($(this).val()));
+            });
+
+        });
+        function formatAmountNoDecimals(number) {
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(number)) {
+                number = number.replace(rgx, '$1' + '.' + '$2');
+            }
+            return number;
+        }
+        function formatAmount(number) {
+            number = number.replace(/[^0-9]/g, '');
+            number = number.replace(/\./g, '.');
+            x = number.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            return formatAmountNoDecimals(x1) + x2;
+        }
+        function changeServiceType(serviceCode, typeCode) {
+            changeService(serviceCode);
+            $("#cbTypes option").each(function (index) {
+                var service = $(this).data("service");
+                var type = $(this).val();
+                if (service == serviceCode && type == typeCode) {
+                    $(this).prop("selected", true);
+                    $('.form-detail').hide();
+                    $('.form-detail').each(function (index) {
+                        if ($(this).data("service") == serviceCode && $(this).data("type") == typeCode)
+                            $(this).show();
+                    });
+                }
+            });
+        }
+        $('#cbServices').change(function () {
+            changeService($(this).val());
+        });
+        $('#cbTypes').change(function () {
+            var service = '';
+            $("#cbTypes option").each(function (index) {
+                if ($(this).is(":selected")) {
+                    service = $(this).data("service");
+                }
+            });
+            var type = $(this).val();
+            //alert(service + "|" + type);
+            $('.form-detail').hide();
+            $('.form-detail').each(function (index) {
+                if ($(this).data("service") == service && $(this).data("type") == type)
+                    $(this).show();
+            });
+        });
+
+        changeServiceType("SHIPPING", "PICKUP");
+
+        $('.province').change(function () {
+            var group = $(this).data("group");
+            var provinceCode = $(this).val();
+            loadDistricts(provinceCode, group);
+        });
+
+        function loadDistricts(provinceCode, group, value, ward) {
+            $.ajax({
+                url: '@Url.Content("~/Metadata/Proxy/ListDistricts")',
+                type: 'POST',
+                dataType: "json",
+                data: { provinceCode: provinceCode },
+                success: function (data) {
+                    //alert(data);
+                    $('.district-' + group).html('');
+                    var listString = "<option value=''>--Quận, huyện--</option>";
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.DistrictCode + "'>" + val.DistrictName + "</option>";
+                    });
+                    $('.district-' + group).html(listString);
+                    if (value) {
+                        $('.district-' + group).val(value);
+                        loadWards(value, group, ward);
+                    }
+                    return;
+                }
+            });
+        }
+
+        $('.district').change(function () {
+            var group = $(this).data("group");
+            var districtCode = $(this).val()
+            loadWards(districtCode, group);
+        });
+
+        function loadWards(districtCode, group, value) {
+            $.ajax({
+                url: '@Url.Content("~/Metadata/Proxy/ListWards")',
+                type: 'POST',
+                dataType: "json",
+                data: { districtCode: districtCode },
+                success: function (data) {
+                    //alert(data);
+                    $('.ward-' + group).html('');
+                    var listString = "<option value=''>--Phường, xã--</option>";
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.WardCode + "'>" + val.WardName + "</option>";
+                    });
+                    $('.ward-' + group).html(listString);
+                    if (value) {
+                        $('.ward-' + group).val(value);
+                    }
+                    return;
+                }
+            });
+        }
+        function refrestLastestRequest() {
+            $.ajax({
+                url: '@Url.Content("~/ServiceRequest/Request/ListTopRequest")',
+                type: 'POST',
+                dataType: "html",
+                data: { customer_code: $('#customer_code').val(), top: 5 },
+                success: function (data) {
+                    $('#lastestRequest').html(data);
+                }
+            });
+        }
+        $('#customer_code1').change(function () {
+            $('#storeList').hide();
+            $('#postcode').hide();
+
+            $.ajax({
+                url: '@Url.Content("~/Merchant/Proxy/LookupProfile")',
+                type: 'POST',
+                dataType: "json",
+                data: { lockupValue: $(this).val() },
+                success: function (data) {
+
+                    if (data.error_code == "00") {
+                        if (data.active == true) {
+
+                            $('.error-result').fadeOut();
+                            $('#customer_name').val(data.customer_name);
+                            $('#address').val(data.address);
+                            $('#customer_mobile').val(data.customer_mobile);
+                            $('#short_name').val(data.short_name);
+                            $('#customer_email').val(data.email);
+                            refrestLastestRequest();
+                            refreshStoreList(data.customer_code);
+                        }
+                        else {
+                            $('#result_messages').html("Doanh nghiệp này đang bị khóa");
+                            $('#result_message').html("Doanh nghiệp này đang bị khóa");
+                            $('.error-result').fadeIn();
+                            //$('#customer_code').val('');
+                            $('#customer_name').val('');
+                            $('#address').val('');
+                            $('#customer_mobile').val('');
+                            $('#short_name').val('');
+                            $('#customer_email').val('');
+
+                        }
+                    } else {
+                        $('#result_messages').html("Doanh nghiệp này không tồn tại");
+                        $('#result_message').html("Doanh nghiệp này không tồn tại");
+                        $('.error-result').fadeIn();
+                        $('#customer_code').val('');
+                        $('#customer_name').val('');
+                        $('#address').val('');
+                        $('#customer_mobile').val('');
+                        $('#short_name').val('');
+                        $('#customer_email').val('');
+                        document.getElementById("customer_code").focus();
+                        setInterval(function () { $('.create-result').fadeOut(); }, 3000);
+                    }
+                    return;
+                }
+            });
+        })
+        $('#customer_mobile').change(function () {
+            $('#storeList').hide();
+            $.ajax({
+                url: '@Url.Content("~/Merchant/Proxy/LookupProfile")',
+                type: 'POST',
+                dataType: "json",
+                data: { lockupValue: $(this).val() },
+                success: function (data) {
+                    if (data.error_code == "00") {
+                        $('#customer_code').val(data.customer_code);
+                        $('#customer_name').val(data.customer_name);
+                        $('#address').val(data.address);
+                        $('#short_name').val(data.short_name);
+                        $('#customer_email').val(data.email);
+                        refrestLastestRequest();
+                        refreshStoreList(data.customer_code);
+                    }
+                    return;
+                }
+            });
+        })
+        $('#short_name').change(function () {
+            $('#storeList').hide();
+            $.ajax({
+                url: '@Url.Content("~/Merchant/Proxy/LookupProfile")',
+                type: 'POST',
+                dataType: "json",
+                data: { lockupValue: $(this).val() },
+                success: function (data) {
+                    if (data.error_code == "00") {
+                        $('#customer_code').val(data.customer_code);
+                        $('#customer_name').val(data.customer_name);
+                        $('#address').val(data.address);
+                        $('#customer_mobile').val(data.customer_mobile);
+                        $('#customer_email').val(data.email);
+                        refrestLastestRequest();
+                        refreshStoreList(data.customer_code);
+                    }
+                    return;
+                }
+            });
+        })
+        function refreshStoreList(user_id) {
+            $.ajax({
+                url: '@Url.Content("~/ServiceRequest/Proxy/ListStore")',
+                type: 'POST',
+                dataType: "json",
+                data: { user_id: $('#customer_code').val() },
+                success: function (data) {
+                    $('#storeList').html('');
+                    $('#storeList').show();
+                    var listString = "<option value=''>--Chọn kho/địa chỉ--</option>";
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.StoreCode + "' data-address='" + val.Address + "' data-district='" + val.District + "' data-province='" + val.Province + "' data-id='" + val._id + "'data-managername='" + val.ManagerName + "'data-managermobile='" + val.ManagerMobile + "'data-postcodelink='" + val.PostCode + "' >" + val.StoreName + ', ' + val.Address + ', ' + val.DistrictName + ', ' + val.ProvinceName + "</option>";
+                    });
+                    $('#storeList').html(listString);
+                    return;
+                }
+            });
+        }
+
+        $('#storeList').change(function () {
+            var selected = $(this).find('option:selected');
+            var province = selected.data("province");
+            var district = selected.data("district");
+            var address = selected.data("address");
+            var managername = selected.data("managername");
+            var managermobile = selected.data("managermobile");
+            var postcode_link = selected.data("postcodelink");
+            $('#address').val(address);
+            $('.province-general').val(province);
+            loadDistricts(province, 'general', district);
+            $('#shipping_pickup_contact_name').val(managername);
+            $('#shipping_pickup_contact_mobile').val(managermobile);
+            $('#postcode_link').val(postcode_link);
+        })
+    })
+</script>

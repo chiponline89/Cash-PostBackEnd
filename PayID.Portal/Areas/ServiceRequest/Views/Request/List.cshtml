@@ -1,0 +1,687 @@
+﻿@{
+    if (Session["profile"] == null)
+    {
+        PayID.Portal.Common.Service.AccountService data = new PayID.Portal.Common.Service.AccountService();
+        var profile = data.GetAccountByUserName(User.Identity.Name);
+        Session["profile"] = profile;
+    }
+
+    var oProfile = (PayID.Portal.Models.Account)Session["profile"];
+}
+
+<div class="actions cm-sticky-scroll" data-ce-top="41" data-ce-padding="37" id="actions_panel">
+    <div class="title pull-left">
+        <h2 style="font-family:-webkit-body;" title="Dashboard">Quản lý Tin</h2>
+    </div>
+    @if (oProfile.UnitCode != "00")
+    {
+        <div class="btn-bar btn-toolbar dropleft pull-right">
+
+
+            <div class="adv-buttons">
+                <div class="btn-group ">
+                    <button type="button" style="float:right;" id="btnAssign" onclick="Shipment.AllotOrder('0')" class="btn btn-primary cm-submit">
+                        <i class="fa fa-arrow-up hidden-xs"></i> Điều Tin
+                    </button>
+                </div>
+            </div>
+
+            <button type="button" style="float:right;" id="btnExport" class="btn btn-primary cm-submit">
+                <i class="fa fa-file-excel-o"></i> Xuất Excel
+            </button>
+
+            <button type="button" style="float:right;" id="btnPrint" class="btn btn-primary cm-submit">
+                <i class="fa fa-print"></i> In Danh sách
+            </button>
+
+            <button type="button" style="float:right;" id="btnCancelAsssign" onclick="Shipment.ConfirmCancelAssign('0')"  class="btn btn-primary cm-submit">
+                <i class="fa fa-times hidden-xs"></i> Hủy điều Tin
+            </button>
+        </div>
+    }
+
+</div>
+<div class="content ufa">
+    <div class="content-wrap">
+        <div class="row marginLR">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Mã Khách hàng</label>
+                                <input type="text" class="form-control" id="CustomerCode" placeholder="Mã khách hàng">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtDateRange">Từ ngày - Đến ngày</label>
+                                <div class="input-group">
+                                    <input class="form-control" name="from-date" id="txtDateRange" placeholder="Từ ngày - Đến ngày" type="text" readonly="readonly">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-pns" id="txtDateRange" onclick="common.RefreshDate('txtDateRange')" type="button"><i class="fa fa-refresh"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Trạng thái</label>
+                                @Html.DropDownList("Status", (IEnumerable<SelectListItem>)ViewBag.ListStatus, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Mã Tin</label>
+                            <input type="text" class="form-control" id="OrderCode" placeholder="Mã Tin">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Mã vận đơn</label>
+                            <input type="text" placeholder="Mã vận đơn" id="TrackingCode" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <button style="margin-top:20px;" onclick="Shipment.GetShipment(1)" class="btn btn-primary" id="btnSearchOrder"><i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row marginLR">
+            <div class="col-md-12" style="text-align:right;">
+                <a href="@Url.Action("CreateRequest", "Request", new { @Area = "ServiceRequest" })" class="btn btn-primary" id="btnSearchOrder">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> Thêm mới Tin
+                </a>
+            </div>
+        </div>
+        <div class="row marginLR">
+            <div class="col-md-12">
+                <div id="listOrder">
+                    <div class="table-responsive">
+                        <table id="tblcontent" class="table table-striped table-bordered datatables dataTable no-footer">
+                            <thead>
+                                <tr class="tr_head">
+                                    <td>#</td>
+                                    <td>Đơn hàng</td>
+                                    <td>Địa chỉ lấy hàng</td>
+                                    <td>Thông tin hàng hóa</td>
+                                    <td>...</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5">
+                                        <span>Chọn điều kiện Tìm kiếm để hiển thị dữ liệu</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            @*<input type="hidden" id="provinceType" value="@(((dynamic)Session["profile"]).unit_link.ToString().Substring(0, 2))" />
+                <input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />
+                <input type="hidden" id="status" value="@ViewBag.status" />*@
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>*@
+                    <h4 class="panel-title" style="color:white;" id="contactLabel"><span class="glyphicon glyphicon-info-sign"></span> Xác nhận.</h4>
+                </div>
+                <div class="modal-body" style="padding: 5px;">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Trạng thái xác nhận</label>
+                            <div class="col-sm-9">
+                                <select id="cbStatus" class="form-control" onchange="CheckStatus()">
+                                    <option value="C7">Lấy hàng thành công</option>
+                                    <option value="C9">Lấy hàng Thất bại</option>
+                                    @*<option value="C2">Hủy yêu cầu thu gom</option>*@
+                                    @*<option value="C8">Hủy lấy hàng</option>
+                                        <option value="C10">Khách hàng hẹn lại</option>
+                                        <option value="C26">Thiếu hàng</option>*@
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="reason" style="display:none;">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Lý do</label>
+                            <div class="col-sm-9">
+                                <select id="cbStatusReason" class="form-control">
+                                    <option value=""></option>
+                                    <option value="0">Thiếu hàng</option>
+                                    <option value="1">Không liên hệ được với khách hàng</option>
+                                    <option value="2">Khách hàng không có nhà</option>
+                                    <option value="3">Khách hàng hẹn lại</option>
+                                    <option value="4">Lý do khác</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="reasonCancel" style="display:none;">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Lý do</label>
+                            <div class="col-sm-9">
+                                <select id="cbStatusReasonCancel" class="form-control">
+                                    <option value=""></option>
+                                    <option value="0">Hàng gửi thuộc hàng cấm gửi</option>
+                                    <option value="1">Đơn hàng thu gom 3 lần shop không giao hàng</option>
+                                    <option value="2">Đơn hàng quá hạn thu gom</option>
+                                    <option value="3">Shop không giao hàng</option>
+                                    <option value="4">Lý do khác</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Thời gian (lấy hàng/hẹn lại)</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="confirm_time" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Họ tên Khách hàng</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="customer" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-12 ">
+                                <label class="control-label">Nội dung</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <textarea id="noteConfirm" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer" style="margin-bottom:-14px;">
+                    <a href="#" id="btnConfirmRequest" class="btn btn-primary ">Cập nhật</a>
+                    <button style="float: right;" type="button" class="btn btn-default btn-close" data-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@section TopMenu{
+        <a href="http://cashpost.payflow.vn"><i class="glyphicon-copyright-mark"></i> </a>
+    }*@
+<script>
+    var startDate;
+    var endDate;
+    filter.initDateRange(filterConfig.dateRange, startDate, endDate);
+
+    var permission = $('#permission').val();
+    $(function () {
+        $("#from-date").datepicker();
+        $("#to-date").datepicker();
+        $("#confirm_time").datepicker();
+    });
+    function CheckStatus() {
+        var setStyle = document.getElementById("reason");
+        var setStyleCancel = document.getElementById("reasonCancel");
+        if ($("#cbStatus option:selected").val() == "C9") {
+            setStyleCancel.style.display = "none";
+            setStyle.style.display = "";
+        } else {
+            setStyle.style.display = "none";
+        }
+        if ($("#cbStatus option:selected").val() == "C8") {
+            setStyleCancel.style.display = "";
+            setStyle.style.display = "none";
+        } else {
+            setStyleCancel.style.display = "none";
+        }
+    }
+    function LoadCancelAssign(id) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ReturnAssign")',
+            dataType: 'html',
+            data: { id: id },
+            beforeSend: function () {
+                $('.loading-element').show();
+            }
+        })
+   .success(function (result) {
+       $('.loading-element').hide();
+       $('#content').html(result);
+       $('#modalCanCelAssign').modal('show');
+
+   })
+   .error(function (xhr, status) {
+       alert("Không thể load dữ liệu. Vui lòng thử lại sau!");
+   })
+    }
+
+    $(document).ready(function () {
+        var postcode = $('#status').val();
+        //document.getElementById("request-status").value = postcode;
+        //$('#btnAssign').hide();
+        //$('#btnConfirm').hide();
+        //$('#btnExport').hide();
+        //$('.btnPrint').hide();
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var lmm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        if (lmm < 10) lmm = '0' + lmm;
+
+        var today = dd + '/' + mm + '/' + yyyy;
+        var last_month = dd + '/' + lmm + '/' + yyyy;
+        $('#confirm_time').val(today);
+        $('#from-date').val(last_month);
+        $('#to-date').val(today);
+
+        $("#filterTypes option").hide();
+        function changeService(serviceCode) {
+            $("#filterTypes option").hide();
+            $("#filterTypes option").each(function (index) {
+                var service = $(this).data("service");
+                if (service == serviceCode || service == "NONE") {
+                    $(this).show();
+                }
+            });
+        }
+        $('#filterServices').change(function () {
+            changeService($(this).val());
+        });
+        function refreshPaging() {
+            $('#page-selection').bootpag({
+                total: $('#total_page').val(),
+                maxVisible: 10,
+            }).on("page", function (event, num) {
+                filter(num);
+            });
+        }
+
+        function listNextProcessUnit() {
+            $.ajax({
+                url: '@Url.Content("~/Systems/Proxy/Workflow_ListNextProcessUnit")',
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    unit_code: '@(oProfile.UnitCode)',
+                    service: 'SHIPPING',
+                    type: 'PICKUP'
+                },
+                success: function (data) {
+
+                    $('#cbUnitProcess').html('');
+                    $('#processForm').hide();
+                    var listString = '';
+                    $('#btnAssign').hide();
+                    if ($("#request-status option:selected").val() == "C5" || $("#request-status option:selected").val() == "C6" || $("#request-status option:selected").val() == "C9") {
+                        $('#btnConfirm').show();
+                    }
+                    $('.btnPrint').show();
+
+                    if (data.length > 0) {
+                        if ($("#request-status option:selected").val() == "C5" || $("#request-status option:selected").val() == "C6" || $("#request-status option:selected").val() == "C9") {
+                            $('#btnAssign').show();
+                        }
+
+                        $('#btnConfirm').hide();
+                    }
+
+                    jQuery.each(data, function (i, val) {
+                        //if(val._id != '@User.Identity.Name')
+                        listString +=
+                            "<option value='" + val._id + "' data-link='" + val.unit_link + "'>" + val._id + " - " + val.name + "</option>";
+                    });
+                    $('#cbUnitProcess').html(listString);
+                    return;
+                }
+            })
+        };
+
+        function filter(num) {
+            $.ajax({
+                beforeSend: function () {
+                    $('.loading-element').show();
+                },
+                url: '@Url.Content("~/ServiceRequest/Request/ListRequest")',
+                type: 'POST',
+                dataType: "html",
+                data: {
+                    from_date: $('#from-date').val(),
+                    to_date: $('#to-date').val(),
+                    customer_code: $('#customer-code').val(),
+                    tracking_code: $('#tracking-code').val(),
+                    request_id: $('#request-id').val(),
+                    status: $('#request-status').val(), // != ""? $('#request-status').val() : $('#status').val(),
+                    page: num
+                },
+                success: function (data) {
+                    $('.loading-element').hide();
+                    $('#filter-result').html(data);
+                    if (num == 1) refreshPaging();
+                    $('#btnAssign').show();
+                    if ($("#request-status option:selected").val() == "C5" || $("#request-status option:selected").val() == "C6" || $("#request-status option:selected").val() == "C9") {
+                        $('#btnConfirm').show();
+                    }
+                    $('#btnExport').show();
+                    $('#btnPrint').show();
+                    var new_href = "/ServiceRequest/Request/ListRequestPrint?from_date=" + $('#from-date').val() + "&to_date=" + $('#to-date').val()
+            + "&customer_code=" + $('#customer-code').val()
+            + "&tracking_code=" + $('#tracking-code').val()
+            + "&request_id=" + $('#request-id').val()
+            + "&status=" + $('#request-status').val();
+                    var new_export_href = "/ServiceRequest/Request/RequestExpInfo?from_date=" + $('#from-date').val() + "&to_date=" + $('#to-date').val()
+            + "&customer_code=" + $('#customer-code').val()
+            + "&tracking_code=" + $('#tracking-code').val()
+            + "&request_id=" + $('#request-id').val()
+            + "&status=" + $('#request-status').val();
+
+                    var new_export_href_NE = "/ServiceRequest/Request/ExpInfoRequireNetPost?from_date=" + $('#from-date').val() + "&to_date=" + $('#to-date').val()
+                     + "&customer_code=" + $('#customer-code').val()
+                     + "&tracking_code=" + $('#tracking-code').val()
+                     + "&request_id=" + $('#request-id').val()
+                     + "&status=" + $('#request-status').val();
+
+                    $('#btnPrint').attr("href", new_href);
+                    if ($("#provinceType").val() == "70") {
+                        $('#btnExport').attr("href", new_export_href_NE);
+                    }
+                    else {
+                        $('#btnExport').attr("href", new_export_href);
+                    }
+                    $("#btnPrint").printPage();
+                    $('#sum_total_item').html("Tổng số tin <span class='badge badge-info' style='background-color:#3577B0;'>" + $('#total_item').val() + "</span>");
+                    listNextProcessUnit();
+                }
+            });
+        }
+
+
+
+        //filter(1);
+
+        //$('#btn-filter').click(function () {
+        //    filter(1);
+        //});
+        $('#btnAssign').click(function () {
+            if (permission != "" && permission.indexOf("|5|") == -1) {
+                alert("Bạn chưa được phân quyền sử dụng chức năng điều tin");
+            }
+            else {
+                if (checkme()) {
+                    $('#modalAssign').modal('show');
+                }
+            }
+        });
+
+        $('#btnConfirm').click(function () {
+            if (permission != "" && permission.indexOf("8") == -1) {
+                alert("Bạn chưa được phân quyền sử dụng chức năng xác nhận yêu cầu");
+            }
+            else {
+                if (checkmeConfirm()) {
+                    if ('@(oProfile.UnitCode)' != "00") {
+                        $('#modalConfirm').modal('show');
+                    }
+                    else {
+                        alert("Bạn không được sử dụng chức năng này.");
+                    }
+                }
+            }
+        });
+        $('#btnConfirmRequest').click(function () {
+            //app.showProcess();
+            var reason = "";
+            if ($("#cbStatus").val() == "C9") {
+                reason = $("#cbStatusReason option:selected").text();
+            }
+            else if ($("#cbStatus").val() == "C8") {
+                reason = $("#cbStatusReasonCancel option:selected").text();
+                if ($("#cbStatusReasonCancel").val() == "4") {
+                    reason = $("#noteConfirm").val();
+                }
+            }
+            var id = '';
+            $('.checkMe').each(function (index, obj) {
+                if ($(this).is(":checked")) {
+                    id = id + $(this).data("id") + "|";
+                }
+            });
+            // alert(id);
+            $.ajax({
+                url: '@Url.Content("~/ServiceRequest/Request/Confirm")',
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    ids: id,
+                    notes: $('#noteConfirm').val(),
+                    status: $('#cbStatus').val(),
+                    confirm_date: $('#confirm_time').val(),
+                    customer: $('#customer').val(),
+                    reason: reason
+                },
+                success: function (data) {
+                    //app.hideProcess();
+                    alert(data.response_message);
+                    location.reload();
+                }
+            });
+
+        });
+
+        $('#cbUnitProcess').change(function () {
+            var pm = $('#cbUnitProcess').val();
+            $.ajax({
+                url: '@Url.Content("~/ServiceRequest/Request/ListPostMan")',
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    id: pm
+                },
+                success: function (data) {
+                    //app.hideProcess();
+                    $('#cbPostMan').html('');
+                    var listString = "<option value=''>Chọn bưu tá</option>";
+                    jQuery.each(data, function (i, val) {
+                        listString = listString + "<option value='" + val._id + "'>" + val.full_name + "</option>";
+                    });
+                    $('#cbPostMan').html(listString);
+                    return;
+                    //alert(data.response_message);
+                    //location.reload();
+                }
+            });
+        });
+
+        $('#btnUnitProcess').click(function () {
+            var unit_link = $('#cbUnitProcess option:selected').data("link");
+            var unit_title = $('#cbUnitProcess option:selected').html();
+            //app.showProcess();
+            var id = '';
+
+            $('.checkMe').each(function (index, obj) {
+                if ($(this).is(":checked")) {
+                    id = id + $(this).data("id") + "|";
+                }
+            });
+            $.ajax({
+                url: '@Url.Content("~/ServiceRequest/Request/Assign")',
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    ids: id,
+                    notes: $('#noteUnitProcess').val(),
+                    unit_code: unit_link,
+                    unit_name: unit_title,
+                    pm: $('#cbPostMan').val()
+                },
+                success: function (data) {
+                    //app.hideProcess();
+                    alert(data.response_message);
+                    location.reload();
+                }
+            });
+
+        });
+
+        function checkme() {
+            var id = '';
+            $('.checkMe').each(function (index, obj) {
+                if ($(this).is(":checked")) {
+                    id = id + 1;
+                }
+            });
+            var announce = 0;
+            $('.checkMe').each(function (index, obj) {
+                if ($(this).is(":checked")) {
+                    //alert($(this).data("assign"));
+                    if ($(this).data("assign") != "")
+                        announce = announce + 1;
+                }
+            });
+            if (id == "") {
+                alert("Bạn chưa chọn tin.");
+                return false;
+            }
+            else {
+                if (announce != "") {
+                    var alertmsg = "Có " + announce + " tin đã phân hướng trong các tin đã chọn. Bạn có tiếp tục thực hiện chức năng phân hướng?";
+                    if (!confirm(alertmsg))
+                        return false;
+                    else
+                        return true;
+                } else {
+                    return true;
+                }
+            }
+        }
+        function checkmeConfirm() {
+            var id = '';
+            $('.checkMe').each(function (index, obj) {
+                if ($(this).is(":checked")) {
+                    id = id + 1;
+                }
+            });
+
+            if (id == "") {
+                alert("Bạn chưa chọn tin.");
+                return false;
+            }
+            else {
+
+                return true;
+            }
+        }
+
+    });
+
+    function UpdateWeight(id) {
+        e = event;
+        var lblmsg = document.getElementById("msgRslt_" + id);
+        var code = (e.keyCode ? e.keyCode : e.which);
+        var w = document.getElementById("weight_" + id);
+        if (code == 13) {
+            $.ajax({
+                url: '@Url.Content("~/ServiceRequest/Request/UpdateLadingWeight")',
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    id: id,
+                    weight: w.value
+                },
+                success: function (data) {
+                    if (data.response_code == "00") {
+                        //alert(data.response_message);
+                        lblmsg.innerHTML = "Cập nhật thành công!";
+                        w.blur();
+                        var delay = 5000;//1 seconds
+                        setTimeout(function () {
+                            lblmsg.innerHTML = "";
+
+                        }, delay);
+                        //var _code = document.getElementById("tracking-code");
+                        //_code.focus();
+                        //location.reload();
+                    } else {
+                        lblmsg.innerHTML = "Cập nhật thất bại!";
+                        var delay = 5000;//1 seconds
+                        setTimeout(function () {
+                            lblmsg.innerHTML = "";
+
+                        }, delay);
+                        //alert(data.response_message);
+                        //location.reload();
+                    }
+                    return;
+                }
+            })
+        }
+        return false;
+    }
+    function SearchByCode() {
+        $.ajax({
+            beforeSend: function () {
+                $('.loading-element').show();
+            },
+            url: '@Url.Content("~/ServiceRequest/Request/ListRequest")',
+            type: 'POST',
+            dataType: "html",
+            data: {
+                from_date: $('#from-date').val(),
+                to_date: $('#to-date').val(),
+                customer_code: "",
+                tracking_code: $('#tracking-code').val(),
+                request_id: "",
+                status: "", // != ""? $('#request-status').val() : $('#status').val(),
+                page: 1
+            },
+            success: function (data) {
+                $('.loading-element').hide();
+                $('#filter-result').html(data);
+
+                // $('#btnAssign').show();
+                //$('#btnConfirm').show();
+
+                $('#btnExport').show();
+                var new_href = "/ServiceRequest/Request/ListRequestPrint?from_date=" + $('#from-date').val() + "&to_date=" + $('#to-date').val()
+        + "&customer_code=" + $('#customer-code').val()
+        + "&tracking_code=" + $('#tracking-code').val()
+        + "&request_id=" + $('#request-id').val()
+        + "&status=" + $('#request-status').val();
+                var new_export_href = "/ServiceRequest/Request/RequestExpInfo?from_date=" + $('#from-date').val() + "&to_date=" + $('#to-date').val()
+        + "&customer_code=" + $('#customer-code').val()
+        + "&tracking_code=" + $('#tracking-code').val()
+        + "&request_id=" + $('#request-id').val()
+        + "&status=" + $('#request-status').val();
+                $('#btnPrint').attr("href", new_href);
+                $('#btnExport').attr("href", new_export_href);
+                $("#btnPrint").printPage();
+                $('#sum_total_item').html("Tổng só tin: " + $('#total_item').val());
+                listNextProcessUnit();
+                return;
+            }
+        })
+    }
+</script>

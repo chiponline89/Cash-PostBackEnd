@@ -1,0 +1,143 @@
+﻿@model IEnumerable<dynamic>
+    @{
+        Layout = null;
+    }
+
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#dongID").visible;
+            $("#btLuuLai1").click(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("UpdateLadingbill")',
+                    dataType: 'json',
+                    data: {
+                        tenSP: $("#txtTenSP").val(), giaTri: $("#txtGiaTri").val(), khoiLuong: $("#txtKhoiLuong").val(), soLuong: $("#txtSoLuong").val(),
+                        moTaSP: $("#txtMoTaSP").val(), ten: $("#txtTenNguoi").val(), buuCucNhan: $("#dropTinhNhan").val(), soDienThoai: $("#txtSDT").val(),
+                        diaChi: $("#txtDiaChi").val(), idd: $("#txtId").val(), tenSP_old: $("#IdProductName").val(), giaTri_old: $("#IdProductValue").val(), khoiLuong_old: $("#IdProductWeight").val(), soLuong_old: $("#IdProductQuantity").val(),
+                        moTaSP_old: $("#IdProductDescr").val(), ten_old: $("#IdReceiverName").val(), buuCucNhan_old: $("#IdToProvinceCode").val(), soDienThoai_old: $("#txtSDT").val(),
+                        diaChi_old: $("#IdReceiverMobile").val(), diaChi_old: $("#IdReceiverAddress").val()
+                    },
+                    success: function (data) {
+                        window.location.href = "@Url.Action("CreateLadingByFile", "CreateLading")";
+                    },
+                    error: function (ex) {
+                        alert('Sửa không thành công!!!' + ex);
+                    }
+                });
+                return true;
+            })
+        });
+    </script>
+
+    @foreach (dynamic item in Model)
+    {
+        <div>
+            <input type="hidden" value="@item.ProductName" id="IdProductName" />
+            <input type="hidden" value="@item.Value" id="IdProductValue" />
+            <input type="hidden" value="@item.Weight" id="IdProductWeight" />
+            <input type="hidden" value="@item.Quantity" id="IdProductQuantity" />
+            <input type="hidden" value="@item.ProductDescription" id="IdProductDescr" />
+            <input type="hidden" value="@item.ReceiverName" id="IdReceiverName" />
+            <input type="hidden" value="@item.ReceiverMobile" id="IdReceiverMobile" />
+            <input type="hidden" value="@item.ReceiverAddress" id="IdReceiverAddress" />
+            <input type="hidden" value="@item.ToProvinceCode" id="IdToProvinceCode" />
+        </div>
+
+        <div id="edit_lading" style="top: 680px; visibility:visible;display:block;opacity:1">
+            <h1>Sửa vận đơn</h1>
+            <div class="row">
+                <div class="large-12 columns">
+                    <div class="row">
+                        <div class="large-4 columns">
+                            <label>Tên sản phẩm</label>
+                            <input type="text"
+                                   id="txtTenSP" value="@item.ProductName"
+                                   name="@item.ProductName" />
+
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Tổng giá trị hàng</label>
+                            <input type="text"
+                                   id="txtGiaTri" value="@item.Value"
+                                   name="@item.Value" />
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Tổng khối lượng</label>
+
+                            <input type="text"
+                                   id="txtKhoiLuong" value="@item.Weight"
+                                   name="@item.Weight" />
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-4 columns">
+                            <label>Số lượng</label>
+                            <input type="text"
+                                   id="txtSoLuong" value="@item.Quantity"
+                                   name="@item.Quantity" />
+
+                        </div>
+
+                        <div class="large-8 columns">
+                            <label>Mô tả sản phẩm</label>
+                            <input type="text"
+                                   id="txtMoTaSP" value="@item.ProductDescription"
+                                   name="@item.ProductDescription" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-4 columns">
+                            <label>Tên người nhận</label>
+                            <input type="text"
+                                   id="txtTenNguoi" value="@item.ReceiverName"
+                                   name="@item.ReceiverName" />
+
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Số điện thoại người nhận</label>
+
+                            <input type="text"
+                                   id="txtSDT" value="@item.ReceiverMobile"
+                                   name="@item.ReceiverMobile" />
+
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Địa chỉ người nhận</label>
+
+                            <input type="text"
+                                   id="txtDiaChi" value="@item.ReceiverAddress"
+                                   name="@item.ReceiverAddress" />
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-4 columns">
+                            <label>Tỉnh thành phố người nhận</label>
+
+                            @Html.DropDownList("dropTinhNhan", (SelectList)ViewBag.stateList, "Chọn tỉnh nhận", new { type = "text", @style = "height:35px; width:200px" })
+
+                        </div>
+                        <div class="large-4 columns">
+                            <input type="hidden"
+                                   id="txtId" value="@item._id"
+                                   name="@item._id" />
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="large-4 columns">
+                            <input type="hidden" name="sc_code_edit" value="SC6523494002">
+                            <input type="button" class="button js_save_edit_lading" value="Lưu lại" onclick="SaveLadingTmp()">
+                            @*<input id="btLuuLai1" type="button" value="Lưu lại" />*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class='close-reveal-modal'>&#215;</a>
+    }

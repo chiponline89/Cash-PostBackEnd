@@ -1,0 +1,80 @@
+﻿<h4>Cấu hình dịch vụ</h4>
+<div class="row">
+    <h5>Dịch vụ Chuyển phát</h5>
+    <div class="col-md-4">
+        <input type="checkbox" name="config_postage" value="POS_PICKUP"/><span> Thu gom</span>
+    </div>
+    <div class="col-md-4">
+        <input type="checkbox" name="config_postage" value="POS_CANCEL" /><span> Rút bưu gửi</span>
+    </div>
+    <div class="col-md-4">
+        <input type="checkbox" name="config_postage" value="POS_DELETE" /><span> Hủy vận đơn</span>
+    </div>
+</div>
+<div class="row">
+    <h5>Dịch vụ Thanh toán</h5>
+    <div class="col-md-4">
+        <input type="checkbox" name="config_payment" value="PAY_TRACK" /><span> Tra soát giao dịch</span>
+    </div>
+</div>
+<div class="row">
+    <h5>Dịch vụ Hỗ trợ Khách hàng</h5>
+    <div class="col-md-4">
+        <input type="checkbox" name="config_customer_support" value="CS_ASK" /><span> Hỗ trợ khách hàng</span>
+    </div>
+</div>
+<div class="row">
+    <a href="#" class="btn btn-primary btn-service">Lưu cấu hình</a>
+</div>
+<hr/>
+<h4>Cấu hình workflow xử lý yêu cầu</h4>
+<div class="row">
+    <h5>Dịch vụ Chuyển phát</h5>
+    <div class="col-md-4">
+        <input type="checkbox" name="config_workflow" value="WF_POSTCODE" /><span> Phân hướng tới bưu cục</span>
+    </div>
+    <div class="col-md-4">
+        <input type="checkbox" name="config_workflow" value="WF_LEVEL" /><span> Phân hướng theo các cấp</span>
+    </div>
+    <div class="col-md-4">
+        <input type="checkbox" name="config_workflow" value="WF_NOPROCESS" /><span> Không tham gia xử lý</span>
+    </div>
+</div>
+<div class="row">
+    <a href="#" class="btn btn-primary btn-workflow">Lưu cấu hình</a>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.btn-workflow').click(function () {
+            var values = [];
+            var cbs = document.getElementsByName('config_workflow');
+            for (var i = 0, cbLen = cbs.length; i < cbLen; i++) {
+                if (cbs[i].checked) {
+                    values.push(cbs[i].value);
+                }
+            }
+            var string_dv = values.join('|');
+            alert(string_dv);
+
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("store_account")',
+                dataType: 'json',
+                data:
+                {                   
+                    choose: document.getElementById("chkDefault").checked ? 1 : 0
+                },
+                success: function (data) {
+                },
+                error: function (ex) {
+                }
+            });
+            return false;
+
+        });
+
+
+    });
+
+</script>

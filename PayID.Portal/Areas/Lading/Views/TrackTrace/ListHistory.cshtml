@@ -1,0 +1,54 @@
+﻿@model dynamic
+@{
+    Layout = null;
+}
+
+<div class="col-md-6" id="home-box">
+    <div class="pricing_header">
+        <h3>Thông tin</h3>
+        <div class="space"></div>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item">GT: @Model.Value_old</li>
+        <li class="list-group-item">KL: @Model.Weight_old</li>
+        <li class="list-group-item off">SL: @Model.Quantity_old</li>
+        <li class="list-group-item">Tên SP: @Model.ProductName_old</li>
+        <li class="list-group-item">Mô tả: @Model.ProductDescription_old</li>
+        <li class="list-group-item off">Người nhận: @Model.ReceiverName_old</li>
+        <li class="list-group-item off">Địa chỉ nhận: @Model.ReceiverAddress_old</li>
+        <li class="list-group-item off">Điện thoại nhận: @Model.ReceiverMobile_old</li>
+        <li class="list-group-item off">Tỉnh phát: @Model.ToProvinceCode_old</li>
+        <li class="list-group-item off">Cước chính: @Model.MainFee_old</li>
+        <li class="list-group-item off">Cước DV: @Model.ServiceFee_old</li>
+        <li class="list-group-item off">Cước COD: @Model.CodFee_old</li>
+        <li class="list-group-item off">Tiền thu hộ: @Model.TotalFee_old</li>
+    </ul>
+</div>
+<!-- Pack 2-->
+<div class="col-md-6" id="home-box2">
+    <div class="pricing_header">
+        <h3>Thông tin thay đổi</h3>
+        <div class="space"></div>
+    </div>
+    <ul class="list-group">
+
+        <li class="list-group-item">GT: @Model.Value đ</li>
+        <li class="list-group-item">KL: @Model.Weight gr</li>
+        <li class="list-group-item off">SL: @Model.Quantity</li>
+        <li class="list-group-item">Tên SP: @Model.ProductName</li>
+        <li class="list-group-item">Mô tả: @Model.ProductDescription</li>
+        <li class="list-group-item off">Người nhận: @Model.ReceiverName</li>
+        <li class="list-group-item off">Địa chỉ nhận: @Model.ReceiverAddress</li>
+        <li class="list-group-item off">Điện thoại nhận: @Model.ReceiverMobile</li>
+        <li class="list-group-item off">Tỉnh phát: @Model.ToProvinceCode</li>
+        <li class="list-group-item off">Cước chính: @Model.MainFee</li>
+        <li class="list-group-item off">Cước DV: @Model.ServiceFee</li>
+        <li class="list-group-item off">Cước COD: @Model.CodFee</li>
+        <li class="list-group-item off">Tiền thu hộ: @Model.TotalFee</li>
+    </ul>
+</div>
+
+<style type="text/css">
+.on {background: #DDD}
+</style>
+

@@ -1,0 +1,83 @@
+﻿@{
+    Layout = null;
+}
+@if (ViewBag.StoreList.Length > 0)
+{
+    for (int i = 0; i < ViewBag.StoreList.Length; i++)
+    {
+        dynamic c = ViewBag.StoreList[i];
+        <tr>
+            <td>@(i + 1)</td>
+            <td>@c.StoreCode</td>
+            <td>@c.StoreName</td>
+            <td>@c.Address</td>
+            <td>@c.ManagerName</td>
+            <td>@c.ManagerMobile</td>
+            <td class="text-center">
+
+                <a class="btn btn-info btn-xs edit-store" data-id="@c._id" data-storename="@c.StoreName" data-managername="@c.ManagerName" data-managermobile="@c.ManagerMobile" data-manageremail="@c.ManagerEmail" data-address="@c.Address" data-provincecode="@c.ProvinceCode" data-districtcode="@c.DistrictCode" data-pos="@c.PostCode" href="#">
+                    <span class="glyphicon glyphicon-edit"></span>Sửa
+                </a>
+                <a class="btn btn-danger btn-xs del-store" data-idx="@c._id" href="#">
+                    <span class="glyphicon glyphicon-remove"></span> Xóa
+                </a>
+            </td>
+        </tr>
+    }
+}
+<script>
+    $('.edit-store').click(function () {
+        if(permission!="" && permission.indexOf("14")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức sửa kho");
+             }
+          else{
+        $('#add_more_store').show();
+        $(".store-result").hide();
+        var v_p = $(this).data("provincecode");
+        var v_d = $(this).data("districtcode");
+        var v_b = $(this).data("pos");
+        document.getElementById("store_id").value = $(this).data("id");
+        document.getElementById("store_name").value = $(this).data("storename");
+        document.getElementById("store_manager_name").value = $(this).data("managername");
+        document.getElementById("store_manager_mobile").value = $(this).data("managermobile");
+        document.getElementById("store_manager_email").value = $(this).data("manageremail");
+        document.getElementById("store_to_address").value = $(this).data("address");
+        document.getElementById("province_drop").value = v_p;
+        BindDistrictByProvinceCode(v_p, v_d);
+        BindPosByDistrictCode(v_d, v_b);
+    }
+    });
+
+    $('.del-store').click(function () {
+        var me = $(this);
+        var idx = $(this).data("idx");
+    if(permission!="" && permission.indexOf("20")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng xóa kho");
+             }
+          else{
+        var ret = confirm("Bạn có chắc chắn muốn xóa thông tin kho này?");
+        if (ret) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("StoreDelete")',
+                dataType: 'json',
+                data:
+                    {
+                        p: idx
+                    },
+                success: function (data) {
+                    alert("Xóa kho hàng thành công");
+                    StoreByCustomer();
+                },
+                error: function (ex) {
+                }
+            }
+            )
+            ;
+        }
+        return false;
+    }
+    });
+</script>

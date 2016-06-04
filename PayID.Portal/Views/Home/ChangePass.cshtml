@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@section TopMenu{
+    
+}
+<div class="login">
+    <form class="form-signin" method="post" role="form">
+        <div class="text-center"><h3 style="margin-top: 0px;">ĐỔI MẬT KHẨU</h3></div>
+        <input type="hidden" id="redirect" name="redirect" value="@ViewBag.redirect" />
+        <input id="userid" name="userid" class="form-control" placeholder="Tài khoản đăng nhập" required autofocus />
+        <input id="old_pass" name="password" type="password" class="form-control" placeholder="Mật khẩu cũ" required />
+        <input id="new_pass" name="password" type="password" class="form-control" placeholder="Mật khẩu mới" required />
+        <input id="re_new_pass" name="password" type="password" class="form-control" placeholder="Nhập lại Mật khẩu mới" required />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Đổi mật khẩu</button>
+    </form>
+</div>

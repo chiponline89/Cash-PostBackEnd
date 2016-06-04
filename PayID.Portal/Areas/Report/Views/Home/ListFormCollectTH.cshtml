@@ -1,0 +1,300 @@
+﻿@{
+    Layout = null;
+
+}
+
+
+<input type="hidden" id="total_page" value="@ViewBag.total_page" />
+<input type="hidden" id="total_item" value="@ViewBag.total_item" />
+<input type="hidden" value="@ViewBag.Page" id="currentPage" />
+
+
+@*@if (ViewBag.listLading.Count > 0)
+    {*@
+@if (Model != null && Model.Count > 0)
+{
+    <div>
+        <div style="border-bottom: dashed 1px #000; height: 30px; margin-bottom:20px;">&nbsp;</div>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table-striped table-condensed">
+            <tr>
+                <td colspan="8" align="right">
+                    <a href="@Url.Action("ReportFormCollectTH",new {id= "PDF"})" title="Xuất PDF"><img src="~/Content/img/pdf.png" /></a>
+                    <a href="@Url.Action("ReportFormCollectTH", new { id = "Excel" })" title="Xuất Excel"> <img src="~/Content/img/excel.png" /></a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" valign="top" width="80">
+                    <div style="width:auto; text-transform:uppercase;font-weight:bold;" align="left">Tổng công ty bưu điện Việt Nam</div>
+                    <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">BƯU ĐIỆN TỈNH/TP:</span><span id="bdtp"></span></div>
+                    <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">BƯU ĐIỆN HUYỆN/TT:</span><span id="bdtt"></span></div>
+                    <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">PO:</span><span id="bdto"></span></div>
+                </td>
+                <td colspan="6" align="center" valign="top">
+                    <label style="font-size: 16px;padding-left:30px; font-weight:bold;text-transform:uppercase;">Danh sách tổng hợp đơn hàng đã điều tin thu gom</label>
+                    <div style="font-size: 13px;">
+                        Từ ngày &nbsp;<span id="preview-from-date">
+                            .....
+                        </span> đến ngày <span id="preview-to-date">
+                            .....
+                        </span>
+                        <div style="text-align: left; padding-left: 310px; line-height: 1.5; padding-bottom: 40px;">
+                            <div style="font-size: 13px; margin:10px 0px 0px 0px;" id="customerName"></div>
+                            <div style="font-size: 13px;" id="labelstatus"></div>
+                            <div style="font-size: 13px;" id="servicesType">
+
+                            </div>
+                            @*<div style="font-size: 13px;" id="createBy"></div>*@
+                            <div style="font-size: 13px;">
+                                Đơn vị tính:   VNĐ
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr style="font-weight:bold">
+                @*<td align="center" style="font-size: 13px;width:20px">
+                        STT
+                    </td>*@
+                <td align="left" style="font-size: 13px;">
+                    Trạng thái
+                </td>
+                @*<td align="right" style="font-size: 13px;">
+                    Số lượng shop
+                </td>*@
+                <td align="right" style="font-size: 13px;">
+                    Số lượng đơn hàng
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Tiền COD
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Cước dịch vụ
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Cước COD
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Cước khác
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Tổng cước
+                </td>
+                <td align="center" style="font-size: 13px;">
+                    Trọng lượng
+                </td>
+            </tr>
+
+            @*<tr id="provinceInfo" style="display:none">
+                    <td align="left" style="font-size: 14px;" colspan="2">
+                        <div id="provinceid"></div>
+                    </td>
+                    <td align="right" style="font-weight:bold;">
+
+                    </td>
+                    <td align="right" style="font-weight:bold;"></td>
+                    <td align="right" style="font-weight:bold;">
+
+                    </td>
+                    <td align="right" style="font-weight:bold;">
+
+                    </td>
+                    <td align="right" style="font-weight:bold;">
+
+                    </td>
+                    <td align="right" style="font-weight:bold;">
+
+                    </td>
+                    <td></td>
+                </tr>*@
+
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var t = Model[i];
+                if (i % 2 == 0)
+                {
+                    <tr>
+                        <td align="left" style="font-size: 14px; font-weight: bold;" colspan="8">
+                            @t.province
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (dynamic ite in t)
+                    {
+                        <tr style="border-bottom: 1px solid rgb(221, 221, 221);">
+                            @*<td align="center" style="font-size: 12px;">
+                                    @(i + 1)
+                                </td>*@
+
+                            <td align="left" style="font-size: 14px; ">
+                                @ite.status
+                            </td>
+
+                            @if (ite.quantity != null)
+                            {
+                                <td align="center" style="font-size: 12px;">
+                                    @ite.quantity
+                                </td>
+                            }
+                            else
+                            {
+                                <td align="center" style="font-size: 12px;">-</td>
+                            }
+
+
+                            @if (ite.collectvalue != null)
+                            {
+                                <td align="right" style="font-size: 12px;">
+                                    @ite.collectvalue
+                                </td>
+                            }
+                            else
+                            {
+                                <td align="right" style="font-size: 12px;">
+                                    0
+                                </td>
+                            }
+                            <td align="right" style="font-size: 12px;">
+                                @ite.MainFee.ToString("N0")
+                            </td>
+                            <td align="right" style="font-size: 12px;">
+                                @ite.CodFee.ToString("N0")
+                            </td>
+                            <td align="right" style="font-size: 12px;">
+                                @ite.ServiceFee.ToString("N0")
+                            </td>
+                            <td align="right" style="font-size: 12px;">
+                                @ite.TotalFee.ToString("N0")
+                            </td>
+                            <td align="center" style="font-size: 12px;">
+                                @ite.weight.ToString("N0")
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+
+        </table>
+    </div>
+}
+else
+{
+    <div>
+        <div style="border-bottom: dashed 1px #000; height: 30px; margin-bottom:20px;">&nbsp;</div>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table-striped table-condensed">
+            <tr>
+                <td colspan="8" align="right">
+                    <a href="@Url.Action("ReportFormIssueTH",new {id= "PDF"})" title="Xuất PDF"><img src="~/Content/img/pdf.png" /></a>
+                    <a href="@Url.Action("ReportFormIssueTH", new { id = "Excel" })" title="Xuất Excel"> <img src="~/Content/img/excel.png" /></a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" valign="top" width="200">
+                    <div align="left">
+ <div style="width:auto; text-transform:uppercase;font-weight:bold;" align="left">Tổng công ty bưu điện Việt Nam</div>       
+                 <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">BƯU ĐIỆN TỈNH/TP:</span><span id="bdtp"></span></div>
+                <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">BƯU ĐIỆN HUYỆN/TT:</span><span id="bdtt"></span></div>
+                <div><span style="width: auto; text-transform: uppercase; font-weight: bold;">PO:</span><span id="bdto"></span></div>
+                    </div>
+                </td>
+                <td colspan="6" align="center" valign="top">
+                    <label style="font-size: 16px;padding-left:30px; font-weight:bold;text-transform:uppercase;">Danh sách tổng hợp đơn hàng đã phát hành</label>
+                    <div style="font-size: 13px;">
+                        Từ ngày &nbsp;<span id="preview-from-date">
+                            .....
+                        </span> đến ngày <span id="preview-to-date">
+                            .....
+                        </span>
+                        <div style="text-align: left; padding-left: 380px; line-height: 1.5; padding-bottom: 40px;">
+                            <div style="font-size: 13px; margin:10px 0px 0px 0px;" id="customerName"></div>
+                            <div style="font-size: 13px;" id="labelstatus"></div>
+                            <div style="font-size: 13px;" id="servicesType">
+
+                            </div>
+                            @*<div style="font-size: 13px;" id="createBy"></div>*@
+                            <div style="font-size: 13px;">
+                                Đơn vị tính:   VNĐ
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr style="font-weight:bold">
+                @*<td align="center" style="font-size: 13px;width:20px">
+                        STT
+                    </td>*@
+                <td align="left" style="font-size: 13px;">
+                    Trạng thái
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Số lượng
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Tiền COD
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Cước dịch vụ
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Cước COD
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Cước khác
+                </td>
+                <td align="right" style="font-size: 13px;">
+                    Tổng cước
+                </td>
+                <td align="center" style="font-size: 13px;">
+                    Trọng lượng
+                </td>
+            </tr>
+
+        </table>
+    </div>
+}
+@*}
+    else
+    {
+        <div style="padding:10px 0; font-size:15px; color:red;" align="center">Dữ liệu tìm kiếm không tồn tại hoặc chưa chọn điều kiện tìm kiếm.</div>
+    }*@
+<script>
+    $(document).ready(function () {
+        var status = $('#status').val();
+        var customerName = $("#buscode").val();
+        var province = $("#province").val();
+        var district = $("#district").val();
+        var pos = $("#pos").val();
+        if (customerName == "") {
+            $('#customerName').html('Tất cả')
+        } else {
+            $('#customerName').html(customerName);
+        }
+        $('#preview-from-date').html($('#f_date').val());
+        $('#preview-to-date').html($('#t_date').val());
+        if (province == "") {
+            $('#bdtp').html('');
+        } else {
+            $('#bdtp').html($('#province option:selected').text());
+        }
+        if (district == "") {
+            $('#bdtt').html('');
+        } else {
+            $('#bdtt').html($('#district option:selected').text());
+        }
+        if (pos == "") {
+            $('#bdto').html('');
+        } else {
+            $('#bdto').html($('#pos option:selected').text());
+        }
+        if (status == "0") {
+            $("#labelstatus").html("Tất Cả");
+        }
+        else {
+            $("#labelstatus").html($('#status option:selected').text());
+        }
+
+    })
+</script>

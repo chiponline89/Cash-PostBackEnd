@@ -1,0 +1,513 @@
+﻿<style>
+    .custab {
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 5% 0;
+        box-shadow: 3px 3px 2px #ccc;
+        transition: 0.5s;
+    }
+
+        .custab:hover {
+            box-shadow: 3px 3px 0px transparent;
+            transition: 0.5s;
+        }
+</style>
+<ol class="breadcrumb">
+    <li><a href=@Url.Content("/Systems/Home/")>Trang chủ</a></li>
+    <li class="active"><a href=@Url.Content("/Systems/Setting/")>Cấu hình luồng xử lý</a></li>
+</ol>
+<div class="row">
+    <div class="col-md-3">
+        <h4>Bưu điện Tỉnh/thành phố</h4>
+        @*<input type="hidden" value="10" id="unit_code" />*@
+    </div>
+    <div class="col-md-9">
+        <select id="unit_code">
+            <option value="@Model.UnitCode">@Model.UnitCode - @Model.UnitName</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 custyle">
+        <h4>Cấp đơn vị xử lý</h4>
+        <table class="table custab">
+            <a href="#" class="pull-right" id="btnAddMore"><b>+</b> Thêm cấp đơn vị</a>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã viết tắt</th>
+                    <th>Tên cấp</th>
+                    <th>Cấp trên</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>BDT</td>
+                    <td>Bưu điện cấp tỉnh</td>
+                    <td>TCTy</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>BDTT</td>
+                    <td><a href="#" class="list-unit" data-unit="BDTT">Bưu điện Trung tâm/Huyện</a></td>
+                    <td>BDT</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>BCU</td>
+                    <td><a href="#" class="list-unit" data-unit="BCU">Bưu cục</a></td>
+                    <td>BDTT</td>
+                    <td></td>
+                </tr>
+                @for (int i = 0; i < Model.workflow_unit_levels.Length; i++)
+                {
+                    dynamic wul = Model.workflow_unit_levels[i];
+                    <tr>
+                        <td>@(i + 4)</td>
+                        <td>@wul.code</td>
+                        <td><a href="#" class="list-unit" data-unit="@wul.code">@wul.name</a></td>
+                        <td>@wul.parent</td>
+                        <td class="text-center">
+                            <a class='btn btn-info btn-xs save-level' href="#" data-id="@wul._id" data-code="@wul.code" data-name="@wul.name" data-parent="@wul.parent"><span class="glyphicon glyphicon-save"></span>Sửa</a>
+                            <a href="#" class="btn btn-danger btn-xs del-level" data-id="@wul._id" data-code="@wul.code" data-name="@wul.name" data-parent="@wul.parent"><span class="glyphicon glyphicon-remove"></span>Xóa</a>
+                        </td>
+                    </tr>
+                }
+                <tr id="rowAddMore">
+                    <td></td>
+                    <td><input type="text" id="level-code" class="form-control" style="width:60px;" onkeyup="CheckValue(1)" /> </td>
+                    <td><input type="text" id="level-name" class="form-control" onkeyup="CheckValue(2)" /></td>
+                    <td><input type="text" id="level-parent" class="form-control" style="width:60px;" onkeyup="CheckValue(3)" /></td>
+                    <td class="text-center">
+                        <a class='btn btn-info btn-xs' href="#" id="save-new">
+                            <span class="glyphicon glyphicon-save">Lưu</span>
+                        </a>
+                        <a href="#" class="btn btn-danger btn-xs" id="del-new">
+                            <span class="glyphicon glyphicon-remove">Xóa</span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" align="left">
+                        <div class="alert alert-info alert-dismissable create-result" style="display:none">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong id="resultMsg">Cập nhật thành công!</strong>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h4>Danh sách đơn vị xử lý</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mã</th>
+                    <th>Tên đơn vị xử lý</th>
+                    @*<th>Thao tác</th>*@
+                </tr>
+            </thead>
+            <tbody id="listUnit"></tbody>
+        </table>
+        <div class="row">
+            <a href="#" class="pull-right" id="btnAddUnitMore"><b>+</b> Thêm đơn vị</a>
+        </div>
+        <div id="addUnitMore" class="row">
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label class="control-label">Mã đơn vị</label>
+                    <input type="text" id="add_unit_code" class="form-control" onkeyup=" CheckValue(4)" />
+                </div>
+                <div class="form-group col-sm-8">
+                    <label class="control-label">Tên đơn vị</label>
+                    <input type="text" id="add_unit_name" class="form-control" onkeyup=" CheckValue(5)" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 pull-right">
+                    <button class="btn btn-primary" id="btnAddUnit">Lưu</button>
+                    <button id="btnCancelAddUnit" class="btn">Hủy</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="alert alert-info alert-dismissable error-result" style="display:none">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong id="resultMesg">Cập nhật thành công!</strong>
+                </div>
+            </div>
+        </div>
+        <div id="addPOMore" class="row">
+            <div class="row">
+                <div class="col-sm-12">Chọn bưu cục trong phạm vi phục vụ</div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-5">
+                    <select class="form-control" id="listDistrictUnit"></select>
+                </div>
+                <div class="form-group col-sm-6">
+                    <select class="form-control" id="listPOUnit"></select>
+                </div>
+                <div class="col-sm-1">
+                    <button class="btn pull-right">+</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    Danh sách bưu cục trong phạm vi phục vụ
+                </div>
+                <table class="table col-sm-12">
+                    <thead>
+                        <tr>
+                            <td>STT</td>
+                            <td>Trung tâm/Huyện</td>
+                            <td>Tên bưu cục</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <input type="text" style="display:none;" id="current_level" />
+    <input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />
+    <input type="hidden" value="@(((dynamic)Session["profile"]).funcCategory)" id="permissionCate" />
+</div>
+<script>
+        var permission = $('#permission').val();
+        var permissionCate = $('#permissionCate').val();
+
+        function CheckValue(p) {
+
+            if (p == 1 && $("#level-code").val() != "") {
+                $('.create-result').fadeOut();
+            }
+
+            if (p == 2 && $("#level-name").val() != "") {
+
+                $('.create-result').fadeOut();
+            }
+
+            if (p == 3 && $("#level-parent").val() != "") {
+                $('.create-result').fadeOut();
+            }
+
+            if (p == 4 && $("#add_unit_code").val() != "") {
+                $('.error-result').fadeOut();
+            }
+
+            if (p == 5 && $("#add_unit_name").val() != "") {
+                $('.error-result').fadeOut();
+            }
+        };
+        function validateUnit() {
+            //alert("Kiem tra");
+            if ($("#level-code").val() == "") {
+                //alert("a");
+                $('#resultMsg').html("Bạn phải nhập thông tin mã đơn vị");
+                $('.create-result').fadeIn();
+                //$('#result_messages').html("Bạn phải nhập họ tên khách hàng");
+                $("#level-code").focus();
+                return false;
+            }
+            else {
+                // alert("b");
+                $('.create-result').fadeOut();
+            }
+
+            if ($("#level-name").val() == "") {
+
+                $('#resultMsg').html("Bạn phải nhập tên đơn vị");
+                $('.create-result').fadeIn();
+                //$('#result_messages').html("Bạn phải nhập số điện thoại khách hàng");
+                $("#level-name").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+
+            if ($("#level-parent").val() == "") {
+
+                $('#resultMsg').html("Bạn phải nhập thông tin cấp trên");
+                //$('#result_messages').html("Bạn phải nhập tỉnh thành phố lấy hàng");
+                $('.create-result').fadeIn();
+                $("#level-parent").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+
+            return true;
+        };
+        function validateUnitProcess() {
+            //alert("Kiem tra");
+            if ($("#add_unit_code").val() == "") {
+                //alert("a");
+                $('#resultMesg').html("Bạn phải nhập thông tin mã đơn vị");
+                $('.error-result').fadeIn();
+                //$('#result_messages').html("Bạn phải nhập họ tên khách hàng");
+                $("#add_unit_code").focus();
+                return false;
+            }
+            else {
+                // alert("b");
+                $('.create-result').fadeOut();
+            }
+
+            if ($("#add_unit_name").val() == "") {
+
+                $('#resultMesg').html("Bạn phải nhập tên đơn vị");
+                $('.error-result').fadeIn();
+                //$('#result_messages').html("Bạn phải nhập số điện thoại khách hàng");
+                $("add_unit_name").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+
+            return true;
+        };
+        $('#del-new').click(function () {
+            $('#level-code').val('');
+            $('#level-name').val('');
+            $('#level-parent').val('');
+            $('#rowAddMore').hide();
+        });
+
+        $('.del-level').click(function () {
+         if(permissionCate!="" && permissionCate.indexOf("6")==-1)
+                {
+                  alert("Bạn chưa được phân quyền sử dụng các chức năng sửa cấp đơn vị xử lý");
+                }
+                else
+                {
+                   if(permission!="" && permission.indexOf("17")==-1)
+                 {
+                      alert("Bạn chưa được phân quyền sử dụng các chức năng sửa cấp đơn vị xử lý");
+                 }
+                 else
+                  {
+                     $('#level-code').val('');
+                     $('#level-name').val('');
+                     $('#level-parent').val('');
+                     RemoveLevel($(this).data("code"));
+                }
+              }
+        });
+        $('.list-unit').click(function () {
+            LoadListUnit($(this).data("unit"));
+        })
+        $('.save-level').click(function () {
+         if(permissionCate!="" && permissionCate.indexOf("6")==-1)
+                {
+                  alert("Bạn chưa được phân quyền sử dụng các chức năng sửa cấp đơn vị xử lý");
+                }
+                else
+                {
+                   if(permission!="" && permission.indexOf("17")==-1)
+                 {
+                      alert("Bạn chưa được phân quyền sử dụng các chức năng sửa cấp đơn vị xử lý");
+                 }
+                 else
+                  {
+                    $('#level-code').val($(this).data("code"));
+                    $('#level-name').val($(this).data("name"));
+                    $('#level-parent').val($(this).data("parent"));
+                    $('#rowAddMore').show();
+                  }
+                }
+        });
+
+        $('#save-new').click(function () {
+            SaveLevel(
+                $('#level-code').val(),
+                $('#level-name').val(),
+                $('#level-parent').val()
+            );
+        })
+        $('#rowAddMore').hide();
+        $('#btnAddMore').click(function () {
+              if(permissionCate!="" && permissionCate.indexOf("6")==-1)
+                {
+                  alert("Bạn chưa được phân quyền sử dụng các chức năng thêm cấp đơn vị xử lý");
+                }
+                else
+                {
+                   if(permission!="" && permission.indexOf("17")==-1)
+                 {
+                      alert("Bạn chưa được phân quyền sử dụng các chức năng thêm cấp đơn vị xử lý");
+                 }
+                 else
+                  {
+                    $('#rowAddMore').show();
+                  }
+                }
+        });
+
+        function LoadDistrictUnit() {
+            $.ajax({
+                url: "@Url.Content("~/Systems/Setting/ListDistrictUnit")",
+                type:"POST",
+                dataType: "json",
+                data: {
+                },
+                success: function (data) {
+                    $('#listDistrictUnit').html("");
+                    var listString = "<option value=''>--Chọn Quận/huyện--</option>";
+                    for (var i = 0; i < data.length; i++) {
+                        value = data[i];
+                        listString += "<option value='" + value.UnitCode + "'>" + value.UnitName + "</option>";
+                    };
+                    $('#listDistrictUnit').html(listString);
+                    return;
+                }
+            });
+        }
+
+        function LoadPOUnit() {
+            $.ajax({
+                url: "@Url.Content("~/Systems/Setting/ListPOUnit")",
+                type:"POST",
+                dataType: "json",
+                data: {
+                    unit_code: $('#listDistrictUnit').val()
+                },
+                success: function (data) {
+                    $('#listPOUnit').html("");
+                    var listString = "<option value=''>--Chọn Bưu cục--</option>";
+                    for (var i = 0; i < data.length; i++) {
+                        value = data[i];
+                        listString += "<option value='" + value.UnitCode + "'>" + value.UnitName + "</option>";
+                    };
+                    $('#listPOUnit').html(listString);
+                    return;
+                }
+            });
+        }
+        $("#btnCancelAddUnit").click(function () {
+            var addStore = document.getElementById("addUnitMore");
+            $("#add_unit_code").val("");
+            $("#add_unit_name").val("");
+            addStore.style.display = "none";
+        });
+        function LoadListUnit(level) {
+            $('#current_level').val(level);
+            $.ajax({
+                url: "@Url.Content("~/Systems/Setting/ListUnit")",
+                type:"POST",
+                dataType: "json",
+                data: {
+                    level: level
+                },
+                success: function (data) {
+                    $('#listUnit').html('');
+                    var listString = '';
+                    for (var i = 0; i < data.length; i++) {
+                        value = data[i];
+                         // listString += "<tr><td>" + value.UnitCode + "</td><td>" + value.UnitName + "</td><td> <a class='btn btn-info btn-xs save-new' href='#'  data-code='"+value.UnitCode+"' data-name='"+value.UnitName+"'><span class='glyphicon glyphicon-save'></span> Sửa</a><a href='#' class='btn btn-danger btn-xs del-new'data-code='"+value.UnitCode+"' data-name='"+value.UnitName+"'><span class='glyphicon glyphicon-remove'></span> Xóa</a></td></tr>";
+                        listString += "<tr><td>" + value.UnitCode + "</td><td>" + value.UnitName + "</td></tr>";
+                    };
+                    $('#listUnit').html(listString);
+                    return;
+                }
+            });
+        }
+
+        function SaveLevel(code, name, parent) {
+            if (validateUnit()) {
+                $.ajax({
+                    url: "@Url.Content("~/Systems/Setting/SaveUnitLevel")",
+                    type:"POST",
+                    dataType: "json",
+                    data: {
+                        code: code,
+                        name: name,
+                        parent: parent
+                    },
+                    success: function (data) {
+                        $('.create-result').fadeOut();
+                        alert(data.response_message);
+                        window.location.href = "@Url.Action("WorkflowUnit", "Setting")";
+                        return;
+                    }
+                });
+            }
+        };
+        function RemoveLevel(code) {
+            var _rsl = confirm("Bạn muốn xóa cấp xử lý này?");
+            if (_rsl) {
+                $.ajax({
+                    url: "@Url.Content("~/Systems/Setting/RemoveUnitLevel")",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        code: code
+                    },
+                    success: function (data) {
+                        alert(data.response_message);
+                        location.reload();
+                        return;
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            LoadDistrictUnit();
+            $('#addUnitMore').hide();
+            $('#addPOMore').hide();
+            $('#listDistrictUnit').change(
+                function () {
+                    LoadPOUnit();
+                });
+            $('#btnAddUnitMore').click(function () {
+                if(permissionCate!="" && permissionCate.indexOf("6")==-1)
+                {
+                  alert("Bạn chưa được phân quyền sử dụng các chức năng thêm đơn vị");
+                }
+                else
+                {
+                 if(permission!="" && permission.indexOf("17")==-1)
+                 {
+                      alert("Bạn chưa được phân quyền sử dụng các chức năng thêm đơn vị xử lý");
+                 }
+                 else
+                  {
+                      $('#addUnitMore').show();
+                  }
+                }
+            });
+            $('#btnAddUnit').click(function () {
+
+                if (validateUnitProcess()) {
+                    $.ajax({
+                        url: "@Url.Content("~/Systems/Setting/SaveUnit")",
+                        type:"POST",
+                        dataType: "json",
+                        data: {
+                            code: $('#add_unit_code').val(),
+                            name: $('#add_unit_name').val(),
+                            parent: $('#current_level').val()
+                        },
+                        success: function (data) {
+                            alert(data.response_message);
+                            LoadListUnit($('#current_level').val());
+                            $('#add_unit_code').val('');
+                            $('#add_unit_name').val('');
+                            $('#current_level').val('');
+                            $('#addUnitMore').hide();
+                            return;
+                        }
+                    });
+                }
+            })
+        })
+</script>

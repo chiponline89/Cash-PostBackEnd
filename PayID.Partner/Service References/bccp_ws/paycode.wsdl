@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://vnpost.vn/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://vnpost.vn/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://vnpost.vn/">
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProccessCreadingLand">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LandingCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="SenderName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SenderAddr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SenderMobile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReceiverName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReceiverAddr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReceiverMobile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="SenderPOCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReceiverPOCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ProductName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceType" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Type" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProccessCreadingLandResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProccessCreadingLandResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProccessQuerryInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LandingCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProccessQuerryInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProccessQuerryInfoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProccessChargesInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="POSenderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="POReceiverCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProccessChargesInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProccessChargesInfoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProccessTrackingInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LandingCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProccessTrackingInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProccessTrackingInfoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FreightTransit">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="SenderPOCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReceiverPOCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FreightTransitResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FreightTransitResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FreightCOD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FreightCODResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FreightCODResult" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProccessCreadingLandSoapIn">
+    <wsdl:part name="parameters" element="tns:ProccessCreadingLand" />
+  </wsdl:message>
+  <wsdl:message name="ProccessCreadingLandSoapOut">
+    <wsdl:part name="parameters" element="tns:ProccessCreadingLandResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProccessQuerryInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:ProccessQuerryInfo" />
+  </wsdl:message>
+  <wsdl:message name="ProccessQuerryInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:ProccessQuerryInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProccessChargesInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:ProccessChargesInfo" />
+  </wsdl:message>
+  <wsdl:message name="ProccessChargesInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:ProccessChargesInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProccessTrackingInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:ProccessTrackingInfo" />
+  </wsdl:message>
+  <wsdl:message name="ProccessTrackingInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:ProccessTrackingInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="FreightTransitSoapIn">
+    <wsdl:part name="parameters" element="tns:FreightTransit" />
+  </wsdl:message>
+  <wsdl:message name="FreightTransitSoapOut">
+    <wsdl:part name="parameters" element="tns:FreightTransitResponse" />
+  </wsdl:message>
+  <wsdl:message name="FreightCODSoapIn">
+    <wsdl:part name="parameters" element="tns:FreightCOD" />
+  </wsdl:message>
+  <wsdl:message name="FreightCODSoapOut">
+    <wsdl:part name="parameters" element="tns:FreightCODResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PaycodeSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProccessCreadingLand">
+      <wsdl:input message="tns:ProccessCreadingLandSoapIn" />
+      <wsdl:output message="tns:ProccessCreadingLandSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProccessQuerryInfo">
+      <wsdl:input message="tns:ProccessQuerryInfoSoapIn" />
+      <wsdl:output message="tns:ProccessQuerryInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProccessChargesInfo">
+      <wsdl:input message="tns:ProccessChargesInfoSoapIn" />
+      <wsdl:output message="tns:ProccessChargesInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProccessTrackingInfo">
+      <wsdl:input message="tns:ProccessTrackingInfoSoapIn" />
+      <wsdl:output message="tns:ProccessTrackingInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FreightTransit">
+      <wsdl:input message="tns:FreightTransitSoapIn" />
+      <wsdl:output message="tns:FreightTransitSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FreightCOD">
+      <wsdl:input message="tns:FreightCODSoapIn" />
+      <wsdl:output message="tns:FreightCODSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PaycodeSoap" type="tns:PaycodeSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="http://vnpost.vn/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProccessCreadingLand">
+      <soap:operation soapAction="http://vnpost.vn/ProccessCreadingLand" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProccessQuerryInfo">
+      <soap:operation soapAction="http://vnpost.vn/ProccessQuerryInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProccessChargesInfo">
+      <soap:operation soapAction="http://vnpost.vn/ProccessChargesInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProccessTrackingInfo">
+      <soap:operation soapAction="http://vnpost.vn/ProccessTrackingInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FreightTransit">
+      <soap:operation soapAction="http://vnpost.vn/FreightTransit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FreightCOD">
+      <soap:operation soapAction="http://vnpost.vn/FreightCOD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PaycodeSoap12" type="tns:PaycodeSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="http://vnpost.vn/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProccessCreadingLand">
+      <soap12:operation soapAction="http://vnpost.vn/ProccessCreadingLand" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProccessQuerryInfo">
+      <soap12:operation soapAction="http://vnpost.vn/ProccessQuerryInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProccessChargesInfo">
+      <soap12:operation soapAction="http://vnpost.vn/ProccessChargesInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProccessTrackingInfo">
+      <soap12:operation soapAction="http://vnpost.vn/ProccessTrackingInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FreightTransit">
+      <soap12:operation soapAction="http://vnpost.vn/FreightTransit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FreightCOD">
+      <soap12:operation soapAction="http://vnpost.vn/FreightCOD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Paycode">
+    <wsdl:port name="PaycodeSoap" binding="tns:PaycodeSoap">
+      <soap:address location="http://bccp.vnpost.vn/paycode/paycode.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PaycodeSoap12" binding="tns:PaycodeSoap12">
+      <soap12:address location="http://bccp.vnpost.vn/paycode/paycode.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

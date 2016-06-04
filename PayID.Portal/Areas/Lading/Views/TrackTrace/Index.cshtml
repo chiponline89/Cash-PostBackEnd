@@ -1,0 +1,118 @@
+﻿@model dynamic
+
+<!DOCTYPE html>
+
+<style>
+    h3 {
+        font: 500 normal 1.775em "Roboto",Arial,Verdana,sans-serif;
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
+        color: #248dc1 !important;
+    }
+</style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết vận đơn</title>
+</head>
+
+<body>
+    <div class="site-wrapper">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <nav class="breadcrumbs left">
+                        <a href=@Url.Content("/")>Trang chủ / </a>
+                        <a class="current" href="#">Lịch sử vận đơn</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- end breadcrumb -->
+        <div class="col-sm-12 text-center">
+            <h2>Tra cứu lịch sử vận đơn</h2>
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 text-center">
+            <div class="col-sm-12  input-group" align="center">
+                <input type="text" class="form-control" placeholder="Nhập mã vận đơn để tra cứu" id="code" name="q" style="padding:6px 6px;">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" id="btnSearch"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4"></div>
+
+        <section class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="col-sm-12">
+                        <div class="pricing_header">
+                            <h3>Lịch sử thay đổi</h3>
+                            <div class="space"></div>
+                        </div>
+                        <table class="table table-striped table-condensed col-sm-6">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Ngày</th>
+                                    <th>Giờ</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lstHistory"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-8" id="lisChangeHistory">
+                    <!-- Pack 1-->
+                </div>
+
+            </div>
+            <div class="row">
+                <div id="resultSearch" align="center" style="font-style:italic; font-size:14px;"></div>
+            </div>
+        </section>
+        <!-- end container -->
+
+        <footer>
+            <section class="footer-copyright">
+                <div class="row">
+                    <div class="small-8 col-sm-8">
+                        <nav id="footer-nav" class="text-right">
+                            <ul id="bot-nav" class="inline-list"></ul>
+                        </nav>
+                    </div>
+                </div>
+
+            </section>
+        </footer>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+
+                $.ajax({
+                    url: '@Url.Action("TrackTrace")',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: { id: $("#code").val() },
+                    beforeSend: function () {
+                        $('.loading-element').show();
+                    }
+                })
+                 .success(function (result) {
+                     $('.loading-element').hide();
+                     $('#lstHistory').html(result);                     
+                     $("#resultSearch").html($("#result").val());
+                     if ($("#resultSearch").html != "") {
+                         $("#home-box").html("");
+                         $("#home-box2").html("");
+                     }
+                 })
+
+            });
+        });
+         
+    </script>
+</body>

@@ -1,0 +1,73 @@
+﻿
+<fieldset>
+    <legend class="text-primary">Thông tin hóa đơn</legend>
+    <form action="#" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="account-setting-form" data-abide="">
+        <div class="alert-area"></div>
+        <input type="hidden" name="action" value="setting-fee">
+        <div class="row">
+
+            <div class="large-12 columns" style="border-right: 1px solid #DDD;">
+                <div class="large-6 columns">
+                    <label><input type="radio" class="fee_config" id="payment_customer_debt" name="payment_customer_type" value="0" required>Là khách hàng nợ</label>
+                </div>
+                <div class="large-6 columns">
+                    <label><input type="radio" class="fee_config" id="payment_customer_cash" name="payment_customer_type" value="1" required>Khách hàng thu tiền mặt</label>
+                </div>
+
+            </div>
+            <div class="large-12 columns" style="border-right: 1px solid #DDD;">
+                <div class="large-6 columns">
+                    <div class="row">
+                        <label>Tên công ty:</label>
+                        <input type="text" name="payment_company_name" id="payment_company_name" placeholder="" value="">
+                        <label>Mã số thuế:</label>
+                        <input type="text" name="payment_account_mst" id="payment_account_mst" placeholder="" value="">
+                        <label>Tên người đại diện:</label>
+                        <input type="text" name="payment_account_name" id="payment_account_name" placeholder="" value="">
+                        <label>Điện thoại:</label>
+                        <input type="text" name="payment_mobile" id="payment_mobile" placeholder="" value="">
+                    </div>
+                </div>
+                <div class="large-6 columns">
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="product_to_address">Địa chỉ</label>
+                            <input type="text" placeholder="Số nhà, phường xã..." name="product[to_address]" id="payment_to_address"
+                                   class="input-preview" data-target="#preview-to-address">
+                            <small class="error" id="iddiachinhan">Bạn phải nhập địa chỉ</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="product_to_city"><i class="icon-home"></i> Tỉnh thành</label>
+                            <select class="input-preview" id="payment_drop_province" data-target="lblProvince">
+                                <option>--Tỉnh/Thành phố--</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="product_to_district">Quận huyện</label>
+                            <select id="payment_drop_district" name="district_drop_payment" class="input-preview">
+                                <option>Quận/Huyện</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label for="product_to_city"></label>
+                        <div class="large-12 columns">
+                            <button class="btn btn-primary save-payment" onclick="SavePayment()">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </form>
+</fieldset>

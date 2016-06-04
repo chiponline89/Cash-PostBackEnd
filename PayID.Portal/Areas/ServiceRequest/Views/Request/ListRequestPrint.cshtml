@@ -1,0 +1,64 @@
+﻿@model dynamic[]
+@{
+    Layout = null;
+}
+<style type="text/css">
+    h3, .h3 {
+        /*font-size: 24px;*/
+        color: #6BBEC7;
+        font-family: 'Lato', sans-serif;
+    }
+    .table {
+        font-size: small;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+</style>
+
+<link href="/Content/bootstrap.css" rel="stylesheet">
+
+<h3>@ViewBag.ProvinceName</h3>
+<div class="row">
+    <table class="table table-bordred table-striped">
+        <thead>
+            <tr>
+                <td>Đơn hàng</td>
+                <td>Sản phẩm</td>
+                <td>Thông tin lấy hàng</td>
+                <td>Tỉnh phát</td>
+                <td>Mã vạch</td>
+                <td>Ghi chú</td>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Length; i++)
+            {
+                var req = Model[i];
+                <tr>
+                    <td>
+                        <strong>@req._id</strong> - @req.tracking_code <br />
+                        @req.created_by. @DateTime.ParseExact(req.created_at, "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy HH:mm:ss")
+                    </td>
+                    <td>
+                        <b>@req.product.name</b> <br /> @req.product.weight g <br />  @req.product.value đ<br />
+                        @req.order_id
+                    </td>
+                    <td>
+                        <b>@req.from_address.name</b>. @req.from_address.phone <br />
+                        @req.from_address.address. @req.FromProvinceName
+                    </td>
+                    <td>
+                        @req.ToProvinceName
+                    </td>
+                    <td>
+                        <br />
+                        <a class="barcode" style="font-size:medium">*@req.tracking_code*</a>
+                    </td> 
+                    <td>
+                      Bưu tá:@req.current_postman
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

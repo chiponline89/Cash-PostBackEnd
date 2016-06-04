@@ -1,0 +1,69 @@
+﻿@{
+    Layout = null;
+}
+@if (ViewBag.BankList.Length > 0)
+{
+    for (int i = 0; i < ViewBag.BankList.Length; i++)
+        {
+            dynamic c = ViewBag.BankList[i];
+            <tr>
+                <td>@(i + 1)</td>
+                <td>@c.bank_name</td>
+                <td>@c.bank_branch</td>
+                <td>@c.bank_user</td>
+                <td>@c.account_number</td>
+                <td class="text-center">
+                    <a class="btn btn-info btn-xs edit-bank" data-id="@c._id" data-code="@c.bank_code" data-address="@c.bank_branch" data-user="@c.bank_user" data-number="@c.account_number">
+                        <span class="glyphicon glyphicon-edit"></span>Sửa
+                    </a>
+                    <a class="btn btn-danger btn-xs del-bank" data-idx="@c._id">
+                        <span class="glyphicon glyphicon-remove"></span> Xóa
+                    </a>
+
+                </td>
+            </tr>
+        }    
+}
+<script>
+    // Sửa ngân hàng dòng này gửi anh HA thân mến.
+    $('.edit-bank').click(function () {
+      if(permission!="" && permission.indexOf("24")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng sửa tài khoản ngân hàng");
+             }
+          else{
+                  $('#add_more_bank').show();
+                  $(".bank-result").hide();
+                  document.getElementById("bank_id").value = $(this).data("id");
+                  document.getElementById("setting_account_bank_code").value = $(this).data("code");
+                  document.getElementById("setting_account_bank_address").value = $(this).data("address");
+                  document.getElementById("setting_account_bank_user").value = $(this).data("user");
+                  document.getElementById("setting_account_bank_number").value = $(this).data("number");
+         }
+    });
+    $('.del-bank').click(function () {
+      if(permission!="" && permission.indexOf("25")==-1)
+        {
+           alert("Bạn chưa được phân quyền sử dụng chức năng xóa tài khoản ngân hàng");
+        }
+        else{
+        var me = $(this);
+        var idx = $(this).data("idx");
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("BankDelete")',
+            dataType: 'json',
+            data:
+                {
+                    p: idx
+                },
+            success: function (data) {
+                BankByCustomer();
+            },
+            error: function (ex) {
+            }
+        });
+        return false;
+      }
+    });
+</script>

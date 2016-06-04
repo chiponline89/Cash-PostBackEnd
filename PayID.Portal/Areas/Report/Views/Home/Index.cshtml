@@ -1,0 +1,995 @@
+﻿@using MvcPaging
+@using System.Web.Mvc
+@Model Dynamic
+<style>
+    .filterable {
+        margin-top: 15px;
+    }
+
+        .filterable .panel-heading .pull-right {
+            margin-top: -35px;
+        }
+
+        .filterable .filters input[disabled] {
+            background-color: transparent;
+            cursor: auto;
+            box-shadow: none;
+            padding: 0;
+            height: auto;
+        }
+
+            .filterable .filters input[disabled]::-webkit-input-placeholder {
+                color: #333;
+            }
+
+            .filterable .filters input[disabled]::-moz-placeholder {
+                color: #333;
+            }
+
+            .filterable .filters input[disabled]:-ms-input-placeholder {
+                color: #333;
+            }
+
+    h6, .h6 {
+        font-size: 20px;
+        color: #004a91;
+        font-family: 'Lato', sans-serif;
+        padding-bottom: 15px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #999 !important;
+    }
+
+    .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+        background-color: #F9F9F9;
+        border-top: 1px solid #DDD;
+        border-bottom: 1px solid #DDD;
+    }
+</style>
+
+@*@section TopMenu{
+
+    <li class="active"><a href="#">Trang chủ</a></li>
+    <li><a href="#about">Danh mục</a></li>
+    <li><a href="#contact">Báo cáo</a></li>
+}*@
+<ol class="breadcrumb">
+    <li><a href=@Url.Content("/Merchant/Home/")>Trang chủ</a></li>
+    <li class="active">Báo cáo / Báo cáo chi tiết vận đơn</li>
+</ol>
+<div class="row">
+    <div class="col-lg-12" align="right">
+        <h7>@ViewBag.Local</h7>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12" align="center">
+        <h6>@ViewBag.Title</h6>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="container-fluid">
+        @*<h5>Tìm kiếm yêu cầu</h5>*@
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Từ ngày:</label>
+            </div>
+            <div class="col-sm-3">
+                <div class="date-picker-wrap">
+                    <input value="@DateTime.Now.ToString("dd/MM/yyyy")" type="text" name="f_date" id="f_date" placeholder="Từ ngày" class="form-control" style="font-family:Tahoma;" onchange="PushValue('f_date', 'preview-f_date')" required>
+                    @*<i class="icon-calendar"></i>*@
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label>Đến ngày</label>
+            </div>
+            <div class="col-sm-3">
+                <div class="date-picker-wrap">
+                    <input value="@DateTime.Now.ToString("dd/MM/yyyy")" type="text" name="t_date" id="t_date" placeholder="Đến ngày" class="form-control" style="font-family:Tahoma;" onchange="PushValue('t_date', 'preview-t_date')" required>
+
+                </div>
+            </div>
+            <div class="col-sm-2">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Tỉnh/Thành Phố</label>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control  province province-general" required data-group="general" id="province">
+                    <option value="">Tỉnh/thành phố</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label>Quận/Huyện</label>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control select-forward-text district" data-group="general" id="district">
+                    <option value="">Quận/Huyện</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Loại báo cáo</label>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control select-forward-text cat" data-group="general" id="cat">
+                    <option value="">-- Loại báo cáo --</option>
+                    <option value="CT">Chi Tiết</option>
+                    <option value="TH">Tổng Hợp</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label>Bưu cục</label>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control select-forward-text pos" data-group="general" id="pos">
+                    <option value="">Bưu cục</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <!--     <div class="col-sm-2">
+                    <label>Mã doanh nghiệp</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="buscode" value="" class="form-control" />
+                </div> -->
+            <div class="col-sm-2">
+                <label>Trạng thái</label>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control select-forward-text status" data-group="general" id="status">
+                    <option value="00">--Trạng thái--</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label>Mã doanh nghiệp</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="buscode" value="" class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2">
+
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-2">
+
+
+
+            </div>
+            <div class="col-sm-3" align="left">
+                <div>
+                    <a href="#" class="btn btn-primary pull-left" id="showRpt">Xem báo cáo</a>
+                </div>
+                <div class="loading-element" style="display: none;" align="center">
+                    <i class="icon-spinner icon-spin"></i>Tìm kiếm...
+                </div>
+                <input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />
+            </div>
+
+            @*onclick="SearchProfile()"*@
+        </div>
+        <!--     <div class="row">
+                <div class="col-xs-12">
+                              <div class="col-sm-2">
+
+                </div>
+                <div class="col-sm-2 pull-right">
+                    <a href="#" class="btn btn-primary" id="showRpt">Xem báo cáo</a>
+                    </div>
+                </div>
+            </div> -->
+    </div>
+    <i class="fa fa-calendar-o fa-6x"></i>
+    <div id="content"></div>
+    <div id="page-selection" class="row" style="padding-top:10px;">
+        <ul class="pagination pull-right bootpag"></ul>
+    </div>
+</div>
+<script>
+    var cat = $('#cat').val();
+    var unit_code = '@(((dynamic)Session["profile"]).unit_code)';
+    var unit_link = '@(((dynamic)Session["profile"]).unit_link)';
+    var permission = $('#permission').val();
+    var pro = unit_link.substring(0, 2);
+    var dis = unit_link.substring(3, 7);
+    var pos = unit_link.substring(8, 15);
+    if (pos == "" && dis == "") {
+        if (unit_code === "00") {
+            $.ajax({
+                url: "@Url.Content("~/Metadata/Proxy/ListProvinces")",
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    provincecode: unit_code
+                },
+                success: function (data) {
+                    $('.Province').html('');
+                    var listString = "<option value=''>--Tỉnh/thành phố--</option>";
+                    jQuery.each(data, function (i, val) {
+                        listString = listString + "<option value='" + val.ProvinceCode + "'>" + val.ProvinceCode + "-" + val.ProvinceName + "</option>";
+                    });
+                    $('.province').html(listString);
+                    return;
+                }
+
+            });
+            $('.province').change(function () {
+                var provinceCode = $(this).val();
+                loadDistricts(provinceCode);
+                $('.pos').html("<option value=''>Chọn bưu cục</option>");
+            });
+            function loadDistricts(provinceCode) {
+                $.ajax({
+                    url: "@Url.Content("~/Metadata/Proxy/ListDistricts")",
+                    type: 'POST',
+                    dataType: "json",
+                    data: { provinceCode: provinceCode },
+                    success: function (data) {
+                        //alert(data);
+                        $('.district').html('');
+                        var listString = "<option value=''>--Quận, huyện--</option>";
+                        jQuery.each(data, function (i, val) {
+                            listString +=
+                                "<option value='" + val.DistrictCode + "' data-districtid='" + val.DistrictCode + "'>" + val.DistrictCode + "-" + val.DistrictName + "</option>";
+                        });
+                        $('.district').html(listString);
+                        // if (value) {
+                        //     $('.district-' + group).val(value);
+                        //     loadWards(value, group, ward);
+                        // }
+                        return;
+                    }
+                });
+            }
+            $('.district').change(function () {
+                var provincecode = $(this).val();
+                loadPosCode(provincecode);
+            });
+            function loadPosCode(provincecode) {
+                $.ajax({
+                    type: 'POST',
+                    url: "@Url.Content("~/Metadata/Proxy/ListPos")",
+                    dataType: "json",
+                    data: { provincecode: provincecode, poscode: pos },
+                    success: function (data) {
+
+                        $('.pos').html('');
+                        var listString = "<option value=''>-- Chọn bưu cục --</option>";
+                        jQuery.each(data, function (i, val) {
+                            if (val.PosCode != '') {
+                                listString +=
+                             "<option value='" + val.Unitcode + "' data-posid='" + val.PosCode + "'>" + val.PosCode + "-" + val.PosName + "</option>";
+                            }
+                        });
+                        $('.pos').html(listString);
+                        return;
+                    }
+                });
+                return false;
+            };
+        }
+        else {
+            // } //    $('.province').change(function () {
+            //         loadProvince(unit_code);
+            //     });
+            // function loadProvince(unit_code) {
+            $.ajax({
+                url: "@Url.Content("~/Metadata/Proxy/GetProvinces")",
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    provincecode: unit_code
+                },
+                success: function (data) {
+                    $('.Province').html('');
+                    var listString = " ";
+                    jQuery.each(data, function (i, val) {
+                        listString = listString + "<option value='" + val.ProvinceCode + "'>" + val.ProvinceCode + "-" + val.ProvinceName + "</option>";
+                    });
+                    $('.province').html(listString);
+                    return;
+                }
+            }).done(function () {
+                $.ajax({
+                    url: "@Url.Content("~/Metadata/Proxy/ListDistricts")",
+                    type: 'POST',
+                    dataType: "json",
+                    data: { provinceCode: $('.province').val() },
+                    success: function (data) {
+                        //alert(data);
+                        $('.district').html('');
+                        var listString = "<option value=''>--Quận, huyện--</option>";
+                        jQuery.each(data, function (i, val) {
+                            listString +=
+                                "<option value='" + val.DistrictCode + "' data-districtid='" + val.DistrictCode + "'>" + val.DistrictCode + "-" + val.DistrictName + "</option>";
+                        });
+                        $('.district').html(listString);
+                        // if (value) {
+                        //     $('.district-' + group).val(value);
+                        //     loadWards(value, group, ward);
+                        // }
+                        return;
+                    }
+                });
+            }
+                );
+
+
+            $('.district').change(function () {
+                var provincecode = $(this).val();
+                loadPosCode(provincecode);
+            });
+            function loadPosCode(provincecode) {
+                $.ajax({
+                    type: 'POST',
+                    url: "@Url.Content("~/Metadata/Proxy/ListPos")",
+                    dataType: "json",
+                    data: { provincecode: provincecode },
+                    success: function (data) {
+
+                        $('.pos').html('');
+                        var listString = "<option value=''>-- Chọn bưu cục --</option>";
+                        jQuery.each(data, function (i, val) {
+                            if (val.PosCode != '') {
+                                listString +=
+                             "<option value='" + val.Unitcode + "' data-posid='" + val.PosCode + "'>" + val.PosCode + "-" + val.PosName + "</option>";
+                            }
+                        });
+                        $('.pos').html(listString);
+                        return;
+                    }
+                });
+                return false;
+            };
+        }
+    }
+    else if (dis !== "" && pos == "") {
+        $.ajax({
+            url: "@Url.Content("~/Metadata/Proxy/GetProvinces")",
+            type: 'POST',
+            dataType: "json",
+            data: {
+                provincecode: pro
+            },
+            success: function (data) {
+                $('.Province').html('');
+                var listString = " ";
+                jQuery.each(data, function (i, val) {
+                    listString = listString + "<option value='" + val.ProvinceCode + "'>" + val.ProvinceCode + "-" + val.ProvinceName + "</option>";
+                });
+                $('.province').html(listString);
+                return;
+            }
+        }).done(function () {
+            $.ajax({
+                url: "@Url.Content("~/Metadata/Proxy/ListDistricts")",
+                type: 'POST',
+                dataType: "json",
+                data: { districtcode: dis },
+                success: function (data) {
+                    //alert(data);
+                    $('.district').html('');
+                    var listString = "";
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.DistrictCode + "' data-districtid='" + val.DistrictCode + "'>" + val.DistrictCode + "-" + val.DistrictName + "</option>";
+                    });
+                    $('.district').html(listString);
+                    // if (value) {
+                    //     $('.district-' + group).val(value);
+                    //     loadWards(value, group, ward);
+                    // }
+                    return;
+                }
+            }).done(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: "@Url.Content("~/Metadata/Proxy/ListPos")",
+                    dataType: "json",
+                    data: { provincecode: $('.district').val() },
+                    success: function (data) {
+
+                        $('.pos').html('');
+                        var listString = "<option value=''>-- Chọn bưu cục --</option>";
+                        jQuery.each(data, function (i, val) {
+                            if (val.PosCode != '') {
+                                listString +=
+                             "<option value='" + val.Unitcode + "' data-posid='" + val.PosCode + "'>" + val.PosCode + "-" + val.PosName + "</option>";
+                            }
+                        });
+                        $('.pos').html(listString);
+                        return;
+                    }
+                });
+                return false;
+            })
+        }
+               );
+    }
+    else if (dis !== "" && pos !== "") {
+        $.ajax({
+            url: "@Url.Content("~/Metadata/Proxy/GetProvinces")",
+            type: 'POST',
+            dataType: "json",
+            data: {
+                provincecode: pro
+            },
+            success: function (data) {
+                $('.Province').html('');
+                var listString = " ";
+                jQuery.each(data, function (i, val) {
+                    listString = listString + "<option value='" + val.ProvinceCode + "'>" + val.ProvinceCode + "-" + val.ProvinceName + "</option>";
+                });
+                $('.province').html(listString);
+                return;
+            }
+        }).done(function () {
+            $.ajax({
+                url: "@Url.Content("~/Metadata/Proxy/ListDistricts")",
+                type: 'POST',
+                dataType: "json",
+                data: { districtcode: dis },
+                success: function (data) {
+                    //alert(data);
+                    $('.district').html('');
+                    var listString = "";
+                    jQuery.each(data, function (i, val) {
+                        listString +=
+                            "<option value='" + val.DistrictCode + "' data-districtid='" + val.DistrictCode + "'>" + val.DistrictCode + "-" + val.DistrictName + "</option>";
+                    });
+                    $('.district').html(listString);
+                    // if (value) {
+                    //     $('.district-' + group).val(value);
+                    //     loadWards(value, group, ward);
+                    // }
+                    return;
+                }
+            }).done(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: "@Url.Content("~/Metadata/Proxy/ListPos")",
+                    dataType: "json",
+                    data: { poscode: pos },
+                    success: function (data) {
+
+                        $('.pos').html('');
+                        var listString = " ";
+                        jQuery.each(data, function (i, val) {
+                            if (val.PosCode != '') {
+                                listString +=
+                             "<option value='" + val.Unitcode + "' data-posid='" + val.POSCode + "'>" + val.POSCode + "-" + val.PosName + "</option>";
+                            }
+                        });
+                        $('.pos').html(listString);
+                        return;
+                    }
+                });
+                return false;
+            })
+        }
+                );
+    }
+
+    $("#f_date").datepicker();
+    $("#t_date").datepicker();
+
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+    $(document).ready(function () {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var lmm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        if (lmm < 10) lmm = '0' + lmm;
+
+        var today = dd + '/' + mm + '/' + yyyy;
+        var last_month = dd + '/' + lmm + '/' + yyyy;
+        $('#f_date').val(last_month);
+        $('#t_date').val(today);
+        var queryValue = getUrlVars()["opt"];
+        $.ajax({
+            url: "@Url.Content("~/Report/Home/ListStatus")",
+            dataType: "json",
+            data: {
+                title: queryValue
+            },
+            success: function (data) {
+                $('.status').html('');
+                var listString = "<option value='0'>--Trạng thái--</option>";
+                jQuery.each(data, function (i, val) {
+                    listString = listString + "<option value='" + val.StatusCode + "'>" + val.StatusDescription + "</option>";
+                });
+                $('.status').html(listString);
+                return;
+            }
+        });
+
+        function refreshPaging() {
+
+            $('#page-selection').bootpag({
+                total: $('#total_page').val(),
+                maxVisible: 10,
+            }).on("page", function (event, num) {
+                filter(num);
+            });
+        }
+        function filter(num) {
+
+            var cat = $('#cat').val();
+            var queryValue = getUrlVars()["opt"];
+            if (queryValue === "vd" || queryValue === "vd#") {
+
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function () {
+                        $('.loading-element').show();
+                    },
+                    url: "@Url.Content("~/Report/Home/ListRptDetail")",
+                    dataType: "html",
+                    data: {
+                        status: $("#status").val(),
+                        fromdt: $("#f_date").val(),
+                        todt: $("#t_date").val(),
+                        page: num
+                    },
+                    success: function (data) {
+                        $('.loading-element').hide();
+                        $('#content').html(data);
+                        if (num == 1) refreshPaging();
+                    }
+                });
+            }
+            else if (queryValue === "tkvdtt" || queryValue === "tkvdtt#") {
+
+                if (cat === "CT") {
+                    $.ajax({
+                        type: 'POST',
+                        beforeSend: function () {
+                            $('.loading-element').show();
+                        },
+                        url: "@Url.Content("~/Report/Home/ListFormName")",
+                        dataType: "html",
+                        data: {
+                            status: $("#status").val(),
+                            fromdt: $("#f_date").val(),
+                            todt: $("#t_date").val(),
+                            province: $("#province").val(),
+                            district: $('#district option:selected').attr('data-districtid'),
+                            pos: $('#pos option:selected').attr('data-posid'),
+                            busscode: $("#buscode").val().trim(),
+                            page: num
+                        },
+                        success: function (data) {
+                            $('.loading-element').hide();
+                            $('#content').html(data);
+                            if (num == 1) refreshPaging();
+                        }
+                    });
+                } else if (cat === "TH") {
+
+                    $.ajax({
+                        type: 'POST',
+                        beforeSend: function () {
+                            $('.loading-element').show();
+                        },
+                        url: "@Url.Content("~/Report/Home/ListFormNameTH")",
+                        dataType: "html",
+                        data: {
+                            status: $("#status").val(),
+                            fromdt: $("#f_date").val(),
+                            todt: $("#t_date").val(),
+                            province: $("#province").val(),
+                            district: $('#district option:selected').attr('data-districtid'),
+                            pos: $('#pos option:selected').attr('data-posid'),
+                            busscode: $("#buscode").val().trim(),
+                            page: num
+                        },
+                        success: function (data) {
+                            $('.loading-element').hide();
+                            $('#content').html(data);
+                            if (num == 1) refreshPaging();
+                        }
+                    });
+                }
+            }
+
+            else if (queryValue === "tkvdtg" || queryValue === "tkvdtg#") {
+                if (cat === "CT") {
+                    $.ajax({
+                        type: 'POST',
+                        beforeSend: function () {
+                            $('.loading-element').show();
+                        },
+                        url: "@Url.Content("~/Report/Home/ListFormCollect")",
+                        dataType: "html",
+                        data: {
+                            status: $("#status").val(),
+                            fromdt: $("#f_date").val(),
+                            todt: $("#t_date").val(),
+                            province: $("#province").val(),
+                            district: $('#district option:selected').attr('data-districtid'),
+                            pos: $('#pos option:selected').attr('data-posid'),
+                            busscode: $("#buscode").val().trim(),
+                            page: num
+                        },
+                        success: function (data) {
+                            $('.loading-element').hide();
+                            $('#content').html(data);
+                            if (num == 1) refreshPaging();
+
+                            var customer = $("#buscode").val().trim();
+                            //var servicesType = $("#srvType").val();
+                            var status = $("#status").val();
+                            //var CreateBy = $("#full_name").val();
+                            if (customer != null && customer != "" && customer != undefined) {
+                                var text = "Mã KH:   " + customer;
+                                $("#customerName").html(text);
+                            }
+                            else {
+                                $("#customerName").html("Mã khách hàng:   Tất cả");
+                            }
+
+                            $("#servicesType").html("Loại dịch vụ:   Tất cả");
+
+                            if (status != null && status != "" && status != undefined) {
+                                if ($("#status").val() == "0") {
+                                    $("#labelstatus").html("Trạng thái:   Tất cả");
+                                } else {
+                                    var text = "Trạng thái:   " + $("#status option:selected").text();
+                                    $("#labelstatus").html(text);
+                                }
+                            }
+                            else {
+                                $("#labelstatus").html("Trạng thái:   Tất cả");
+                            }
+                        }
+                    });
+                } else if (cat === "TH") {
+
+                    $.ajax({
+                        type: 'POST',
+                        beforeSend: function () {
+                            $('.loading-element').show();
+                        },
+                        url: "@Url.Content("~/Report/Home/ListFormCollectTH")",
+                        dataType: "html",
+                        data: {
+                            status: $("#status").val(),
+                            fromdt: $("#f_date").val(),
+                            todt: $("#t_date").val(),
+                            province: $("#province").val(),
+                            district: $('#district option:selected').attr('data-districtid'),
+                            pos: $('#pos option:selected').attr('data-posid'),
+                            busscode: $("#buscode").val().trim(),
+                            page: num
+                        },
+                        success: function (data) {
+                            $('.loading-element').hide();
+                            $('#content').html(data);
+                            if (num == 1) refreshPaging();
+
+
+                            var customer = $("#buscode").val().trim();
+                            //var servicesType = $("#srvType").val();
+                            var status = $("#status").val();
+                            //var CreateBy = $("#full_name").val();
+                            if (customer != null && customer != "" && customer != undefined) {
+                                var text = "Mã KH:   " + customer;
+                                $("#customerName").html(text);
+                            }
+                            else {
+                                $("#customerName").html("Mã khách hàng:   Tất cả");
+                            }
+
+                            $("#servicesType").html("Loại dịch vụ:   Tất cả");
+
+                            if (status != null && status != "" && status != undefined) {
+                                if ($("#status").val() == "0") {
+                                    $("#labelstatus").html("Trạng thái:   Tất cả");
+                                } else {
+                                    var text = "Trạng thái:   " + $("#status option:selected").text();
+                                    $("#labelstatus").html(text);
+                                }
+                            }
+                            else {
+                                $("#labelstatus").html("Trạng thái:   Tất cả");
+                            }
+
+                        }
+                    });
+                }
+            }
+            else if (queryValue === "tkvdph" || queryValue === "tkvdph#") {
+                if (cat === "CT") {
+                    $.ajax({
+                        type: 'POST',
+                        beforeSend: function () {
+                            $('.loading-element').show();
+                        },
+                        url: "@Url.Content("~/Report/Home/ListFormIssue")",
+                        dataType: "html",
+                        data: {
+                            status: $("#status").val(),
+                            fromdt: $("#f_date").val(),
+                            todt: $("#t_date").val(),
+                            province: $("#province").val(),
+                            district: $('#district option:selected').attr('data-districtid'),
+                            pos: $('#pos option:selected').attr('data-posid'),
+                            busscode: $("#buscode").val().trim(),
+                            page: num
+                        },
+                        success: function (data) {
+                            $('.loading-element').hide();
+                            $('#content').html(data);
+                            if (num == 1) refreshPaging();
+
+
+                            var cusPos = document.getElementById("posInfo");
+                            var customer = $("#buscode").val().trim();
+                            //var servicesType = $("#srvType").val();
+                            var status = $("#status").val();
+                            //var CreateBy = $("#full_name").val();
+                            if (customer != null && customer != "" && customer != undefined) {
+                                var text = "Mã KH:   " + customer;
+                                $("#customerName").html(text);
+                            }
+                            else {
+                                $("#customerName").html("Mã khách hàng:   Tất cả");
+                            }
+
+                            $("#servicesType").html("Loại dịch vụ:   Tất cả");
+
+                            if (status != null && status != "" && status != undefined) {
+                                if ($("#status").val() == "0") {
+                                    $("#labelstatus").html("Trạng thái:   Tất cả");
+                                } else {
+                                    var text = "Trạng thái:   " + $("#status option:selected").text();
+                                    $("#labelstatus").html(text);
+                                }
+                            }
+                            else {
+                                $("#labelstatus").html("Trạng thái:   Tất cả");
+                            }
+                        }
+                    });
+                } else if (cat === "TH") {
+
+                    $.ajax({
+                        type: 'POST',
+                        beforeSend: function () {
+                            $('.loading-element').show();
+                        },
+                        url: "@Url.Content("~/Report/Home/ListFormIssueTH")",
+                        dataType: "html",
+                        data: {
+                            status: $("#status").val(),
+                            fromdt: $("#f_date").val(),
+                            todt: $("#t_date").val(),
+                            province: $("#province").val(),
+                            district: $('#district option:selected').attr('data-districtid'),
+                            pos: $('#pos option:selected').attr('data-posid'),
+                            busscode: $("#buscode").val().trim(),
+                            page: num
+                        },
+                        success: function (data) {
+                            $('.loading-element').hide();
+                            $('#content').html(data);
+                            if (num == 1) refreshPaging();
+
+
+                            var customer = $("#buscode").val().trim();
+                            //var servicesType = $("#srvType").val();
+                            var status = $("#status").val();
+                            //var CreateBy = $("#full_name").val();
+                            if (customer != null && customer != "" && customer != undefined) {
+                                var text = "Mã KH:   " + customer;
+                                $("#customerName").html(text);
+                            }
+                            else {
+                                $("#customerName").html("Mã khách hàng:   Tất cả");
+                            }
+
+                            $("#servicesType").html("Loại dịch vụ:   Tất cả");
+
+                            if (status != null && status != "" && status != undefined) {
+                                if ($("#status").val() == "0") {
+                                    $("#labelstatus").html("Trạng thái:   Tất cả");
+                                } else {
+                                    var text = "Trạng thái:   " + $("#status option:selected").text();
+                                    $("#labelstatus").html(text);
+                                }
+                            }
+                            else {
+                                $("#labelstatus").html("Trạng thái:   Tất cả");
+                            }
+                        }
+                    });
+                }
+            }
+            else if (queryValue === "thvd" || queryValue === "thvd#") {
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function () {
+                        $('.loading-element').show();
+                    },
+                    url: "@Url.Content("~/Report/Home/ListRptTotal")",
+                    dataType: "html",
+                    data: {
+                        status: $("#status").val(),
+                        fromdt: $("#f_date").val(),
+                        todt: $("#t_date").val(),
+                        busscode: $("#buscode").val().trim(),
+                        srvCode: $("#srvType").val(),
+                        page: num
+                    },
+                    success: function (data) {
+                        $('.loading-element').hide();
+                        $('#content').html(data);
+                        if (num == 1) refreshPaging();
+                    }
+                });
+            }
+            else if (queryValue === "dh" || queryValue === "dh#") {
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function () {
+                        $('.loading-element').show();
+                    },
+                    url: "@Url.Content("~/Report/Home/ListRptBillDetail")",
+                    dataType: "html",
+                    data: {
+                        status: $("#status").val(),
+                        fromdt: $("#f_date").val(),
+                        todt: $("#t_date").val(),
+                        busscode: $("#buscode").val().trim(),
+                        srvCode: $("#srvType").val(),
+                        page: num
+                    },
+                    success: function (data) {
+                        $('.loading-element').hide();
+                        $('#content').html(data);
+                        if (num == 1) refreshPaging();
+                    }
+                });
+            }
+            else if (queryValue === "dhth" || queryValue === "dhth#") {
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function () {
+                        $('.loading-element').show();
+                    },
+                    url: "@Url.Content("~/Report/Home/ListRptBillTotal")",
+                    dataType: "html",
+                    data: {
+                        status: $("#status").val(),
+                        fromdt: $("#f_date").val(),
+                        todt: $("#t_date").val(),
+                        busscode: $("#buscode").val().trim(),
+                        srvCode: $("#srvType").val(),
+                        page: num
+                    },
+                    success: function (data) {
+                        $('.loading-element').hide();
+                        $('#content').html(data);
+                        if (num == 1) refreshPaging();
+                    }
+                });
+            }
+            else if (queryValue === "thu" || queryValue === "thu#") {
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function () {
+                        $('.loading-element').show();
+                    },
+                    url: "@Url.Content("~/Report/Home/ListRptPayDetail")",
+                    dataType: "html",
+                    data: {
+                        status: $("#status").val(),
+                        fromdt: $("#f_date").val(),
+                        todt: $("#t_date").val(),
+                        busscode: $("#buscode").val().trim(),
+                        srvCode: $("#srvType").val(),
+                        page: num
+                    },
+                    success: function (data) {
+                        $('.loading-element').hide();
+                        $('#content').html(data);
+                        if (num == 1) refreshPaging();
+                    }
+                });
+            }
+            else if (queryValue === "thuth" || queryValue === "thuth#") {
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function () {
+                        $('.loading-element').show();
+                    },
+                    url: "@Url.Content("~/Report/Home/ListRptPayTotal")",
+                    dataType: "html",
+                    data: {
+                        status: $("#status").val(),
+                        fromdt: $("#f_date").val(),
+                        todt: $("#t_date").val(),
+                        busscode: $("#buscode").val().trim(),
+                        srvCode: $("#srvType").val(),
+                        page: num
+                    },
+                    success: function (data) {
+                        $('.loading-element').hide();
+                        $('#content').html(data);
+                        if (num == 1) refreshPaging();
+                    }
+                });
+            }
+        }
+
+
+        function validate() {
+            var queryValue = getUrlVars()["opt"];
+            var cat = $('#cat').val();
+            if ($("#cat").val() == "") {
+                alert("Bạn phải chọn loại báo cáo");
+                return false;
+            }
+            else if ($("#cat").val() == "TH" && $("#province").val() == "") {
+                if ((queryValue == "tkvdph" && queryValue == "tkvdph#") && (queryValue == "tkvdtg" && queryValue == "tkvdtg#")) {
+                    alert("Bạn phải chọn tỉnh thành phố");
+                    return false;
+                }
+
+            }
+            if ($("#f_date").val() == null) {
+                return false;
+            }
+
+            if ($("#t_date").val() == null) {
+                return false;
+            }
+
+            return true;
+        }
+
+        //filter(1);
+        $('#showRpt').click(function () {
+            if (permission != "" && permission.indexOf("19") == -1) {
+                alert("Bạn chưa được phân quyền sử dụng chức năng xem báo cáo");
+            }
+            else {
+                if (validate()) {
+                    filter(1);
+                }
+            }
+        });
+
+    });
+
+</script>

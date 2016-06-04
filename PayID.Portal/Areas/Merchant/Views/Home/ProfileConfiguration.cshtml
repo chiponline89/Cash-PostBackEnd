@@ -1,0 +1,381 @@
+﻿@model dynamic[]
+@section TopMenu{
+
+    <li class="active"><a href="#">Trang chủ</a></li>
+    <li><a href="#about">Danh mục</a></li>
+    <li><a href="#contact">Thông tin Đại lý</a></li>
+}
+
+<div class="row">
+    @*<div class="col-md-2">
+            <input type="hidden" value="@ViewBag.customer_code" id="hidden_customer_code" />
+        </div>*@
+    <input type="hidden" value="@ViewBag.customer_code" id="hidden_customer_code" />
+    <input type="hidden" value="@ViewBag.v_unitcode" id="hidden_unitcode" />
+    <div class="col-md-12" id="userList">
+        <h4 id="unit_name_heading"></h4>
+        <div class="panel with-nav-tabs panel-primary">
+            <div class="panel-heading">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1primary" data-toggle="tab">Thông tin chung</a></li>
+                    <li ><a href="#tab2primary" data-toggle="tab">Địa chỉ lấy hàng</a></li>
+                    <li><a href="#tab3primary" data-toggle="tab">Tài khoản ngân hàng</a></li>
+                    <li><a href="#tab4primary" data-toggle="tab">Thông tin tài khoản</a></li>
+                    @*<li><a href="#tab5primary" data-toggle="tab">Thanh toán</a></li>*@
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tab1primary">
+                        @Html.Partial("Info")
+                    </div>
+                    <div class="tab-pane fade" id="tab2primary">
+                        @Html.Partial("Store")
+                    </div>
+                    <div class="tab-pane fade" id="tab3primary">
+                        @Html.Partial("Bank")
+                    </div>
+                    <div class="tab-pane fade" id="tab4primary">
+                        @Html.Partial("Account")
+                    </div>
+                    @*<div class="tab-pane fade" id="tab5primary">
+                            @Html.Partial("Pay")
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="@(((dynamic)Session["profile"]).permission)" id="permission" />
+<input type="hidden" value="@(((dynamic)Session["profile"]).funcCategory)" id="permissionCate" />
+<style>
+    .icon-edit:before {
+        content: "\f044";
+        color: #333 !important;
+        font-weight: bold;
+    }
+    .custab {
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 5% 0;
+        box-shadow: 3px 3px 2px #ccc;
+        transition: 0.5s;
+    }
+
+        .custab:hover {
+            box-shadow: 3px 3px 0px transparent;
+            transition: 0.5s;
+        }
+</style>
+<script type="text/javascript">
+    var permission = $('#permission').val();
+    $(document).ready(function () {
+        var myunitcode = $("#hidden_unitcode").val();
+        // Begin Danh mục Tỉnh huyện
+        //$.ajax({
+        //    url: "/Metadata/Proxy/ListProvinces",
+        //    dataType: "json",
+        //    data: {
+        //    },
+        //    success: function (data)
+        //    {
+        //        $('#province_drop').html('<option>Tỉnh thành nhận</option>');
+        //        jQuery.each(data, function (i, val) {
+        //            $('#province_drop').html($('#province_drop').html() +
+        //              "<option value='" + val.ProvinceCode + "'>" + val.ProvinceName + "</option>");
+        //        });
+        //        if (myunitcode != "00")
+        //        { document.getElementById("province_drop").value = myunitcode; }
+
+        //        return;
+        //    }
+        //});
+        $('#province_drop').change(function () {
+            $("#id_drop_district").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetDistrictJson")',
+                dataType: 'json',
+                data: { IdTinh: $("#province_drop").val() },
+                success: function (states) {
+                    $.each(states, function (i, state) {
+                        $("#id_drop_district").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    $("#id_drop_district").append('<option>' + "Quận/huyện" + '</option>');
+                }
+            });
+            return false;
+        });
+        $('#account_drop_province').change(function () {
+            $("#account_drop_district").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetDistrictJson")',
+                dataType: 'json',
+                data: { IdTinh: $("#account_drop_province").val() },
+                success: function (states) {
+                    $.each(states, function (i, state) {
+                        $("#account_drop_district").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    $("#account_drop_district").append('<option>' + "Quận/huyện" + '</option>');
+                }
+            });
+            return false;
+        });
+
+        // Thêm ngân hàng
+        $('.add-bank').click(function () {
+            add_new_bank();
+            $(".bank-result").hide();
+        });
+
+        BankByCustomer();
+        StoreByCustomer();
+        load_profile();
+       // setvalue();
+    });
+    function add_new_store() {
+        document.getElementById("store_id").value = "";
+        document.getElementById("store_name").value = "";
+        document.getElementById("store_manager_name").value = "";
+        document.getElementById("store_manager_mobile").value = "";
+        document.getElementById("store_manager_email").value = "";
+        document.getElementById("store_to_address").value = "";
+        document.getElementById("province_drop").value = "00";
+        document.getElementById("id_drop_district").value = "";
+        document.getElementById("drop_pos_store").value = "";
+    }
+    function add_new_bank() {
+        document.getElementById("bank_id").value = "";
+        document.getElementById("setting_account_bank_code").value = "";
+        document.getElementById("setting_account_bank_address").value = "";
+        document.getElementById("setting_account_bank_user").value = "";
+        document.getElementById("setting_account_bank_number").value = "";
+    }
+    function setvalue() {
+        var myunitcode = $("#hidden_unitcode").val();
+        if (myunitcode != '00') {
+            $("#province_drop").prop("disabled", true);
+        }
+    }
+    function BankByCustomer() {
+        $.ajax({
+            url: '@Url.Action("ListBank", "Home")',
+            type: 'POST',
+            dataType: 'html',
+            data: { id: $("#hidden_customer_code").val() },
+        })
+           .success(function (result) {
+               $('#listBank').html(result);
+           })
+    }
+    function StoreByCustomer() {
+        $.ajax({
+            url: '@Url.Action("ListStore", "Home")',
+            type: 'POST',
+            dataType: 'html',
+            data: { id: $("#hidden_customer_code").val() },
+        })
+           .success(function (result) {
+               $('#listStore').html(result);
+           })
+    }
+
+    function BindDistrictByProvinceCode(p, d) {
+        $.ajax({
+            url: "/Metadata/Proxy/ListDistricts",
+            dataType: "json",
+            data: { provinceCode: p },
+            success: function (data) {
+                jQuery.each(data, function (i, val) {
+                    $('#id_drop_district').html($('#id_drop_district').html() +
+                        "<option value='" + val.DistrictCode + "'>" + val.DistrictName + "</option>");
+                });
+                document.getElementById("id_drop_district").value = d;
+            }
+        });
+    }
+    function BindDistrictByProvinceCode_Account(p, d) {
+
+        $.ajax({
+            url: "/Metadata/Proxy/ListDistricts",
+            dataType: "json",
+            data: { provinceCode: p },
+            success: function (data) {
+                jQuery.each(data, function (i, val) {
+                    $('#account_drop_district').html($('#account_drop_district').html() +
+                        "<option value='" + val.DistrictCode + "'>" + val.DistrictName + "</option>");
+                });
+                document.getElementById("account_drop_district").value = d;
+            }
+        });
+    }
+    function BindPosByDistrictCode(d, b) {
+        $("#drop_pos_store").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetPosJson")',
+            dataType: 'json',
+            data: { DistrictId: d },
+            success: function (states) {
+                $.each(states, function (i, state) {
+                    $("#drop_pos_store").append('<option value="' + state.Value + '">' + state.Value + '-' + state.Text + '</option>');
+                });
+                //alert(b);
+                document.getElementById("drop_pos_store").value = b;
+            },
+            error: function (ex) {
+                $("#drop_pos_store").append('<option>' + "Bưu cục" + '</option>');
+            }
+        });
+        return false;
+    }
+    // Load thông tin cá nhân
+    function load_profile() {
+        var radios = document.getElementsByName('payment_customer_type');
+        var customer_type = "";
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                customer_type = radios[i].value;
+                break;
+            }
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetAccount")',
+            dataType: 'json',
+            data: {
+                customer_code: $('#hidden_customer_code').val(),
+            },
+            success: function (data) {
+                $('#customer_type').val(data.type);
+                document.getElementById("setting_account_company_name").defaultValue = data.company_name;
+                document.getElementById("setting_account_name").defaultValue = data.name;
+                document.getElementById("setting_account_email").defaultValue = data.email;
+                document.getElementById("setting_account_phone").defaultValue = data.phone;
+                document.getElementById("setting_account_company_short_name").defaultValue = data.shortname;
+                document.getElementById("payment_account_tax").defaultValue = data.tax;
+                document.getElementById("setting_account_address").defaultValue = data.address;
+                document.getElementById("setting_account_company_contract").defaultValue = data.contract;
+                document.getElementById("account_drop_province").value = data.provincecode;
+                BindDistrictByProvinceCode_Account(data.provincecode, data.districtcode);
+                if (data.paymenttype == true)
+                    document.getElementById("payment_customer_debt").checked = true;
+                else
+                    document.getElementById("payment_customer_cash").checked = true;
+            }
+        });
+        return false;
+    }
+    $("#id_drop_district").change(function () {
+        $("#drop_pos_store").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetPosJson")',
+            dataType: 'json',
+            data: { DistrictId: $("#id_drop_district").val() },
+            success: function (states) {
+                $.each(states, function (i, state) {
+                    $("#drop_pos_store").append('<option value="' + state.Value + '">' + state.Value + '-' + state.Text + '</option>');
+                });
+            },
+            error: function (ex) {
+                $("#drop_pos_store").append('<option>' + "Bưu cục" + '</option>');
+            }
+        });
+        return false;
+    });
+    // LƯU ĐỊA CHỈ LẤY HÀNG
+    function SaveStore() {
+        //app.showProcess();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("save_store")',
+            dataType: 'json',
+            data: {
+                customer_code: $('#hidden_customer_code').val(),
+                _id: $("#store_id").val(),
+                store_name: $("#store_name").val(),
+                store_manager_name: $("#store_manager_name").val(),
+                store_manager_mobile: $("#store_manager_mobile").val(),
+                store_manager_email: $("#store_manager_email").val(),
+                store_to_address: $("#store_to_address").val(),
+                province_code: $("#province_drop").val(),
+                district_code: $("#id_drop_district").val(),
+                postcode: $("#drop_pos_store").val()
+            },
+            success: function (data) {
+                $(".store-result").fadeIn();
+                setInterval(function(){ $('.store-result').fadeOut(); }, 3000);
+                //app.hideProcess();
+                StoreByCustomer();
+                add_new_store();
+            },
+            error: function (ex) {
+                //    app.hideProcess();
+            }
+        });
+        return false;
+    };
+    // Lưu tài khoản ngân hàng
+    function SaveBank() {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("save_bank")',
+            dataType: 'json',
+            data: {
+                id: $('#bank_id').val(),
+                customer_code: $('#hidden_customer_code').val(),
+                bank_code: $("#setting_account_bank_code").val(),
+                bank_name: $("#setting_account_bank_code option:selected").text(),
+                bank_branch: $("#setting_account_bank_address").val(),
+                bank_user: $("#setting_account_bank_user").val(),
+                account_number: $("#setting_account_bank_number").val()
+            },
+            success: function (data) {
+                $(".bank-result").fadeIn();
+                BankByCustomer();
+                add_new_bank();
+            },
+            error: function (ex) {
+
+            }
+        });
+        return false;
+    };
+    function SaveInfo() {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("save_account")',
+            dataType: 'json',
+            data: {
+                customer_code: $('#hidden_customer_code').val(),
+                company_name: $("#setting_account_company_name").val(),
+                name: $("#setting_account_name").val(),
+                email: $("#setting_account_email").val(),
+                phone: $("#setting_account_phone").val(),
+                shortname: $("#setting_account_company_short_name").val(),
+                customer_type: $("#customer_type").val(),
+                //sex: $("#setting_account_sex").val(),
+                tax: $("#payment_account_tax").val(),
+                contract: $("#setting_account_company_contract").val(),
+                address: $("#setting_account_address").val(),
+                provincecode: $("#account_drop_province").val(),
+                districtcode: $("#account_drop_district").val(),
+                payment_type: document.getElementById("payment_customer_debt").checked ? 1 : 0
+            },
+            success: function (data) {
+                $(".info-result").fadeIn();
+            },
+            error: function (ex) {
+
+            }
+        });
+        return false;
+    };
+</script>

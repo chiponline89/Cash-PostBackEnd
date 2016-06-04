@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "Tra cứu vận đơn";
+}
+@model dynamic
+
+<!DOCTYPE html>
+
+<style>
+    h3 {
+        font: 500 normal 1.775em "Roboto",Arial,Verdana,sans-serif;
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
+        color: #248dc1 !important;
+    }
+</style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết vận đơn</title>
+</head>
+
+<body>
+    <div class="site-wrapper">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <nav class="breadcrumbs left">
+                        <a href=@Url.Content("/Merchant/Home/")>Trang chủ / </a>
+                        <a class="current" href="#">Định vị bưu phẩm</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- end breadcrumb -->
+        <div class="col-sm-12 text-center">
+            <h2>Tra cứu vận đơn</h2>
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 text-center">
+            <div class="col-sm-12  input-group" align="center">
+                <input type="text" class="form-control" placeholder="Nhập mã vận đơn để tra cứu" id="code" name="q" style="padding:6px 6px;">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" id="btnSearch"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4"></div>
+
+     
+          
+                <div class="col-md-2"></div>
+                <div class="col-md-8 text-center" id="divinfo" style="display:none;">
+                    <div class="row">
+                        <label class="col-sm-2">Số hiệu bưu gửi:</label>
+                        <div class="col-sm-4" id="divCode"></div>
+                        <label class="col-sm-2">Khối lượng</label>
+                        <div class="col-sm-4" id="divWeight"></div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2">Nơi gửi:</label>
+                        <div class="col-sm-4" id="divFrom"></div>
+                        <label class="col-sm-2">Nơi nhận:</label>
+                        <div class="col-sm-4" id="divTo"></div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+          
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div id="hanhtrinhvandon" class="col-md-8">
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+
+        
+        <!-- end container -->
+
+        <footer>
+            <section class="footer-copyright">
+                <div class="row">
+                    <div class="small-8 col-sm-8">
+                        <nav id="footer-nav" class="text-right">
+                            <ul id="bot-nav" class="inline-list"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        </footer>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#btnSearch').click(function () {
+                getinfo();
+                $.ajax({
+                    url: '@Url.Action("ListJourney")',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: { id: $("#code").val() },
+                    beforeSend: function () {
+                        $('.loading-element').show();
+                    }
+                })
+ .success(function (result) {
+     $('.loading-element').hide();
+     $('#hanhtrinhvandon').html(result);
+ })
+            });
+        });
+
+        function getinfo() {
+            $.ajax({
+                url: '@Url.Action("LadingInfo")',
+                type: 'POST',
+                dataType: 'json',
+                data: { id: $("#code").val() },
+                beforeSend: function () {
+                    $('.loading-element').show();
+                }
+            })
+   .success(function (result) {    
+       $('#divinfo').show();
+
+       $('#divCode').html($('#code').val());
+       $('#divWeight').html(result.Weight);
+       $('#divFrom').html(result.From);
+       $('#divTo').html(result.To);
+       
+   })
+        }
+    </script>
+</body>

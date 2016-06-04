@@ -1,0 +1,392 @@
+﻿@model PayID.Portal.Models.Lading
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
+    <meta name="Googlebot" content="noindex,nofollow,noarchive" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Cổng vận chuyển  và thanh toán Cash@Post | In vận đơn</title>
+    
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <link type="text/css" rel="stylesheet" href="~/Content/main_print.css" media="print, handheld" />
+    <link type="text/css" rel="stylesheet" href="~/Content/bills_print.css" media="print, handheld" />
+    <link href="/Content/bootstrap.css" rel="stylesheet">
+
+    <!-- Google Tag Manager -->
+    <noscript>
+        <iframe src="//www.googletagmanager.com/ns.html?id=GTM-5ZHFVT"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-5ZHFVT');</script>
+    <!-- End Google Tag Manager -->
+
+    @*<link type="text/css" rel="stylesheet" href="http://mc.shipchung.vn/templates/default/css/main.css" media="screen" />*@
+
+    <link type="text/css" rel="stylesheet" href="~/Content/main.css" media="screen" />
+</head>
+<body>
+
+    <div class="site-wrapper">
+
+        <div class="content-bill">
+            <div class="bill-head bd-bt">
+                <!-- Save for Web Slices (Untitled-1) -->
+                <table id="Table_01" cellpadding="0" cellspacing="0">
+
+                    <tr>
+                        <td style="vertical-align: top !important;"></td>
+                        <td colspan="7" style="vertical-align: top !important;"></td>
+
+                        <td style="vertical-align: top !important;"></td>
+
+                    </tr>
+                    <tr>
+                        <td width="50%" style="text-align:center">
+                            <a><img src="/Content/img/Logo_Cash@Post.png">             </a>
+                        </td>
+                        <td width="50%" style="text-align:center">
+                            <a class="barcode" style="font-size:large">*@Model.Code*</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" width="100%" height="22">
+                            <div class="bill-note fb">
+                                <span class="fb">
+                                    Vận đơn này không thu bất kỳ loại phí nào của người nhận.
+                                    (ĐƯỢC KIỂM TRA HÀNG)
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- End Save for Web Slices -->
+            </div>
+            <div class="contentPrint">
+                <div class="bd-bt borderBottom clearfix">
+                   
+                        <div class="box-infor" style="width:50%; border-right: 1px solid silver;">
+                            <div class="number fb">1</div>
+                            <div class="tt-number fb">Thông tin người gửi</div>
+                            <ul class="clearfix">
+                                <li class="clearfix">
+                                    <div class="lblText">Họ và tên<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.SenderName</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Số điện thoại<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.SenderMobile</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Địa chỉ<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.SenderAddress</div>
+                                </li>
+
+
+                                <li class="clearfix">
+                                    <div class="lblText">Quận/ Huyện<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.FromDistrictName</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Tỉnh/ Thành phố<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.FromProvinceName</div>
+                                </li>
+                            </ul>
+                        </div>
+                  
+                        <div class="box-infor " style="width:49.8%">
+                            <div class="number fb">2</div>
+                            <div class="tt-number fb">Thông tin người nhận</div>
+                            <ul class="clearfix">
+                                <li class="clearfix">
+                                    <div class="lblText">Họ và tên<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ReceiverName</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Số điện thoại<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ReceiverMobile</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Địa chỉ<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ReceiverAddress</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Quận/ Huyện<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ToDistrictName</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Tỉnh/ Thành phố<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ToProvinceName</div>
+                                </li>
+                            </ul>
+                        </div>
+                 
+                </div>
+
+                <div class="bd-bt clearfix">
+                    <div class="box-infor " style="width:50%">
+                    
+                            <div class="bd-bt borderBottom clearfix">
+                                <div class="number fb">3</div>
+                                <div class="tt-number fb">Thông tin hàng hóa</div>
+                                <ul class="clearfix">
+                                    <li class="clearfix">
+                                        <div class="lblText">Sản phẩm<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.ProductName</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Số lượng<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.Quantity.ToString("N0")</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Mô tả sản phẩm<span class="fr">:</span></div>
+                                        <div class="lblValue sc_mota">@Model.ProductDescription</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Trọng lượng g<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.Weight.ToString("N0")</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Giá sản phẩm đ<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.Value.ToString("N0")</div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                      
+                            <div class="clearfix">
+                                <div class="number fb">4</div>
+                                <div class="tt-number fb">Thông tin cước phí</div>
+                                <ul class="clearfix">
+                                    <li class="clearfix">
+                                        <div class="lblText">Cước dịch vụ<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.ServiceFee.ToString("N0") đ</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Dịch vụ cộng thêm<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.ServiceCode đ</div>
+                                    </li>
+
+                                    <li class="clearfix">
+                                        <div class="lblText">Tổng tiền thu hộ<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.TotalFee đ</div>
+                                    </li>
+                                </ul>
+                            </div>
+                      
+                    </div>
+                    <div class="box-infor bd-bl" style="width:49.8%;">
+
+                        <div class="bd-bt borderBottom clearfix">
+                            <div class="fl sc_chuky"><strong>Ngày giờ gửi</strong> <br />......./......./...........<br /><strong>Họ tên, chữ ký người gửi</strong></div>
+                            <div class="fl" style="width:49.8%;text-align:center;padding-top: 10px;"><strong>Dấu BC chấp nhận</strong><br /><strong>Tên nhân viên chấp nhận</strong></div>
+                        </div>
+
+                        <div class="box-time">
+                            <div class="fl sc_chuky" style="height: 100px;"><strong>Ngày giờ phát</strong> <br />......./......./...........<br /><strong>Tên nhân viên phát</strong></div>
+                            <div class="fl" style="width:49.8%;text-align:center;padding-top: 10px;"><strong>Họ và tên chữ ký người nhận</strong></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div>
+                <p><span class="fb">Lưu ý: </span> Vận đơn có giá trị khi có dấu của bưu cục chấp nhận</p>
+            </div>
+        </div>
+
+
+        <div class="content-bill contentPrint2">
+            <div class="bill-head bd-bt">
+                <!-- Save for Web Slices (Untitled-1) -->
+                <table id="Table_01" cellpadding="0" cellspacing="0">
+
+                    <tr>
+                        <td style="vertical-align: top !important;"></td>
+                        <td colspan="7" style="vertical-align: top !important;"></td>
+
+                        <td style="vertical-align: top !important;"></td>
+
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top !important;" colspan="2"></td>
+
+                        <td width="100%" colspan="5" style="vertical-align: top !important;">
+                            <p class="fb fs18">
+                                PHIẾU VẬN ĐƠN -  Chuyển phát nhanh
+                            </p>
+                        </td>
+
+                        <td style="vertical-align: top !important;text-align:left;text-align: center;" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" width="100%" height="22">
+                            <div class="bill-note fb">
+                                <span class="fb">
+                                    Vận đơn này không thu bất kỳ loại phí nào của người nhận.
+                                    (ĐƯỢC KIỂM TRA HÀNG)
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- End Save for Web Slices -->
+            </div>
+            <div class="contentPrint">
+                <div class="bd-bt borderBottom clearfix">
+                  
+                        <div class="box-infor" style="width:50%; border-right: 1px solid silver;">
+                            <div class="number fb">1</div>
+                            <div class="tt-number fb">Thông tin người gửi</div>
+                            <ul class="clearfix">
+                                <li class="clearfix">
+                                    <div class="lblText">Họ và tên<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.SenderName </div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Số điện thoại<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.SenderMobile</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Địa chỉ<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.SenderAddress</div>
+                                </li>
+
+
+                                <li class="clearfix">
+                                    <div class="lblText">Quận/ Huyện<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.FromDistrictCode</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Tỉnh/thành phố<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.FromProvinceCode</div>
+                                </li>
+                            </ul>
+                        </div>
+                   
+                        <div class="box-infor " style="width:49.8%;">
+                            <div class="number fb">2</div>
+                            <div class="tt-number fb">Thông tin người nhận</div>
+                            <ul class="clearfix">
+                                <li class="clearfix">
+                                    <div class="lblText">Họ và tên<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ReceiverName</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Số điện thoại<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ReceiverMobile</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Địa chỉ<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ReceiverAddress</div>
+                                </li>
+
+
+                                <li class="clearfix">
+                                    <div class="lblText">Quận/ Huyện<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ToDistrictCode</div>
+                                </li>
+                                <li class="clearfix">
+                                    <div class="lblText">Tỉnh/ Thành phố<span class="fr">:</span></div>
+                                    <div class="lblValue">@Model.ToProvinceCode</div>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+
+                <div class="bd-bt clearfix">
+                    <div class="box-infor " style="width:50%">
+                     
+                            <div class="bd-bt borderBottom clearfix">
+                                <div class="number fb">3</div>
+                                <div class="tt-number fb">Thông tin hàng hóa</div>
+                                <ul class="clearfix">
+                                    <li class="clearfix">
+                                        <div class="lblText">Sản phẩm<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.ProductName</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Số lượng<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.Quantity</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Mô tả sản phẩm<span class="fr">:</span></div>
+                                        <div class="lblValue sc_mota">@Model.ProductDescription</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Trọng lượng<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.Weight gram</div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Giá sản phẩm<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.Value vnđ</div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                      
+                            <div class="clearfix">
+                                <div class="number fb">4</div>
+                                <div class="tt-number fb">Thông tin cước phí</div>
+                                <ul class="clearfix">
+                                    <li class="clearfix">
+                                        <div class="lblText">Cước dịch vụ<span class="fr">:</span></div>
+                                        <div class="lblValue">
+                                            @Model.ServiceFee đ
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="lblText">Dịch vụ cộng thêm<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.ServiceCode đ</div>
+                                    </li>
+
+                                    <li class="clearfix">
+                                        <div class="lblText">Tổng tiền thu hộ<span class="fr">:</span></div>
+                                        <div class="lblValue">@Model.TotalFee đ</div>
+                                    </li>
+                                </ul>
+                            </div>
+                       
+                    </div>
+                    <div class="box-infor bd-bl" style="width:49.8%;">
+
+                        <div class="bd-bt borderBottom clearfix">
+                            <div class="fl sc_chuky"><strong>Ngày giờ gửi</strong> <br />......./......./...........<br /><strong>Họ tên, chữ ký người gửi</strong></div>
+                            <div class="fl" style="width:49.8%;text-align:center;"><strong>Dấu BC chấp nhận</strong><br /><strong>Tên nhân viên chấp nhận</strong></div>
+                        </div>
+
+                        <div class="box-time">
+                            <div class="fl sc_chuky" style="height: 100px;"><strong>Ngày giờ phát</strong> <br />......./......./...........<br /><strong>Tên nhân viên phát</strong></div>
+                            <div class="fl" style="width:49.8%;text-align:center;"><strong>Họ và tên chữ ký người nhận</strong></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div>
+                <p><span class="fb">Lưu ý: </span> Vận đơn có giá trị khi có dấu của bưu cục chấp nhận</p>
+            </div>
+        </div>
+        <div class="page-break"></div>
+
+
+        <div class="print_button" onclick="window.print()"></div>
+
+    </div>
+
+</body>
+</html>

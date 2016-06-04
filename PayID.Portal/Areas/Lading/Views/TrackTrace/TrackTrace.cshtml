@@ -1,0 +1,50 @@
+﻿@model dynamic[]
+@{
+    Layout = null;
+}
+
+@if (ViewBag.lstJourney.Length > 0)
+{
+    for (int i = 0; i < ViewBag.lstJourney.Length; i++)
+    {
+        dynamic c = ViewBag.lstJourney[i];
+        <tr>
+            <td>@(i + 1)</td>
+            <td>@c.system_time_key.date.ToString().Substring(6, 2)/@c.system_time_key.date.ToString().Substring(4, 2)/@c.system_time_key.date.ToString().Substring(0, 4)</td>
+            <td>@c.system_time_key.time.ToString().Substring(0, 2):@c.system_time_key.time.ToString().Substring(2, 2):@c.system_time_key.time.ToString().Substring(4, 2)</td>
+            <td class="text-center">
+                <a class="btn btn-info btn-xs view-journey" data-id="@c._id">
+                    Xem <span class="glyphicon glyphicon-arrow-right"></span>
+                </a>
+                <input type="hidden" id="result" value="" />
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <input type="hidden" id="result" value="Dữ liệu lịch sử thay đổi vận đơn chưa được cập nhật."/>
+}
+<script>
+    $('.view-journey').click(function () {
+        var me = $(this);
+        var id = $(this).data("id");
+        //alert(id);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ListHistory")',
+            dataType: 'html',
+            data:
+                {
+                    p: id
+                },
+            success: function (result) {
+                $('#lisChangeHistory').html(result);
+            },
+            error: function (ex) {
+            }
+        });
+        return false;
+    });
+    
+</script>

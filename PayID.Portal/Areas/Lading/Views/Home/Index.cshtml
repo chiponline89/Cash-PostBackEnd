@@ -1,0 +1,481 @@
+﻿<div class="actions cm-sticky-scroll" data-ce-top="41" data-ce-padding="37" id="actions_panel">
+    <div class="title pull-left">
+        <h2 style="font-family:-webkit-body;" title="Dashboard">Quản lý Vận đơn</h2>
+    </div>
+</div>
+
+<div class="content ufa">
+    <div class="content-wrap">
+        <div class="row marginLR">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Mã vận đơn</label>
+                                <input id="LadingCode" class="form-control" type="text" name="LadingCode" placeholder="Mã vận đơn">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtDateRange">Từ ngày - Đến ngày</label>
+                                <div class="input-group">
+                                    <input class="form-control" name="from-date" id="txtDateRange" placeholder="Từ ngày - Đến ngày" type="text" readonly="readonly">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-pns" id="txtDateRange" onclick="common.RefreshDate('txtDateRange')" type="button"><i class="fa fa-refresh"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Trạng thái</label>
+                                @Html.DropDownList("Status", (IEnumerable<SelectListItem>)ViewBag.ListStatus, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Tỉnh chấp nhận</label>
+                            @Html.DropDownList("ProvinceAccept", (IEnumerable<SelectListItem>)ViewBag.ListProvince, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Mã khách hàng</label>
+                                <input id="Customer" class="form-control" type="text" name="CustomerCode" placeholder="Mã khách hàng" onchange="refreshStoreList()">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button onclick="Lading.SearchLading(1)" style="margin-top:20px;" class="btn btn-primary" id="btnSearchOrder"><i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row marginLR">
+            <div class="col-md-12">
+                <div id="listLading">
+                    <div class="table-responsive">
+                        <table id="tblcontent" class="table table-striped table-bordered datatables dataTable no-footer">
+                            <thead>
+                                <tr class="tr_head">
+                                    <td>STT</td>
+                                    <td>Mã vận đơn</td>
+                                    <td>Địa chỉ gửi</td>
+                                    <td>Địa chỉ nhận</td>
+                                    <td>Nội dung</td>
+                                    <td>Thông tin phí</td>
+                                    <td>Tiền thu hộ</td>
+                                    <td>Trạng thái</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="8">
+                                        <span>Chọn điều kiện Tìm kiếm để hiển thị dữ liệu</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DivToAppendPartialVoew"></div>
+
+<div class="modal fade" id="modal_lading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="modal_content_lading">
+        <div class="modal-content">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="panel-title" id="contactLabel"><span class="glyphicon glyphicon-info-sign"></span>Sửa vận đơn</h4>
+                </div>
+                <div id="content_lading">
+                </div>
+                <div class="panel-footer" style="margin-bottom:-14px;">
+                    <input type="button" id="edit_lading_mng" class="btn btn-success" value="Lưu" />
+                    <button style="float: right;" type="button" class="btn btn-default btn-close" data-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .btn-default .dropdown-menu {
+        color: #000 !important;
+    }
+
+        .btn-default .dropdown-menu li > a:hover,
+        .btn-default .dropdown-menu li > a:focus {
+            background-color: #000 !important;
+            color: #fff !important;
+        }
+
+    .btn-group-primary .dropdown-menu {
+        background-color: #3784c5 !important;
+    }
+
+        .btn-group-primary .dropdown-menu li > a:hover,
+        .btn-group-primary .dropdown-menu li > a:focus {
+            background-color: #428bca !important;
+        }
+
+    .btn-group-success .dropdown-menu {
+        background-color: #51b351 !important;
+    }
+
+        .btn-group-success .dropdown-menu li > a:hover,
+        .btn-group-success .dropdown-menu li > a:focus {
+            background-color: #5cb85c !important;
+        }
+
+    .btn-group-info .dropdown-menu {
+        background-color: white !important;
+    }
+
+        .btn-group-info .dropdown-menu li > a:hover,
+        .btn-group-info .dropdown-menu li > a:focus {
+            background-color: #5bc0de !important;
+        }
+    .btn-group-warning .dropdown-menu {
+        background-color: #efa640 !important;
+    }
+        .btn-group-warning .dropdown-menu li > a:hover,
+        .btn-group-warning .dropdown-menu li > a:focus {
+            background-color: #f0ad4e !important;
+        }
+
+    .btn-group-danger .dropdown-menu {
+        background-color: #d64742 !important;
+    }
+        .btn-group-danger .dropdown-menu li > a:hover,
+        .btn-group-danger .dropdown-menu li > a:focus {
+            background-color: #d9534f !important;
+        }
+</style>
+
+<script>
+    var startDate;
+    var endDate;
+    filter.initDateRange(filterConfig.dateRange, startDate, endDate);
+
+
+    $(function () {
+        $("#from-date").datepicker();
+        $("#to-date").datepicker();
+    });
+    var permission = $('#permission').val();
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1;
+    var lmm = today.getMonth()+1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+    if (lmm < 10) lmm = '0' + lmm;
+
+    var today = dd + '/' + mm + '/' + yyyy;
+    var last_month = dd + '/' + lmm + '/' + yyyy;
+    $('#from-date').val(last_month);
+    $('#to-date').val(today);
+
+    @*$(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("SetDate")',
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+                document.getElementById("from-date").defaultValue = data.v_from_date;
+                document.getElementById("to-date").defaultValue = data.v_to_date;
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+        });
+        return true;
+    });*@
+
+    $.ajax({
+        url: "/Metadata/Proxy/ListProvinces",
+        dataType: "json",
+        data: {
+        },
+        success: function (data) {
+            $('#accept_province').html('');
+             if($("#provinceType").val()!="" && $("#provinceType").val()!="00")
+               {
+                       jQuery.each(data, function (i, val) {
+                         
+                            listString = listString + "<option value='" + val.ProvinceCode + "'>" + val.ProvinceName + "</option>";
+                        
+                      });
+                     $('#accept_province').html(listString);
+
+             }else{
+
+                  var listString = "<option value=''>Tỉnh/thành phố</option>";
+                       jQuery.each(data, function (i, val) {
+
+                            listString = listString + "<option value='" + val.ProvinceCode + "'>" + val.ProvinceName + "</option>";
+
+                      });
+                     $('#accept_province').html(listString);
+              }
+            return;
+        }
+    });
+
+    $(function () {
+        $('.btn-primary').click(function (e) {
+            $('#loading').fadeIn();
+            return false;
+        });
+        $('#loading').click(function (e) {
+            $('#loading').fadeOut();
+            return false;
+        });
+    });
+
+    //Filter(1);
+
+
+    //  $(document).ready(function () {
+    function refreshPaging() {
+        $('#page-selection').bootpag({
+            total: $('#total_page').val(),
+            maxVisible: 10,
+        }).on("page", function (event, num) {
+            Filter(num);
+        });
+    }
+    @*function Filter(p) {
+        $.ajax({
+            beforeSend: function () {
+                $('.loading-element').show();
+            },
+            url: '@Url.Action("ListLading", "Home")',
+            type: 'POST',
+            dataType: 'html',
+            data: {
+                code: $("#txtMaVanDon").val(),
+                from_date: $("#from-date").val(),
+                to_date: $("#to-date").val(),
+                status: $("#status_mng").val(),
+                province_code: $("#accept_province").val(),
+                customercode:$("#Customer").val(),
+                page: p
+            },
+            success: function (data) {
+                $('.loading-element').hide();
+                $("#content").html(data);
+                if (p == 1) refreshPaging();
+                $("#lading_accept").click(function () {
+                    var retVal = confirm("Bạn có muốn duyệt vận đơn này?");
+                    var self = this;
+                    var pcode = self.getAttribute("code").valueOf();
+                    if (retVal) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("LadingAccept")',
+                            dataType: 'json',
+                            data: { code: pcode },
+                            success: function (data) {
+                                alert("Duyệt thành công");
+                                $('#confirm-cancel').modal('hide');
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                        });
+                    }
+                });
+
+            }
+
+        });
+
+    };
+    $('#search_key').click(function () {
+
+        Filter(1);
+    });*@
+
+
+    function DeleteProduct(_code) {
+
+        var retVal = confirm("Bạn có muốn xóa vận đơn này không?");
+        if (retVal == true) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("LadingBillDelete")',
+                dataType: 'json',
+                data: { code: _code },
+                success: function (data) {
+                    alert("xóa thành công");
+                    window.location.href = "@Url.Action("Index", "Home")";
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function CancelProduct(v_code) {
+         if(permission!="" && permission.indexOf("|3|")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng hủy vận đơn");
+             }else{
+        var retVal = confirm("Bạn có muốn hủy vận đơn này không?");
+        if (retVal == true) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("LadingCancel")',
+                dataType: 'json',
+                data: { code: v_code },
+                success: function (data) {
+                    alert("Hủy thành công");
+                    window.location.href = "@Url.Action("Index", "Home")";
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return true;
+        } else {
+            return false;
+        }
+      }
+    }
+
+    $('.js-checkall').click('click', function () {
+        $('#drop').removeAttr('style').removeClass('open');
+        var elemAll = $('.toggle-all');
+        var elem = $(this);
+        if (elem.attr('data-check') == 'all') {
+            if (elemAll.is(":checked")) {
+                elemAll.prop('checked', false);
+            }
+            else {
+                elemAll.prop('checked', true);
+            }
+            //
+            if (elemAll.is(":checked")) {
+                $('input.js-checkbox').prop('checked', true);
+            }
+            else {
+                $('input.js-checkbox').prop('checked', false);
+            }
+        }
+        else if (elem.attr('data-check') == 'accept') {
+            elemAll.prop('checked', false);
+            $('input.js-checkbox').prop('checked', false);
+            $('input[data-action="only"]').prop('checked', true);
+        }
+        else if (elem.attr('data-check') == 'non-accept') {
+            elemAll.prop('checked', false);
+            $('input.js-checkbox').prop('checked', false);
+            $('input[data-action="none"]').prop('checked', true);
+        }
+        BiuldLinkPrint();
+    });
+
+    function UpdateLading(v_code) {
+       if(permission!="" && permission.indexOf("|2|")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng sửa vận đơn");
+             }
+       else{
+        $.ajax({
+              type: 'POST',
+            url: '@Url.Action("LadingEdit")',
+            dataType: 'html',
+            data: {code:v_code},
+            beforeSend: function () {
+            $('.loading-element').show();
+            }
+        })
+  .success(function (result) {
+      $('.loading-element').hide();
+      $('#content_lading').html(result);
+      $('#modal_lading').modal('show');
+      var cuocCOD = "", cuocTHem = "", cuocchinh = "", cuoctongthuho = "";
+
+      //$.each(data, function (i, state) {
+      //    alert(state.CodFee);
+      //    cuocCOD += state.CodFee;
+      //    cuocTHem += state.ServiceFee;
+      //    cuocchinh += state.MainFee;
+      //    cuoctongthuho += state.TotalFee;
+      //});
+      //$("#idtthcuocchinh").html(cuocchinh);
+      //$("#idtthcuoccod").html(cuocCOD);
+      //$("#idtthcuocthem").html(cuocTHem);
+      //$("#tthtongthuho").html(cuoctongthuho);
+  })
+  .error(function (xhr, status) {
+      alert("Không thể load dữ liệu. Vui lòng thử lại sau!");
+  })
+    }
+    }
+    // Sửa dịch vụ
+    function getInfoService(idLading) {
+        $.ajax({
+            url: '@Url.Action("GetService")',
+            type: 'GET',
+            dataType: 'html',
+            data: { code: idLading },
+            beforeSend: function () {
+                $('.loading-element').show();
+            }
+        })
+ .success(function (result) {
+     $('.loading-element').hide();
+     $('#ModifyInfo-service-modal').html(result);
+ })
+ .error(function (xhr, status) {
+     alert("Không thể load dữ liệu. Vui lòng thử lại sau!");
+ })
+    }
+
+    function detailLading(idLading) {
+
+        $.ajax({
+            url: '/Home/DetailLadingBill',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            data: { code: idLading },
+            beforeSend: function () {
+                $('.loading-element').show();
+            }
+        })
+
+ .success(function (result) {
+     var idd = idLading;
+     $('.loading-element').hide();
+     window.location.href = "@Url.Action("DetailLadingBill", "Home", new { code = "catid" })".replace("catid", idLading);
+ })
+ .error(function (xhr, status) {
+     alert("Không thể load dữ liệu. Vui lòng thử lại sau!");
+ })
+    }
+    function Invandon(idLading) {
+        $("#preview-from-name").html(idLading);
+    }
+
+</script>
+

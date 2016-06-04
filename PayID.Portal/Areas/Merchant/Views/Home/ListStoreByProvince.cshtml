@@ -1,0 +1,123 @@
+﻿@{
+    Layout = null;
+}
+@if (ViewBag.StoreList.Length > 0)
+{
+    for (int i = 0; i < ViewBag.StoreList.Length; i++)
+    {
+        dynamic c = ViewBag.StoreList[i];
+        <tr>
+            <td>@(i + 1)</td>
+            <td>@c.StoreCode</td>
+            <td>@c.StoreName</td>
+            <td>@c.Address</td>
+            <td>@c.DistrictName</td>
+            <td>@c.ProvinceName</td>
+            <td>@c.ManagerName</td>
+            <td>@c.ManagerMobile</td>           
+            <td class="text-center">
+                <a class="btn btn-info btn-xs edit-store" data-id="@c._id" data-storename="@c.StoreName" data-managername="@c.ManagerName" data-managermobile="@c.ManagerMobile" data-manageremail="@c.ManagerEmail" data-userid="@c.UserId" data-address="@c.Address" data-provincecode="@c.ProvinceCode" data-districtcode="@c.DistrictCode" data-pos="@c.PostCode" href="#">
+                    <span class="glyphicon glyphicon-edit"></span>Sửa
+                </a>
+                <a class="btn btn-danger btn-xs del-store-mng" data-idx="@c._id" href="#">
+                    <span class="glyphicon glyphicon-remove"></span> Xóa
+                </a>
+
+            </td>
+        </tr>
+    }
+}
+<script>
+    $(document).ready(function () {
+        $('.edit-store').click(function () {
+         if(permission!="" && permission.indexOf("14")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức sửa kho");
+             }
+          else{
+            var v_p = $(this).data("provincecode");
+            var v_d = $(this).data("districtcode");
+            var v_b = $(this).data("pos");
+            $(".info-result-mng").hide();
+            $('#add_more_store').show();
+            document.getElementById("store_id").value = $(this).data("id");
+            document.getElementById("store_name").value = $(this).data("storename");
+            document.getElementById("store_manager_name").value = $(this).data("managername");
+            document.getElementById("store_manager_mobile").value = $(this).data("managermobile");
+            document.getElementById("store_manager_email").value = $(this).data("manageremail");
+            document.getElementById("store_to_address").value = $(this).data("address");
+            document.getElementById("drop_province_store_mng").value = v_p;
+            BindDistrictByProvinceCode(v_p, v_d);
+            BindPosByDistrictCode(v_d, v_b);
+            document.getElementById("drop_customer").value = $(this).data("userid");
+          }
+        });
+
+        function BindDistrictByProvinceCode(p,d) {
+            $.ajax({
+                url: "/Metadata/Proxy/ListDistricts",
+                dataType: "json",
+                data: { provinceCode: p },
+                success: function (data) {
+                    jQuery.each(data, function (i, val) {
+                        $('#drop_district_store_mng').html($('#drop_district_store_mng').html() +
+                            "<option value='" + val.DistrictCode + "'>" + val.DistrictName + "</option>");
+                    });
+                    document.getElementById("drop_district_store_mng").value = d;
+                }
+            });
+        }
+        function BindPosByDistrictCode(d,b) {
+            $("#drop_pos_store_mng").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetPosJson")',
+                dataType: 'json',
+                data: { DistrictId: d },
+                success: function (states) {
+                    $.each(states, function (i, state) {
+                        $("#drop_pos_store_mng").append('<option value="' + state.Value + '">' + state.Value + '-' + state.Text + '</option>');
+                    });
+                    //alert(b);
+                    document.getElementById("drop_pos_store_mng").value = b;
+                },
+                error: function (ex) {
+                    $("#drop_pos_store_mng").append('<option>' + "Bưu cục" + '</option>');
+                }
+            });
+            return false;
+        }
+
+
+        $('.del-store-mng').click(function () {
+            var idx = $(this).data("idx");
+
+         if(permission!="" && permission.indexOf("20")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng xóa kho");
+             }
+          else{
+      var ret = confirm("Bạn có chắc chắn muốn xóa thông tin kho này?");
+            if (ret) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("StoreDeleteMng")',
+                    dataType: 'json',
+                    data:
+                        {
+                            p: idx
+                        },
+                    success: function (data) {
+                        alert("Xóa kho hàng thành công");
+                        StoreByProvince();
+                    },
+                    error: function (ex) {
+                    }
+                });
+            }
+            return false;
+          }
+        });
+    });
+</script>
+

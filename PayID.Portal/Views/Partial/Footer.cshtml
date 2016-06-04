@@ -1,0 +1,127 @@
+﻿
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href=@Url.Content("~/")>
+                <span style="color: #004a91;font-weight:bold; font-size:18px;">CASH</span><span style="color: #f99d1c; font-weight: bold; font-size: 18px;">@@</span><span style="color: #004a91; font-weight: bold; font-size: 18px;">POST</span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href=@Url.Content("/")>Trang chủ</a></li>
+                @if (Request.IsAuthenticated && (dynamic)Session["profile"] != null)
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Điều tin <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Content("~/ServiceRequest/Request/CreateRequest")">Tạo tin</a></li>
+                            <li><a href="@Url.Content("~/ServiceRequest/Request/List?status=C0")">Tìm kiếm tin</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a tabindex="-1" href="#" class="dropdown-toggle" data-toggle="dropdown">Vận đơn<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Content("~/Lading/Home/Index")">Quản lý vận đơn</a></li>
+                            <li><a href="@Url.Content("~/Lading/ImportLading/Index")">Tạo vận đơn theo file</a></li>
+                            <li><a href="@Url.Content("~/Lading/TrackTrace/Index")">Lịch sử vận đơn</a></li>
+                            <li><a href="@Url.Content("~/Lading/TrackTrace/LadingTrackTrace")">Tìm kiếm</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quản lý doanh nghiệp <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Content("~/Merchant/Home/Index")">Danh sách doanh nghiệp</a></li>
+                            <li><a href="@Url.Content("~/Merchant/Home/StoreManagement")">Quản lý kho hàng</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a tabindex="0" data-toggle="dropdown" data-submenu="">Báo cáo<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a tabindex="0" href="#" style="font-weight:bold;">Thống kê đơn hàng</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=tkvdtt")">Theo tên Khách hàng</a></li>
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=tkvdtg")">Điều tin thu gom</a></li>
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=tkvdph")">Đã được phát hành</a></li>
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#" style="font-weight:bold;">Báo cáo quản lý vận đơn</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=vd")">Chi tiết vận đơn</a></li>
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=thvd")">Tổng hợp vận đơn</a></li>
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#" style="font-weight:bold;">Báo cáo quản lý thanh toán</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=thu")">Chi tiết giao dịch thanh toán</a></li>
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=thuth")">Tổng hợp giao dịch thanh toán</a></li>
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#" style="font-weight:bold;">Báo cáo quản lý đơn hàng</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=dh")">Chi tiết quản lý đơn hàng</a></li>
+                                    <li><a href="@Url.Content("~/Report/Home/Index?opt=dhth")">Tổng hợp quản lý đơn hàng</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    if (Session["profile"] != null && ((dynamic)Session["profile"]).unit_code.ToString().Length == 2)
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cấu hình đơn vị<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Content("~/Metadata/Organization/")">Danh sách đơn vị</a></li>
+                                <li><a href="@Url.Content("~/Systems/Setting/WorkflowUnit")">Cấu hình Cấp, đơn vị xử lý</a></li>
+                                <li><a href="@Url.Content("~/Systems/Setting/Workflow")">Cấu hình Luồng xử lý</a></li>
+                            </ul>
+                        </li>
+                        <li>
+
+                            <a href="@Url.Content("~/Systems/Decentral/")">Phân quyền</a>
+                            @*<ul class="dropdown-menu">
+                                    <li><a href="@Url.Content("~/Systems/Decentral/")">Phân quyền theo cấp đơn vị</a></li>
+                                    <li><a href="@Url.Content("~/Systems/Decentral/")">Phân quyền theo người dùng</a></li>
+
+                                </ul>*@
+                        </li>
+                    }
+
+                    <li class="dropdown">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @*<li><a href="#" id="changepass">Đổi mật khẩu</a></li>*@
+                            <li>
+                                <a href="#" onclick="SignOut()">Thoát</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @*<li>
+                            <a href="#" onclick="SignOut()"><i class="icon-signout"></i></a>
+                        </li>
+
+                        <li>
+                            <a href=#>@User.Identity.Name</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="SignOut()">Thoát</a>
+                        </li>*@
+                }
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>

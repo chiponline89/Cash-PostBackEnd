@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GET_MONEY_STATE_BY_ITEM">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ItemCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATE_BY_ITEMResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GET_MONEY_STATE_BY_ITEMResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATES_BY_PACKAGE">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PackageCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATES_BY_PACKAGEResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GET_MONEY_STATES_BY_PACKAGEResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATES_BY_LIST">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATES_BY_LISTResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GET_MONEY_STATES_BY_LISTResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATE_BY_ITEM_2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ItemCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATE_BY_ITEM_2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GET_MONEY_STATE_BY_ITEM_2Result">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATES_BY_LIST_2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GET_MONEY_STATES_BY_LIST_2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GET_MONEY_STATES_BY_LIST_2Result">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GET_MONEY_STATE_BY_ITEMSoapIn">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATE_BY_ITEM" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATE_BY_ITEMSoapOut">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATE_BY_ITEMResponse" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATES_BY_PACKAGESoapIn">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATES_BY_PACKAGE" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATES_BY_PACKAGESoapOut">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATES_BY_PACKAGEResponse" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATES_BY_LISTSoapIn">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATES_BY_LIST" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATES_BY_LISTSoapOut">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATES_BY_LISTResponse" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATE_BY_ITEM_2SoapIn">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATE_BY_ITEM_2" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATE_BY_ITEM_2SoapOut">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATE_BY_ITEM_2Response" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATES_BY_LIST_2SoapIn">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATES_BY_LIST_2" />
+  </wsdl:message>
+  <wsdl:message name="GET_MONEY_STATES_BY_LIST_2SoapOut">
+    <wsdl:part name="parameters" element="tns:GET_MONEY_STATES_BY_LIST_2Response" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="GET_MONEY_STATE_BY_ITEM">
+      <wsdl:input message="tns:GET_MONEY_STATE_BY_ITEMSoapIn" />
+      <wsdl:output message="tns:GET_MONEY_STATE_BY_ITEMSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_PACKAGE">
+      <wsdl:input message="tns:GET_MONEY_STATES_BY_PACKAGESoapIn" />
+      <wsdl:output message="tns:GET_MONEY_STATES_BY_PACKAGESoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_LIST">
+      <wsdl:input message="tns:GET_MONEY_STATES_BY_LISTSoapIn" />
+      <wsdl:output message="tns:GET_MONEY_STATES_BY_LISTSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATE_BY_ITEM_2">
+      <wsdl:input message="tns:GET_MONEY_STATE_BY_ITEM_2SoapIn" />
+      <wsdl:output message="tns:GET_MONEY_STATE_BY_ITEM_2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_LIST_2">
+      <wsdl:input message="tns:GET_MONEY_STATES_BY_LIST_2SoapIn" />
+      <wsdl:output message="tns:GET_MONEY_STATES_BY_LIST_2SoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GET_MONEY_STATE_BY_ITEM">
+      <soap:operation soapAction="http://tempuri.org/GET_MONEY_STATE_BY_ITEM" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_PACKAGE">
+      <soap:operation soapAction="http://tempuri.org/GET_MONEY_STATES_BY_PACKAGE" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_LIST">
+      <soap:operation soapAction="http://tempuri.org/GET_MONEY_STATES_BY_LIST" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATE_BY_ITEM_2">
+      <soap:operation soapAction="http://tempuri.org/GET_MONEY_STATE_BY_ITEM_2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_LIST_2">
+      <soap:operation soapAction="http://tempuri.org/GET_MONEY_STATES_BY_LIST_2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GET_MONEY_STATE_BY_ITEM">
+      <soap12:operation soapAction="http://tempuri.org/GET_MONEY_STATE_BY_ITEM" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_PACKAGE">
+      <soap12:operation soapAction="http://tempuri.org/GET_MONEY_STATES_BY_PACKAGE" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_LIST">
+      <soap12:operation soapAction="http://tempuri.org/GET_MONEY_STATES_BY_LIST" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATE_BY_ITEM_2">
+      <soap12:operation soapAction="http://tempuri.org/GET_MONEY_STATE_BY_ITEM_2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GET_MONEY_STATES_BY_LIST_2">
+      <soap12:operation soapAction="http://tempuri.org/GET_MONEY_STATES_BY_LIST_2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://172.16.132.82:1601/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://172.16.132.82:1601/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

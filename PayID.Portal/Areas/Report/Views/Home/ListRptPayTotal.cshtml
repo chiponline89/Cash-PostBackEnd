@@ -1,0 +1,298 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 0;
+    }
+
+    body {
+        line-height: 2;
+    }
+</style>
+<input type="hidden" id="total_page" value="@ViewBag.total_page" />
+<input type="hidden" id="total_item" value="@ViewBag.total_item" />
+<input type="hidden" value="@ViewBag.Page" id="currentPage" />
+@*@if (ViewBag.listLading.Count > 0)
+    {*@
+<div>
+    <div style="border-bottom: dashed 1px #000; height: 30px; margin-bottom:20px;">&nbsp;</div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td colspan="9" align="right">
+                <a href="@Url.Action("ReportTotalPay", new { id = "PDF" })" title="Xuất PDF"><img src="~/Content/img/pdf.png" /></a>
+                <a href="@Url.Action("ReportTotalPay", new { id = "Excel" })" title="Xuất Excel"> <img src="~/Content/img/excel.png" /></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" valign="top" width="80">
+                <div style="width: auto; font-weight: bold;"><label>Tổng công ty bưu điện Việt Nam</label></div>
+                <div>
+                    <img src="~/Content/img/Logo_Cash@Post11.png" />
+                </div>
+            </td>
+            <td colspan="6" align="left" valign="top" style="padding-left:160px;">
+                <label style="font-size: 16px; font-weight:bold;">Báo cáo tổng hợp giao dịch thanh toán</label>
+                <div style="font-size: 13px; padding-left:10px;">
+                    Từ ngày &nbsp;<span id="preview-from-date">
+                        .....
+                    </span> đến ngày <span id="preview-to-date">
+                        .....
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr style="font-weight: bold;">
+            <td colspan="3" align="right" width="420">
+                Sản lượng
+            </td>
+            <td align="right">
+                Số tiền thu hộ
+            </td>
+            <td align="right">
+                Cước vận chuyển
+            </td>
+            <td align="right">
+                Cước DVCT
+            </td>
+            <td align="right">
+                Cước thu hộ
+            </td>
+            <td align="right">
+                Tổng phỉ
+            </td>
+            <td align="right">
+                Tổng tiền thu
+            </td>
+        </tr>
+        <tr>
+            <td align="left" width="90">I.Tổng hợp</td>
+
+            @if (ViewBag.sum_value > 0)
+            {
+                <td colspan="2" align="right" width="330">
+                    @ViewBag.sum_number.ToString("N0")
+                </td>
+            }
+            else
+            {
+                <td colspan="5" align="right" width="330">
+                    -
+                </td>
+            }
+            @if (ViewBag.sum_value > 0)
+            {
+                <td align="right">
+                    @ViewBag.sum_value.ToString("N0")
+                </td>
+            }
+            else
+            {
+                <td align="right">
+                    -
+                </td>
+            }
+            @if (ViewBag.sum_main_fee > 0)
+            {
+                <td align="right">
+                    @ViewBag.sum_main_fee.ToString("N0")
+                </td>
+            }
+            else
+            {
+                <td align="right">
+                    -
+                </td>
+            }
+            @if (ViewBag.sum_service_fee > 0)
+            {
+                <td align="right">
+                    @ViewBag.sum_service_fee.ToString("N0")
+                </td>
+            }
+            else
+            {
+                <td align="right">
+                    -
+                </td>
+            }
+            @if (ViewBag.cod_fee > 0)
+            {
+                <td align="right">
+                    @((ViewBag.cod_fee).ToString("N0"))
+                </td>
+            }
+            else
+            {
+                <td align="right">
+                    -
+                </td>
+            }
+            @if (ViewBag.sum_total_fee > 0)
+            {
+                <td align="right">
+                    @ViewBag.sum_total_fee.ToString("N0")
+                </td>
+            }
+            else
+            {
+                <td align="right">
+                    -
+                </td>
+            }
+            @if (ViewBag.sum_total > 0)
+            {
+                <td align="right">
+                    @ViewBag.sum_total.ToString("N0")
+                </td>
+            }
+            else
+            {
+                <td align="right">
+                    -
+                </td>
+            }
+        </tr>
+        <tr>
+            <td colspan="9" align="left">
+                II.Chi tiết
+            </td>
+        </tr>
+        <tr style="font-weight: bold;">
+            <td align="center" style="font-size: 13px;" width="30">TT</td>
+            <td align="center" style="font-size: 13px;" width="30">
+                Ngày
+            </td>
+            <td align="right" style="font-size: 13px;" width="200">
+                Sản lượng
+            </td>
+            <td align="right" style="font-size: 13px;">
+                Tiền thu hộ
+            </td>
+            <td align="right" style="font-size: 13px;">
+                Cước vận chuyển
+            </td>
+            <td align="right" style="font-size: 13px;">
+                Cước DVCT
+            </td>
+            <td align="right" style="font-size: 13px;">
+                Cước thu hộ
+            </td>
+            <td align="right" style="font-size: 13px;">
+                Tổng phí
+            </td>
+            <td align="right" style="font-size: 13px;">
+                Tổng tiền thu
+            </td>
+        </tr>
+        @for (int i = 0; i < ViewBag.listLading.Count; i++)
+        {
+            <tr>
+                <td align="center">
+                    @(i + 1 + @ViewBag.Page)
+                </td>
+                <td align="center" style="font-size: 12px;">
+                    @ViewBag.listLading[i].TRANS_DATE.ToString()
+                </td>
+                @if (ViewBag.listLading[i].QUANTITY > 0)
+                {
+                    <td align="right" style="font-size: 12px;">
+                        @long.Parse(ViewBag.listLading[i].QUANTITY.ToString()).ToString("N0")
+                    </td>
+                }
+                else
+                {
+                    <td align="right" style="font-size: 12px;">
+                        -
+                    </td>
+                }
+                @if (ViewBag.listLading[i].VALUE > 0)
+                {
+                    <td align="right" style="font-size: 12px;">
+                        @long.Parse(ViewBag.listLading[i].VALUE.ToString()).ToString("N0")
+                    </td>
+                }
+                else
+                {
+                    <td align="right" style="font-size: 12px;">
+                        -
+                    </td>
+                }
+                @if (ViewBag.listLading[i].MAIN_FEE > 0)
+                {
+                    <td align="right" style="font-size: 12px;">
+                        @long.Parse(ViewBag.listLading[i].MAIN_FEE.ToString()).ToString("N0")
+                    </td>
+                }
+                else
+                {
+                    <td align="right" style="font-size: 12px;">
+                        -
+                    </td>
+                }
+                @if (ViewBag.listLading[i].SERVICE_FEE > 0)
+                {
+                    <td align="right" style="font-size: 12px;">
+                        @long.Parse(ViewBag.listLading[i].SERVICE_FEE.ToString()).ToString("N0")
+                    </td>
+                }
+                else
+                {
+                    <td align="right" style="font-size: 12px;">
+                        -
+                    </td>
+                }
+                @if (ViewBag.listLading[i].COD_FEE > 0)
+                {
+                    <td align="right" style="font-size: 12px;">
+                        @long.Parse(ViewBag.listLading[i].COD_FEE.ToString()).ToString("N0")
+                    </td>
+                }
+                else
+                {
+                    <td align="right" style="font-size: 12px;">
+                        -
+                    </td>
+                }
+                @if ((ViewBag.listLading[i].MAIN_FEE + ViewBag.listLading[i].SERVICE_FEE + ViewBag.listLading[i].COD_FEE) > 0)
+                {
+                    <td align="right" style="font-size: 12px;">
+                        @long.Parse((ViewBag.listLading[i].MAIN_FEE + ViewBag.listLading[i].SERVICE_FEE + ViewBag.listLading[i].COD_FEE).ToString()).ToString("N0")
+                    </td>
+                }
+                else
+                {
+                    <td align="right" style="font-size: 12px;">
+                        -
+                    </td>
+                }
+                @if ((ViewBag.listLading[i].VALUE + ViewBag.listLading[i].MAIN_FEE + ViewBag.listLading[i].SERVICE_FEE + ViewBag.listLading[i].COD_FEE) > 0)
+                {
+                    <td align="right" style="font-size: 12px;">
+                        @long.Parse((ViewBag.listLading[i].AMOUNT_NO_COD).ToString()).ToString("N0")
+                    </td>
+                }
+                else
+                {
+                    <td align="right" style="font-size: 12px;">
+                        -
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+</div>
+@*}
+    else
+    {
+        <div style="padding:10px 0; font-size:15px; color:red;" align="center">Dữ liệu tìm kiếm không tồn tại hoặc chưa chọn điều kiện tìm kiếm.</div>
+    }*@
+<script>
+    $(document).ready(function () {
+        $('#preview-from-date').html($('#f_date').val());
+        $('#preview-to-date').html($('#t_date').val());
+    })
+</script>
+

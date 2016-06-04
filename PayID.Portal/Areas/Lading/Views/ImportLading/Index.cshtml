@@ -1,0 +1,834 @@
+﻿@using MvcPaging
+@using System.Web.Mvc
+@Model Dynamic
+@*@section TopMenu{
+
+        <li class="active"><a href="#">Trang chủ</a></li>
+        <li><a href="#about">Danh mục</a></li>
+        <li><a href="#contact">Thông tin Đại lý</a></li>
+    }*@
+
+@{
+    ViewBag.Title = "Tạo vận đơn theo File";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="actions cm-sticky-scroll" data-ce-top="41" data-ce-padding="37" id="actions_panel">
+    <div class="title pull-left">
+        <h2 style="font-family:-webkit-body;" title="Dashboard">Tạo vận đơn theo File</h2>
+        <input type="hidden" id="View" value="ImportLading" />
+    </div>
+</div>
+
+<div class="content ufa">
+    <div class="content-wrap">
+        <form id="ImportLading">
+            <div class="row marginLR">
+                <div class=" col-md-6">
+                    <div class="alert alert-info">
+                        <span class="label"> <span class="glyphicon glyphicon-info-sign"></span> Thông tin khách hàng</span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Mã Khách hàng</label>
+                                    <div class="input-group">
+                                        <input type="hidden" id="CustomerCode" />
+                                        <input type="text" id="CustomerCodeSearch" class="form-control validate[required]" placeholder="Mã khách hàng" onchange="Shipment.CustomerChange()" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-pns" id="btnSearchCus" onclick="Customer.GetCustomer()" type="button"><i class="fa fa-fw fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="CustomerName">Tên Khách hàng&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                    <input type="text" disabled class="form-control validate[required]" placeholder="Tên khách hàng" id="CustomerName" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="CustomerShortName">Tên viết tắt</label>
+                                    <input type="text" class="form-control" disabled placeholder="Tên viết tắt" id="CustomerShortName" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="CustomerMobile">Số điện thoại&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                    <input type="text" class="form-control" disabled placeholder="Số điện thoại" id="CustomerMobile" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <textarea id="PickUpStreet" class="form-control" disabled></textarea>
+                                <input type="hidden" id="PickUpAddress" />
+                                <input type="hidden" id="PickUpProvince" />
+                                <input type="hidden" id="PickUpDistrict" />
+                                <input type="hidden" id="PickUpWard" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="StoreId">Kho</label>
+                                    <select id="StoreId" class="form-control">
+                                        <option value="">---Kho hàng---</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row marginLR">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <form method="POST" id="fileupload" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                        <div class="panel-body panel-ajax-placeholder" role="content">
+                            <div id="img_upload" style="padding: 15px; margin-top: 15px; margin-bottom: 15px; display: block; background: rgb(241, 241, 241);">
+
+                                <style type="text/css">
+                                    input[type="file"] {
+                                        display: none;
+                                    }
+
+                                    .custom-file-upload {
+                                        border: 1px solid #ccc;
+                                        display: inline-block;
+                                        padding: 6px 12px;
+                                        cursor: pointer;
+                                    }
+                                </style>
+
+                                <div id="fid_upload">
+                                    <input type="hidden" id="FileName" />
+                                    <div>
+                                        <div id="upfile">
+                                            <label for="file-upload" class="custom-file-upload btn-primary" id="lbupfile">
+                                                <i class="fa fa-cloud-upload"></i> Tải File lên...
+                                            </label>
+                                            <input id="file-upload" type="file" class="validate[required]" accept="application/vnd.ms-excel" />
+                                            <span id="file_error"></span>
+                                        </div>
+                                    </div>
+                                    <div id="images-to-upload" style="margin:0px 0px 0px 15px;">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                        <div id="contentImport">
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var arrLading = [];
+    var fileCollection;
+    $("#file-upload").on('change', function (e) {
+        $("#contentImport").html("");
+        arrShipment = [];
+        if (CheckFileType()) {
+            var files = e.target.files;
+
+            $.each(files, function (i, file) {
+                fileCollection = new Array();
+                fileCollection.push(file);
+
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.fileName = file.name;
+                reader.size = file.size;
+                console.log(file);
+
+                reader.onload = function (e) {
+
+                    console.log(e);
+
+                    @*var template = '<form action="@Url.Action("Uploads", "File")">' +*@
+                    var template = '<div class="row">' +
+                                            '<div class="col-md-3" style="margin:auto;">' +
+                                                '<label>' + e.target.fileName + '</label>' +
+                                            '</div>' +
+                                            '<div style="margin:0px 10px 0px 0px;" class="col-md-6">';
+                    if (CheckFileSize()) {
+                        template += '<div class="progress progress-striped active" style="height:30px;">' +
+                                                    '<div class="progress-bar progress-bar-info progress-bar-striped" style="width:100%">Sẵn sàng...</div>' +
+                                                '</div>';
+
+                        $("#fileupload").submit();
+                    }
+                    else {
+                        template += '<div class="progress progress-striped active" style="height:30px;">' +
+                                                    '<div class="progress-bar progress-bar-danger progress-bar-striped" style="width:100%">' + messageFileSize + '</div>' +
+                                                '</div>';
+                    }
+                    //'<button class="btn btn-sm btn-info upload">Upload</button>' +
+                    //'<a href="#" class="btn btn-sm btn-danger remove">Remove</a>' +
+                    template += '</div></div>';
+                    //'</form>';
+
+
+                    $("#images-to-upload").html(template);
+                };
+            })
+        }
+    });
+
+
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var index = $(this).index();
+
+        var formdata = new FormData($(this)[0]);
+
+        console.log(index);
+
+        formdata.append('image', fileCollection[0]);
+        var request = new XMLHttpRequest();
+
+        request.upload.addEventListener('progress', function (e) {
+            var percent = Math.round(e.loaded / e.total * 100);
+            $('.progress-bar').removeClass("progress-bar-info").removeClass("progress-bar-striped").addClass("progress-bar-success").html("Đang tải Ảnh lên...");
+            $('.progress-bar').width(percent + '%').html(percent + '%');
+        });
+
+        request.open("Post", "@Url.Action("Uploads", "ImportLading")", true);
+        request.send(formdata);
+
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                if (request.responseText == null || request.responseText == undefined || request.responseText == "") {
+                    $('.progress-bar').addClass('progress-bar-danger').html('Tải File lên thất bại...');
+
+                    new PNotify({
+                        title: "Lỗi",
+                        text: "Có lỗi trong quá trình tải File lên.",
+                        type: 'error',
+                        styling: 'fontawesome'
+                    });
+                }
+                else {
+                    var foo = JSON.parse(request.responseText);
+                    if (foo.Mes.split('|')[0] == "00" || foo.Mes.split('|')[0] == "01") {
+                        console.log(foo);
+                        var FileName = foo.Mes.split('|')[2];
+                        $("#FileName").val(FileName);
+                        var html = "<br /><div class='row'><div class='col-sm-6' align='left'><button id='btnImport' onclick='Updata()' class='btn btn-primary'><i class='fa fa fa-cloud-upload'></i> Import</button></div></div>";
+                        html += "<div class='table-responsive' style='margin:0px 0px 15px 0px;'>";
+                        html += "<table class='table table-striped table-bordered datatables dataTable no-footer'>";
+                        html += "<thead>";
+                        html += "<tr class='tr_head'>";
+                        html += "<td>#</td>";
+                        html += "<td>Thông tin Người nhận</td>";
+                        html += "<td>Thông tin hàng hóa</td>";
+                        html += "</tr>";
+                        html += "</thead>";
+                        html += "<tbody class='tbody'>";
+                        $.each(foo.Value, function (i, v) {
+
+                            var checkMobile = "error-check";
+                            var checkNameReceiver = "error-check";
+                            var CheckWeight = "error-check";
+                            var CheckAddress = "error-check";
+                            var rowError = "trError";
+                            var Check = false;
+                            var isError = 0;
+                            //////////////////////////////////////RECEIVER_PHONE/////////////////////////////////////////////////
+                            if (v.ReceiverMobile != null && v.ReceiverMobile != undefined && v.ReceiverMobile != '') {
+                                var arrPhoneNumber = v.ReceiverMobile.replace(';', ',').split(',');
+
+                                $.each(arrPhoneNumber, function (index, value) {
+                                    if (!common.IsMobileNumber(value.trim())) {
+                                        isError++;
+                                    }
+                                })
+                            }
+                            else {
+                                isError++;
+                            }
+                            if (isError == 0) {
+
+                                checkMobile = "";
+                            }
+                            ////////////////////////////////////RECEIVER_NAME///////////////////////////////////////////////////
+                            if (v.ReceiverName == null || v.ReceiverName == undefined || v.ReceiverName.trim() == '') {
+                                isError++;
+                            }
+                            else {
+                                checkNameReceiver = "";
+                            }
+                            ///////////////////////////////////ADDRESS////////////////////////////////////////////////////
+                            if (v.ReceiverAddress == null || v.ReceiverAddress == undefined || v.ReceiverAddress.trim() == '') {
+                                isError++;
+                            }
+                            else {
+                                CheckAddress = "";
+                            }
+                            ///////////////////////////////////WEIGHT////////////////////////////////////////////////////
+                            if (!$.isNumeric(v.Weight)) {
+                                v.Weight = 0;
+                                isError++;
+                            }
+                            else {
+                                CheckWeight = "";
+                            }
+                            ///////////////////////////////////TOTAL_AMOUNT////////////////////////////////////////////////////
+                            if (!$.isNumeric(v.Value)) {
+                                v.TotalAmount = 0;
+                                isError++;
+                            }
+                            else {
+                                CheckWeight = "";
+                            }
+                            ///////////////////////////////////////////////////////////////////////////////////////
+                            if (isError == 0) {
+                                rowError = "";
+                                Check = true;
+                            }
+
+
+                            arrLading.push({
+                                Id: v._id,
+                                Weight: v.Weight,
+                                Quantity: v.Quantity,
+                                Receiver_Name: v.ReceiverName,
+                                Receiver_Street: v.ReceiverAddress,
+                                Receiver_Address: v.ReceiverAddress,
+                                Receiver_Mobile: v.ReceiverMobile,
+                                ReceiverProvinceId: v.ToProvinceCode,
+                                ReceiverDistrictId: v.ToDistrictCode,
+                                ReceiverWardId: v.ToWardCode,
+                                ProductName: v.ProductName,
+                                ProductDescription: v.ProductDescription,
+                                ServiceCode: v.ServiceCode,
+                                Type: v.Type,
+                                Value: v.Value,
+                                CollectValue: v.CollectValue,
+                                FileName: FileName,
+                                Height: v.Height,
+                                Channel: "FILE",
+                                Check: Check,
+                                IsConsorShip: true
+                            });
+
+                            html += "<tr id='row" + v.Id + "' class='" + rowError + "'>";
+                            //html += "<td id='colCK-" + v.Id + "'><input type='checkbox' id='ck-" + v.Id + "' /></td>";
+                            html += "<td id='colSTT-" + v.Id + "'>" + (i + 1) + "</td>";
+                            html += "<td id='colReceiverInfo-" + v.Id + "'><span class='" + checkNameReceiver + "'>Họ và tên: " + v.ReceiverName + "</span></br><span class='" + checkMobile + "'>Số điện thoại: " + v.ReceiverMobile + "</span></br><span class='" + CheckAddress + "'>Địa chỉ: " + ((v.ReceiverAddress == null || v.ReceiverAddress == undefined || v.ReceiverAddress == '') ? '...' : v.ReceiverAddress) + ((v.ToProvinceName == null || v.ToProvinceName == undefined || v.ToProvinceName == '') ? '' : ' (' + v.ToProvinceName + ')') + "</span></td>";
+                            html += "<td id='colProductName-" + v.Id + "'>";
+                            //if (v.TrackingCode != undefined && v.TrackingCode != null && v.TrackingCode != '')
+                            //{
+                            //    html += "<span class='btn btn-xs btn-primary'>Mã tham chiếu: " + v.TrackingCode + "</span></br>";
+                            //}
+                            html += "<span>" + v.ProductName + "</span></br><span class='" + CheckWeight + "'>Số lượng: " + (v.Quantity == 0 ? '...' : v.Quantity) + "</span></br><span>Cân nặng: " + (v.Weight == 0 ? '...' : v.Weight) + " gram" + (v.Value > 0 ? "</br><span>Giá trị: " + v.Value + " VNĐ</span>" : "") + (v.CollectValue > 0 ? "</br><span>Tiền thu hộ: " + v.CollectValue + " VNĐ</span>" : "") + "</span>";
+                            html += "</td>";
+                            html += "</tr>";
+                        });
+
+                        html += "</tbody>";
+                        html += "</table>";
+                        html += "</div>";
+
+                        $("#contentImport").html(html);
+
+
+                        $('.progress-bar').addClass('progress-bar-success').html('Đọc file thành công...');
+
+                        if (foo.Mes.split('|')[0] == "00") {
+                            new PNotify({
+                                title: "Thành công",
+                                text: foo.Mes.split('|')[1],
+                                type: 'success',
+                                styling: 'fontawesome'
+                            });
+
+                        }
+                        else {
+                            new PNotify({
+                                title: "Thông báo",
+                                text: foo.Mes.split('|')[1],
+                                type: 'warning',
+                                styling: 'fontawesome'
+                            });
+                        }
+                        $("#FileName").val(foo.Mes.split('|')[2])
+
+                    }
+                    else {
+                        $('.progress-bar').addClass('progress-bar-danger').html(foo.Mes.split('|')[1]);
+                        new PNotify({
+                            title: "Lỗi",
+                            text: foo.Mes.split('|')[1],
+                            type: 'error',
+                            styling: 'fontawesome'
+                        });
+                    }
+                }
+            }
+        };
+    });
+
+    function CheckFileType() {
+        var allowedFiles = [".xls", ".xlsx"];
+        var fileUpload = $("#file-upload");
+        var lblError = $("#file_error");
+        console.log(fileUpload.val().toLowerCase());
+        var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+        if (!regex.test(fileUpload.val().toLowerCase())) {
+            $("#file_error").css("color", "#FF0000");
+            lblError.html("Bạn chỉ được up file " + " <b>" + allowedFiles.join(' ; ') + "</b>");
+            new PNotify({
+                title: "Cảnh báo",
+                text: "Bạn chỉ được up file " + " <b>" + allowedFiles.join(' ; ') + "</b>",
+                styling: 'fontawesome'
+            });
+            $("#lbupfile").removeClass("btn-primary").addClass("btn-danger");
+            $("#images-to-upload").html('');
+            fileCollection = null;
+            return false;
+        }
+        lblError.html('');
+        $("#lbupfile").removeClass("btn-danger").addClass("btn-primary");
+        return true;
+    }
+
+    function CheckFileSize() {
+        if (CheckFileType()) {
+            $("#file_error").html("");
+            $(".demoInputBox").css("border-color", "#F0F0F0");
+            var file_size = $('#file-upload')[0].files[0].size;
+            if (file_size > 31457280) {
+                //$("#file_error").html(messageFileSize);
+                $("#file_error").css("color", "#FF0000");
+                $("#lbupfile").removeClass("btn-primary").addClass("btn-danger");
+                //$('.progress-bar').addClass('progress-bar-danger').html(messageFileSize);
+                fileCollection = null;
+                return false;
+            }
+            $("#file_error").html('');
+            $("#lbupfile").removeClass("btn-danger").addClass("btn-primary");
+            return true;
+        }
+    }
+
+
+
+
+
+
+    function Updata() {
+        var valid = $('#ImportLading').validationEngine('validate');
+        if (valid == true) {
+            var html = '<div id="confirmCancelOrder" class="bootbox modal fade in"><div class="modal-dialog modal-sm" role="document"><div class="modal-content">';
+            html += '<div class="modal-body">';
+            html += '<div class="row">';
+            html += '<div class="col-md-12"><div>Bạn có muốn Import những vận đơn trong File này?</div></div>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="modal-footer">';
+            html += '<button type="button" class="btn btn-small btn-primary confirm">Tiếp tục</button>';
+            html += '<button type="button" class="btn btn-small btn-danger" data-dismiss="modal">Hủy</button>';
+            html += '</div></div></div>';
+
+            $("#confirmModal").html(html);
+            $("#confirmCancelOrder").modal('show');
+
+            $(".confirm").click(function () {
+                var isCensorship = $('input[name="isCheck"]:checked').val();
+
+
+                $.each(arrLading, function (i, v) {
+                    arrLading[i].IsConsorShip = isCensorship;
+                });
+
+                $("#confirmCancelOrder").modal('hide');
+
+                var FileName = $("#FileName").val();
+
+                Lading.AddLading(arrLading, FileName);
+
+
+            })
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function addCommas(nStr) {
+        var mang = nStr.split(",");
+        var trara = "";
+        for (var item in mang) {
+            trara = trara + mang[item];
+        }
+        return trara;
+    }
+
+    function formatAmountNoDecimals(number) {
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(number)) {
+            number = number.replace(rgx, '$1' + '.' + '$2');
+        }
+        return number;
+    }
+    function formatAmount(number) {
+
+        number = number.replace(/[^0-9]/g, '');
+        number = number.replace(/\./g, '.');
+        x = number.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+
+        return formatAmountNoDecimals(x1) + x2;
+    }
+
+    function validate() {
+
+        if ($("#txtCustomer").val() == "") {
+            $('.error-result').fadeIn();
+            $('#result_message').html("Bạn phải nhập thông tin khách hàng");
+            return false;
+        } else {
+            $('.error-result').fadeOut();
+            //return true;
+        }
+
+        if ($("#dropStore").val() == "") {
+            $('.error-result').fadeIn();
+            $('#result_message').html("Bạn phải chọn kho hàng");
+            return false;
+        } else {
+            $('.error-result').fadeOut();
+            return true;
+        }
+
+        return true;
+    }
+    function HandleBrowseClick() {
+        var fileinput = document.getElementById("browse");
+        $("#ResultPanel").hide();
+        $("#content").hide();
+        if (validate()) {
+            fileinput.click();
+            $("#Submit").show();
+        }
+    }
+    function Handlechange() {
+        var fileinput = document.getElementById("browse").value;
+        var textinput = document.getElementById("filepath");
+        //textinput.value = fileinput.value;
+        $("#filepath").val(fileinput);
+    }
+
+    function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++) {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam) {
+                return sParameterName[1];
+            }
+        }
+    }
+    function LoadCustomer() {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetBusiness")',
+            dataType: 'json',
+            data: {},
+            success: function (states) {
+
+                $.each(states, function (i, state) {
+                    $("#txtCustomer").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                });
+            },
+            error: function (ex) {
+                $("#txtCustomer").append('<option>' + "Khách hàng" + '</option>');
+            }
+        });
+        return false;
+    }
+    $(document).ready(function () {
+        //LoadCustomer();
+        function refreshPaging() {
+            $('#page-selection').bootpag({
+                total: $('#total_page').val(),
+                maxVisible: 10,
+            }).on("page", function (event, num) {
+                Filter(num);
+            });
+        }
+        function Filter(p) {
+            $.ajax({
+                beforeSend: function () {
+                    $('.loading-element').show();
+                },
+                url: '@Url.Action("GetListLadingBillTmp", "ImportLading")',
+                type: 'POST',
+                dataType: 'html',
+                data: {
+                    receivername: $("#txtReceiverName").val(), mobile: $("#txtMobile").val(), file: "",
+                    page: p
+                },
+                success: function (data) {
+                    $('.loading-element').hide();
+                    $("#content").html(data);
+
+                    if (p == 1) refreshPaging();
+                }
+            });
+
+        };
+
+        $("#txtCustomer").change(function () {
+            $("#dropStore").empty();
+            $("#ResultPanel").hide();
+            $("#content").hide();
+            onLoadStore();
+        })
+        var reslt = getUrlParameter("rs");
+        var msgreslt = document.getElementById("ResultPanel");
+        if (reslt != null) {
+
+            if (reslt === "0") {
+                var fileinput = document.getElementById("browse");
+                fileinput.value = "";
+                msgreslt.innerHTML = "Tạo yêu cầu thu gom theo danh sách thành công";
+            } else {
+                if (reslt === "1") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột tên người nhận!";
+                } else if (reslt === "2") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột Khối lượng!";
+                } else if (reslt === "3") {
+                    msgreslt.innerHTML = "Không import được file do lỗi hệ thống!";
+                } else if (reslt === "4") {
+                    msgreslt.innerHTML = "Chưa chọn file import!";
+                } else if (reslt === "5") {
+                    msgreslt.innerHTML = "File import sai định dạng!";
+                } else if (reslt === "6") {
+                    msgreslt.innerHTML = "Dữ liệu cột khối lượng không phải là số!";
+                } else if (reslt === "7") {
+                    msgreslt.innerHTML = "Kiểm tra giá trị cột tổng giá trị hàng hóa!";
+                } else if (reslt === "8") {
+                    msgreslt.innerHTML = "Giá trị hàng hóa không phải là số!";
+                } else if (reslt === "9") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột loại dịch vụ!";
+                } else if (reslt === "10") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột hình thức thanh toán!";
+                } else if (reslt === "11") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột tên sản phẩm!";
+                } else if (reslt === "12") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột tỉnh thành nhận!";
+                } else if (reslt === "13") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột số lượng!";
+                } else if (reslt === "14") {
+                    msgreslt.innerHTML = "Dữ liệu cột số lượng không phải là số!";
+                } else if (reslt === "15") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột quận huyện nhận!";
+                } else if (reslt === "16") {
+                    msgreslt.innerHTML = "Giá trị hàng hóa có giá trị âm!";
+                } else if (reslt === "17") {
+                    msgreslt.innerHTML = "Khối lượng hàng hóa có giá trị âm!";
+                } else if (reslt === "18") {
+                    msgreslt.innerHTML = "Khối lượng hàng hóa có giá trị vượt quá 30 kg!";
+                } else if (reslt === "19") {
+                    msgreslt.innerHTML = "Dữ liệu cột địa chỉ có thông tin bị trống!";
+                } else if (reslt === "20") {
+                    msgreslt.innerHTML = "Kiểm tra dữ liệu cột tổng tiền thu hộ!";
+                } else if (reslt === "21") {
+                    msgreslt.innerHTML = "Dữ liệu cột Tổng tiền thu hộ có giá trị âm!";
+                } else if (reslt === "22") {
+                    msgreslt.innerHTML = "Dữ liệu cột Số điện thoại bị trống!";
+                } else if (reslt === "23") {
+                    msgreslt.innerHTML = "Dữ liệu cột Số điện thoại có độ dài chưa đúng!";
+                } else if (reslt === "24") {
+                    msgreslt.innerHTML = "Dữ liệu cột Số điện thoại không phải là số!";
+                } else if (reslt === "25") {
+                    msgreslt.innerHTML = "Dữ liệu cột Số điện thoại bị âm!";
+                } else if (reslt === "26") {
+                    msgreslt.innerHTML = "Dữ liệu cột Số lượng bị âm!";
+                } else if (reslt === "27") {
+                    msgreslt.innerHTML = "Dữ liệu cột Tổng tiền thu hộ không phải là số!";
+                }
+            }
+        }
+        $("#showProcess").hide();
+        //if (msgreslt.innerText != "") {
+        //    $("#showProcess").show();
+
+        //    var fileinput = document.getElementById("browse");
+        //    fileinput.value = "";
+        //    $("#dropStore").val("");
+        //    $("#txtCustomer").val("");
+        //    Filter(1);
+        //}
+
+
+
+
+    });
+
+
+
+</script>
+<script type="text/javascript">
+    function onLoadStore() {
+        //alert("abc");
+        $("#dropStore").html("");
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetStore")',
+            dataType: 'json',
+            data: { UserId: $("#txtCustomer").val() },
+            success: function (states) {
+                //alert("OK");
+                $("#dropStore").append('<option value="">Kho hàng</option>');
+                if (states.length > 0) {
+                    $.each(states, function (i, state) {
+                        $("#dropStore").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                    });
+                } else {
+                    $("#dropStore").append('<option value="">' + "Kho hàng" + '</option>');
+                }
+            },
+            error: function (ex) {
+                $("#dropStore").append('<option>' + "Kho hàng" + '</option>');
+            }
+        });
+
+    }
+    function CreateLadingWithFile() {
+        var createLading = document.getElementById("approve");
+        var result = confirm("Bạn có đồng ý tạo vận đơn theo danh sách phía dưới không?");
+        if (result) {
+            $.ajax({
+                beforeSend: function () {
+                    $('.loading-element').show();
+                },
+                type: 'GET',
+                url: '@Url.Action("CreateLadingWithFiles")',
+                dataType: 'json',
+                success: function () {
+                    $('.loading-element').hide();
+                    alert("Tạo vận đơn thành công");
+                    createLading.disabled = "disabled";
+                    window.location.href = "@Url.Action("index", "ImportLading")";
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+
+            return true;
+        } else {
+            return false;
+            window.location.href = "@Url.Action("Index", "ImportLading")";
+        }
+
+    }
+
+    function SearchLading(p) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetListLadingBillTmp", "ImportLading")',
+            dataType: 'html',
+            data: {
+                receivername: $("#txtReceiverName").val(), mobile: $("#txtMobile").val(), file: "",
+                page: p
+            },
+
+            success: function (data) {
+                $('.loading-element').hide();
+                $("#content").html(data);
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+
+        });
+
+        return true;
+    }
+
+    function DeleteLadingTmp(id) {
+        var ret = confirm("Bạn có xóa yêu cầu này không?");
+        if (ret) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteLadingTmpFromList")',
+                dataType: 'json',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    alert('Xóa thành công!');
+                    var resltMsg = getUrlParameter("rs");
+                    if (resltMsg != null) {
+                        //alert(resltMsg);
+                        window.location.href = "@Url.Action("Index", "ImportLading", new { rs="0"})";
+                    }
+                    else
+                        window.location.href = "@Url.Action("Index?rs=", "ImportLading")";
+                },
+                error: function (ex) {
+                    alert('Xóa không thành công!!!' + ex);
+                }
+            });
+            return true;
+        } else {
+            return false;
+            window.location.href = "@Url.Action("Index", "ImportLading")";
+        }
+    }
+    function CancelAll() {
+        var rset = confirm("Bạn có hủy danh sách yêu cầu này không?");
+        if (rset) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("CancelLadingWithFiles")',
+                dataType: 'json',
+                success: function () {
+                    alert('Hủy thành công!');
+                    window.location.href = "@Url.Action("Index", "ImportLading")";
+                },
+                error: function (ex) {
+                    alert('Hủy không thành công!!!' + ex);
+                }
+            });
+            return true;
+        } else {
+            return false;
+            window.location.href = "@Url.Action("index", "ImportLading")";
+        }
+    }
+</script>
+

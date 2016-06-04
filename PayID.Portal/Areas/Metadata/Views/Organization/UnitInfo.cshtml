@@ -1,0 +1,613 @@
+﻿<div class="card" style="box-shadow:none;">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" id="tabuser" class="active"><a href="#user" aria-controls="user" role="tab" data-toggle="tab" aria-expanded="true">Danh sách người dùng</a></li>
+        <li id="tabPo" role="presentation"><a href="#po" aria-controls="po" role="tab" data-toggle="tab" aria-expanded="false">Danh sách Đơn vị trực thuộc</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="user">
+            <div class="row">
+                <div id="divUsers">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered datatables dataTable no-footer">
+                            <thead>
+                                <tr class="tr_head">
+                                    <td>#</td>
+                                    <td>Tài khoản</td>
+                                    <td>Thông tin người dùng</td>
+                                    <td>Chức vụ</td>
+                                    <td>Quyền truy cập</td>
+                                    <td>Khóa/Mở</td>
+                                    <td>...</td>
+                                </tr>
+                            </thead>
+                            <tbody id="listUsers">
+                                <tr>
+                                    <td colspan="7">
+                                        <span>Danh sách người dùng</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="divAreas" style="display:none;">
+                    <fieldset>
+                        <legend>Tuyến thu gom</legend>
+                        <div align="right">
+                            <a href="#" title="Thêm phạm vi" id="moreArea"><b><span class="icon-plus-sign-alt"></span></b>Tuyến thu gom</a>
+                        </div>
+                        <br />
+                        <div class="row col-md-12 col-md-offset-2 custyle">
+                            <table class="table table-striped custab">
+                                <thead>
+
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Họ tên</th>
+                                        <th>Điện thoại</th>
+                                        <th>Tuyến đường</th>
+                                        <th>Thời gian</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ghi chú</th>
+                                        <th class="text-center">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listUnitInfo"></tbody>
+
+                            </table>
+                        </div>
+                        <div class="row col-md-12 col-md-offset-2 custyle" id="divMoreArea">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Họ tên</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="unit_info_posname" placeholder="Họ và tên">
+                                    </div>
+                                    <label class="col-sm-2 control-label">Điện thoại</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="unit_info_phone" placeholder="Số điện thoại">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Tuyến đường</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="unit_info_path" placeholder="Tên phố">
+                                    </div>
+                                    <label class="col-sm-2 control-label">Thời gian</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="unit_info_time" placeholder="Tên quận">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Trạng thái</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="unit_info_status" placeholder="Trạng thái">
+                                    </div>
+                                    <label class="col-sm-2 control-label">Ghi chú</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="unit_info_note" placeholder="Ghi chú">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" hidden="hidden">
+                                <input type="text" name="unitinfo_id" id="unitinfo_id" placeholder="" value="" class="hide">
+                            </div>
+                        </div>
+                        <div align="right">
+                            <button type="button" class="btn btn-primary btn-lg save-unit-info">Cập nhật</button>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="po">
+            <div class="row">
+                <div id="divInfoPo">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered datatables dataTable no-footer">
+                            <thead>
+                                <tr class="tr_head">
+                                    <td>#</td>
+                                    <td>Mã đơn vị</td>
+                                    <td>Tên đơn vị</td>
+                                    <td>Địa chỉ</td>
+                                    <td>Khóa/Mở</td>
+                                    <td>...</td>
+                                </tr>
+                            </thead>
+                            <tbody id="listUnit">
+                                <tr>
+                                    <td colspan="6">
+                                        <span>Danh sách Đơn vị trực thuộc</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="divInfo" style="display:none;">
+                    <fieldset>
+                        <legend>Thay đổi thông tin</legend>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">Tên bưu cục</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="unit_info_postcode_name" placeholder="Tên bưu cục">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2">Địa chỉ</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="unit_info_postcode_address" placeholder="Địa chỉ bưu cục" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2">Vai trò</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="unit_info_postcode_task" placeholder="Đường thư số" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="checkbox" name="dv" id="is_dispatch" class="input-preview" value="" data-type="checkbox">
+                                <label for="is_dispatch">Thu gom</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="checkbox" name="dv" id="is_active" class="input-preview" value="" data-type="checkbox">
+                                <label for="is_active">Hoạt động</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-info alert-autocloseable-info" id="alert_info" style="display:none">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong> Cập nhật thành công !</strong>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7">
+                                <button type="button" class="btn btn-primary btn-lg save-postcode">Cập nhật</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+   
+
+    <script>
+        function hideResult() {
+            $('.create-result').fadeOut();
+        }
+        function loadUnitCode() {
+            $.ajax({
+                url: '@Url.Action("GetPosByUnitCode")',
+                dataType: "json",
+                data: { unitcode: $("#posID").val() },
+                success: function (data) {
+
+                    $('#unit_info_postcode').html("<option value=''>Chọn bưu cục</option>");
+                    jQuery.each(data, function (i, val) {
+                        if (val._id != '') {
+                            $('#unit_info_postcode').html($('#unit_info_postcode').html() + "<option value='" + val._id + "'>" + val._id + '-' + val.POSName + "</option>");
+                        }
+                    });
+
+                    return;
+                }
+            });
+            return false;
+        };
+        function isDoubleByte(str) {
+            for (var i = 0, n = str.length; i < n; i++) {
+                if (str.charCodeAt(i) > 255) { return true; }
+            }
+            return false;
+        }
+        function validateUsersInfo() {
+            //alert("Kiem tra");
+            if ($("#user-account").val() == "") {
+                //alert("a");
+                $('#resultMsg').html("Bạn phải nhập thông tin tài khoản");
+                $('.create-result').fadeIn();
+                //$('#result_messages').html("Bạn phải nhập họ tên khách hàng");
+                $("#user-account").focus();
+                return false;
+            }
+            else {
+                // alert("b");
+                $('.create-result').fadeOut();
+            }
+            if ($("#user-account").val().length < 6) {
+                //alert("a");
+                $('#resultMsg').html("Tài khoản có ít nhất 6 ký tự");
+                $('.create-result').fadeIn();
+                //$('#result_messages').html("Tài khoản có ít nhất 6 ký tự");
+                $("#user-account").focus();
+                return false;
+            }
+            else {
+                // alert("b");
+                $('.create-result').fadeOut();
+            }
+
+            if (isDoubleByte($("#user-account").val()) == true) {
+                $('#resultMsg').html("Tài khoản chứa ký tự có dấu");
+                $('.create-result').fadeIn();
+                //$('#result_messages').html("Tài khoản chứa ký tự có dấu");
+                $("#user-account").focus();
+                return false;
+            }
+
+            if ($("#user-password").val() == "") {
+
+                $('#resultMsg').html("Bạn phải nhập thông tin mật khẩu");
+                $('.create-result').fadeIn();
+                //$('#result_messages').html("Bạn phải nhập số điện thoại khách hàng");
+                $("#user-password").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+
+            if ($("#user-password").val().length < 6) {
+
+                $('#resultMsg').html("Mật khẩu nhập không được ít hơn 6 ký tự");
+                $('.create-result').fadeIn();
+                //$('#result_messages').html("Mật khẩu nhập không được ít hơn 6 ký tự");
+                $("#user-password").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+
+            if ($("#user-name").val() == "") {
+
+                $('#resultMsg').html("Bạn phải nhập tên chủ tài khoản");
+                //$('#result_messages').html("Bạn phải nhập tỉnh thành phố lấy hàng");
+                $('.create-result').fadeIn();
+                $("#user-name").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+
+            if ($("#user-address").val() == "") {
+
+                $('#resultMsg').html("Bạn phải nhập thông tin địa chỉ");
+                //$('#result_messages').html("Bạn phải nhập địa chỉ lấy hàng");
+                $('.create-result').fadeIn();
+                $("#user-address").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+
+            if ($("#user-phone").val() == "") {
+
+                $('#resultMsg').html("Bạn phải nhập thông tin điện thoại liên hệ");
+                //$('#result_messages').html("Bạn phải nhập Quận/Huyện lấy hàng");
+                $('.create-result').fadeIn();
+                $("#user-name").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+
+            if ($("#user-office").val() == "") {
+
+                $('#resultMsg').html("Bạn phải nhập thông tin chức vụ");
+                //$('#result_messages').html("Bạn phải nhập Phường/xã lấy hàng");
+                $('.create-result').fadeIn();
+                $("#user-name").focus();
+                return false;
+            }
+            else {
+                $('.create-result').fadeOut();
+            }
+            return true;
+        };
+        function refreshUser() {
+            $("#user-account").val("");
+            $("#user-account").prop("readonly", "");
+            $("#user-name").val("");
+            $("#user-password").val("");
+            $("#user-address").val("");
+            $("#user-phone").val("");
+            $("#user-status").val("");
+            $("#user-office").val("");
+            $("#user-role").val("1");
+            //var addUsr = document.getElementById("divAddUser");
+            //addUsr.style.display = "none";
+            //$('.create-result').fadeOut();
+        }
+        $(document).ready(function () {
+            $('.create-result').fadeOut();
+            $('.alert_pos').fadeOut();
+            $('#divInfo').hide();
+            //$('#divUsers').hide();
+            $('#divAreas').hide();
+            $('#divAddUser').hide();
+            $('#divAddPos').hide();
+            $('#divMoreArea').hide();
+
+            $("#showHide").click(function () {
+                if ($("#user-password").attr("type") == "password") {
+                    $("#user-password").attr("type", "text");
+                } else {
+                    $("#user-password").attr("type", "password");
+                }
+            });
+            $('.add-user').click(function () {
+                if (permissionCate != "" && permissionCate.indexOf("3") == -1) {
+                    alert("Bạn chưa được phân quyền sử dụng các chức năng thêm người dùng");
+                }
+                else {
+                    if (permission != "" && permission.indexOf("10") == -1) {
+                        alert("Bạn chưa được phân quyền sử dụng các chức năng thêm người dùng");
+                    }
+                    else {
+                        $('.create-result').fadeOut();
+                        $('#divAddUser').toggle();
+
+                        $("#user-account").prop("readonly", false);
+                        $("#user-account").val("");
+                        $("#user-name").val("");
+                        $("#user-password").val("");
+                        $("#user-address").val("");
+                        $("#user-phone").val("");
+                        $("#user-status").val("");
+                        $("#user-office").val("");
+                        $('#divAddUser').show();
+                    }
+                }
+            })
+            $('.add-pos').click(function () {
+                if (permissionCate != "" && permissionCate.indexOf("3") == -1) {
+                    alert("Bạn chưa được phân quyền sử dụng các chức năng thêm bưu cục");
+                }
+                else {
+                    if (permission != "" && permission.indexOf("|9|") == -1) {
+                        alert("Bạn chưa được phân quyền sử dụng các chức năng thêm bưu cục");
+                    }
+                    else {
+                        $('#divAddPos').toggle();
+                    }
+                }
+            })
+            $('#moreArea').click(function () {
+                $('#divMoreArea').toggle();
+            })
+            $('.save-user').click(function () {
+                if (validateUsersInfo()) {
+                    //alert("c");
+                    //app.showProcess();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("SaveAccount")',
+                        dataType: 'json',
+                        data: {
+                            _id: $("#user-account").val(),
+                            full_name: $("#user-name").val(),
+                            password: $("#user-password").val(),
+                            role: $("#user-role").val(),
+                            unit_code: $("#current-unit-code").val(),
+                            user_office: $("#user-office").val(),
+                            unit_link: $("#current-unit-link").val() + "." + $('#unit_info_postcode').val(),
+                            address: $("#user-address").val(),
+                            phone: $("#user-phone").val(),
+                            status: 1,
+                            _idEdit: $("#UsrId").val()
+                        },
+                        success: function (data) {
+                            if (data.result == "00") {
+                                $('.create-result').fadeIn();
+                                //$('.alert_pos').fadeIn();
+                                //app.hideProcess();
+                                refreshUser();
+                                var userId = document.getElementById("user-account");
+                                userId.focus();
+                                refreshUserListByUnit($('#current-unit-code').val());
+                                //$('#divAddUser').hide();
+                                setInterval(function () { $('.create-result').fadeOut(); }, 3000);
+                                //$('.create-result').fadeOut();
+                                $("#UsrId").val("");
+                            }
+                            else {
+                                $("#ErrorMsg").html(data.message);
+                                $('.error-user').fadeIn();
+                                setInterval(function () { $('.error-user').fadeOut(); }, 3000);
+                            }
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    return false;
+                }
+
+            });
+            $('.save-unit-info').click(function () {
+                app.showProcess();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("SaveUnitInfo")',
+                    dataType: 'json',
+                    data:
+                        {
+                            _id: $('#unitinfo_id').val(),
+                            name: $('#unit_info_posname').val(),
+                            phone: $('#unit_info_phone').val(),
+                            path: $('#unit_info_path').val(),
+                            time: $('#unit_info_time').val(),
+                            status: $('#unit_info_status').val(),
+                            note: $("#unit_info_note").val(),
+                            unit_code: $("#unitcode").val()
+                        },
+                    success: function (data) {
+
+                        refreshUnitInfo();
+                        $(".legend-user-info").fadeIn();
+
+                    },
+                    error: function (ex) {
+
+                    }
+                });
+                return false;
+            });
+            function validate() {
+                if ($("#post-code").val() == "") {
+                    $('.error-result').fadeIn();
+                    $('#result_message').html("Bạn phải nhập mã bưu cục");
+                    document.getElementById("post-code").focus();
+                    return false;
+                }
+                else {
+                    $('.error-result').fadeOut();
+                }
+
+                if ($("#post-name").val() == "") {
+                    $('.error-result').fadeIn();
+                    $('#result_message').html("Bạn phải nhập tên bưu cục");
+                    document.getElementById("post-name").focus();
+                    return false;
+                }
+                else {
+                    $('.error-result').fadeOut();
+                }
+
+                if ($("#post-address").val() == "") {
+                    $('.error-result').fadeIn();
+                    $('#result_message').html("Bạn phải nhập thông tin địa chỉ bưu cục");
+                    document.getElementById("post-address").focus();
+                    return false;
+                }
+                else {
+                    $('.error-result').fadeOut();
+                }
+                return true;
+            }
+            $('.save-new-pos').click(function () {
+                if (validate()) {
+                    //app.showProcess();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("AddNewPostCode")',
+                        dataType: 'json',
+                        data: {
+                            code: $("#post-code").val(),
+                            name: $("#post-name").val(),
+                            address: $("#post-address").val(),
+                            unitcode: $("#divkeyVal").val(),
+                        },
+                        success: function (data) {
+                            //app.hideProcess();
+                            $(".alert_pos").fadeIn();
+                            $("#post-code").val('');
+                            $("#post-name").val('');
+                            $("#post-address").val('');
+                            //$("#divAddPos").hide();
+                            //setInterval(function () { $('#alert_pos').fadeOut(); }, 2000);
+                            //location.reload();
+                            loadUnitCode();
+                            //setInterval(function () { $('#alert_pos').fadeOut(); }, 2000);
+                            //$('#alert_pos').fadeOut();
+                        },
+                        error: function (ex) {
+                            //app.hideProcess();
+                        }
+                    });
+                    return false;
+                }
+            });
+
+            $('.save-postcode').click(function () {
+                if (permissionCate != "" && permissionCate.indexOf("3") == -1) {
+                    alert("Bạn chưa được phân quyền sử dụng các chức năng sửa bưu cục");
+                }
+                else {
+                    if (permission != "" && permission.indexOf("|9|") == -1) {
+                        alert("Bạn chưa được phân quyền sử dụng các chức năng sửa bưu cục");
+                    }
+                    else {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("SavePostCode")',
+                            dataType: 'json',
+                            data:
+                              {
+                                  _id: $('#unit_info_postcode').val(),
+                                  name: $('#unit_info_postcode_name').val(),
+                                  address: $('#unit_info_postcode_address').val(),
+                                  task: $('#unit_info_postcode_task').val(),
+                                  is_dispatch: document.getElementById("is_dispatch").checked ? true : false,
+                                  is_active: document.getElementById("is_active").checked ? true : false
+                              },
+                            success: function (data) {
+                                $("#alert_info").fadeIn();
+                            },
+                            error: function (ex) {
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+
+            $('#unit_info_postcode').change(function () {
+                $('#divInfo').hide();
+                $('#divUsers').hide();
+                $('#divAreas').hide();
+                $("#alert_info").hide();
+                $("#current-unit-code").val($("#current-parent-unit-code").val());
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetPostCodeInfo")',
+                    dataType: 'json',
+                    data: { post_code: $("#unit_info_postcode").val() },
+                    success: function (data) {
+                        if (data._id != "") {
+                            $('#divInfo').show();
+                            $('#divAddPos').hide();
+                            $('#divpos').hide();
+                            $('#divUsers').show();
+                            $("#current-unit-code").val(data._id);
+                            $('#unit_info_postcode_name').val(data.POSName);
+                            $('#unit_info_postcode_address').val(data.Address);
+                            $('#unit_info_postcode_task').val(data.Task);
+                            document.getElementById("is_dispatch").checked = data.IsDispatch;
+                            document.getElementById("is_active").checked = data.Status;
+                            refreshUserList();
+                            refreshUser();
+                        }
+                        else {
+                            refreshUserListByUnit($('#current-parent-unit-code').val());
+                            $('#divAddPos').show();
+                            $('#divpos').show();
+
+                        }
+                    },
+                    error: function (ex) {
+                        refreshUserListByUnit($('#current-unit-code').val());
+                    }
+                });
+            }
+            );
+
+        });
+
+    </script>

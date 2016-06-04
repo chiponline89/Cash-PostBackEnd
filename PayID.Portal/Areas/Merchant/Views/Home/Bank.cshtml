@@ -1,0 +1,148 @@
+﻿<div class="row">  
+    <a href="#" class="btn btn-block btn-small add-bank"><span class="label label-success"><i style="margin-right:3px;"></i>Thêm ngân hàng</span></a>
+</div>
+<div class="form-content" style="margin-top: 0px">
+    <input type="hidden" value="setting-bank" name="action">
+    <input type="hidden" value="" name="bank_id" id="bank_id">
+
+    <div class="row bank-colapsible" hidden="hidden" id="add_more_bank">
+        <form class="cmxform" id="bankForm" method="get" action="novalidate">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="setting_account_bank_code">Lựa chọn ngân hàng</label>
+                            <select name="account[bank_code]" id="setting_account_bank_code" class="form-control" required>
+                                <option value="">Lựa chọn ngân hàng</option>
+                                <option value="VCB">Ngân hàng TMCP Ngoại Thương Việt Nam(VIETCOMBANK)</option>
+                                <option value="DAB">Ngân hàng Đông Á</option>
+                                <option value="TCB">Ngân hàng Kỹ Thương (TECHCOMBANK)</option>
+                                <option value="VIB">Ngân hàng Quốc tế(VIB)</option>
+                                <option value="MB">Ngân Hàng Quân Đội (MB BANK)</option>
+                                <option value="ICB">Ngân hàng Công Thương Việt Nam(VIETINBANK)</option>
+                                <option value="HDB">Ngân hàng Phát triển Nhà TPHCM (HD BANK)</option>
+                                <option value="EXB">Ngân hàng Xuất Nhập Khẩu(EXIMBANK)</option>
+                                <option value="ACB">Ngân hàng Á Châu (ACB)</option>
+                                <option value="SHB">Ngân hàng Sài Gòn-Hà Nội</option>
+                                <option value="PGB">Ngân hàng Xăng dầu Petrolimex</option>
+                                <option value="TPB">Ngân hàng Tiền Phong</option>
+                                <option value="SCB">Ngân hàng Sài Gòn Thương tín</option>
+                                <option value="MSB">Ngân hàng Hàng Hải</option>
+                                <option value="AGB">Ngân hàng Nông nghiệp & Phát triển nông thôn</option>
+                                <option value="BIDV">Ngân hàng Đầu tư & Phát triển Việt Nam</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="setting_account_bank_address">Chi nhánh ngân hàng</label>
+                            <input type="text" class="form-control" placeholder="Chi nhánh ngân hàng" id="setting_account_bank_address" required>
+                        </div>
+                    </div>
+                    <div class="alert alert-success alert-dismissable bank-result" style="display:none">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <strong> Cập nhật thành công !</strong>
+                    </div>   
+
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="setting_account_bank_user">Tên chủ tài khoản</label>
+                            <input type="text" class="form-control" placeholder="Chủ tài khoản" id="setting_account_bank_user" required>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="setting_account_bank_number">Số tài khoản</label>
+                            <input type="text" placeholder="Số tài khoản" class="form-control" id="setting_account_bank_number" required>
+
+                        </div>
+                    </div>
+                    <div class="row" hidden="hidden">
+                        <div class="col-sm-6">
+                            <input type="text" name="bank_id" id="bank_id" placeholder="" value="" class="hide">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             
+            <div class="row">
+                <div class="col-sm-12">
+                    <label for="">&nbsp;</label>
+                    <button id="btSaveNH" type="submit" class="btn btn-primary"><i class="icon-ok"></i>Lưu</button>
+                    &nbsp; <button type="reset" class="btn btn-default secondary">Nhập lại</button>
+                </div>
+            </div>
+        </form>
+</div>
+    <br />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table table-bordred table-striped">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên ngân hàng</th>
+                            <th>Chi nhánh ngân hàng</th>
+                            <th>Tên chủ tài khoản</th>
+                            <th>Số tài khoản</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listBank">                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#bankForm").validate({
+        lang: 'vi',
+        submitHandler: function (form) {
+            SaveBank();
+        }
+    });
+
+    $().ready(function () {
+        var click = 0;
+        $(".add-bank").click(function () {
+          if(permission!="" && permission.indexOf("23")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng thêm tài khoản ngân hàng");
+             }
+          else{
+            if (click == 1) {
+                $('#add_more_bank').hide();
+                click = 0;
+            }
+            else {
+                $('#add_more_bank').show();
+                click = 1;
+            }
+          }
+        });
+        //----
+
+        //$("#bankForm").validate({
+        //    rules:
+        //    {
+        //        setting_account_bank_code: "required",
+        //        setting_account_bank_number: "required",
+        //        setting_account_bank_user: "required",
+        //        setting_account_bank_address: "required",
+        //    },
+        //    messages: {
+        //        setting_account_bank_code: "Vui lòng nhập tên ngân hàng.",
+        //        setting_account_bank_user: "Vui lòng nhập tên chủ tài khoản.",
+        //        setting_account_bank_number: "Vui lòng nhập số tài khoản.",
+        //        setting_account_bank_address: "Vui lòng nhập chi nhanh ngân hàng.",
+
+        //    }
+        //});
+    });
+</script>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://bccp.vnpost.vn/paycode/paycode.asmx?wsdl" docRef="http://bccp.vnpost.vn/paycode/paycode.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://bccp.vnpost.vn/paycode/paycode.asmx" xmlns:q1="http://vnpost.vn/" binding="q1:PaycodeSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://bccp.vnpost.vn/paycode/paycode.asmx" xmlns:q2="http://vnpost.vn/" binding="q2:PaycodeSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

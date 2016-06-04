@@ -1,0 +1,16 @@
+﻿@{
+    Layout = null;
+}
+@foreach (dynamic user_role in ViewBag.user_role)
+{
+    <tr>
+        <td>#</td>
+        <td>@user_role.role_name</td>
+        <td>@user_role.role_description</td>
+        <td class="text-center">
+            <a data-id="@user_role._id" data-name="@user_role.role_name" data-descreiption="@user_role.role_description" class='btn btn-info btn-xs role-edit' href="#">
+            <span class="glyphicon"></span> Sửa</a>
+            <a href="#" data-idx="@user_role._id" class="button small secondary alert role-remove"><span class="glyphicon"></span> Xóa</a>
+        </td>
+    </tr>
+}

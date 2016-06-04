@@ -1,0 +1,184 @@
+﻿<style>
+    .area_fixed{
+        position:fixed;
+        top:160px;
+        z-index:1000;
+        right:110px;
+    }
+    .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+        padding: 5px;
+        line-height: 1.428571429;
+        vertical-align: top;
+        border-top: 1px solid #dddddd;
+        background-color: floralwhite;
+    }
+    
+</style>
+<div class="row">
+    <div class="form-horizontal" role="form" id="divMain">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Cấp đơn vị</label>           
+            <div class="col-sm-8">
+                <select id="unit_info_postcode" class="form-control">
+                    <option value=" ">Chọn cấp đơn vị</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>        
+    </div>    
+    <div class="legend-user-info" id="divUsers" style="padding-top:15px;">
+        <fieldset>
+            @*Thông tin tài khoản*@
+            <legend>Danh sách chức năng</legend>
+            <table id="mytable" class="table table-bordred table-striped">
+                @*<thead>
+                    <tr>
+                        <th>Tài khoản</th>
+                        <th>Họ tên</th>
+                        <th>Địa chỉ</th>
+                        <th>Điện thoại</th>
+                        <th>Chức vụ</th>
+                        <th>Quyền truy cập</th>
+                        <th>Khóa/Mở</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>*@
+                <tbody id="listfunctions"></tbody>
+            </table>     
+        </fieldset>
+    </div>
+    
+</div>
+<div class="area_fixed" align="right">
+    <div class="row" id="updateAreas">
+        <div class="form-group" align="right">
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-success btn-md save-postcode">Cập nhật</button>
+            </div>
+        </div>
+        <div class="alert alert-info alert-autocloseable-info" id="alert_info" style="display:none">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong id="msgContent" style="margin-top:15px;"> Cập nhật thành công !</strong>          
+            <label id="mes"></label>
+        </div>       
+    </div>
+</div>
+<script>
+    var unit_code = '@(((PayID.Portal.Models.Account)Session["profile"]).UnitCode)';
+
+    $("#updateAreas").hide();
+    function hideResult()
+    {
+        $('.create-result').fadeOut();
+    }
+    function loadUnitCode() {
+        $.ajax({
+            url: '@Url.Action("GetPosByUnitCode")',
+            dataType: "json",
+            data: { unitcode: unit_code},
+            success: function (data) {
+
+                $('#unit_info_postcode').html("<option value=''>Chọn cấp đơn vị</option>");
+                jQuery.each(data, function (i, val) {
+                    if (val._id >0) {
+                        $('#unit_info_postcode').html($('#unit_info_postcode').html() + "<option value='" + val._id + "'>" + val.POSName + "</option>");
+                    }
+                });
+
+                return;
+            }
+        });
+        return false;
+    };
+    loadUnitCode();
+    $(document).ready(function () {
+
+        $('#unit_info_postcode').change(function () {
+           if(permissionCate!="" && permissionCate.indexOf("7")==-1)
+             {
+                  alert("Bạn chưa được phân quyền sử dụng chức năng phân quyền");
+                  $('#unit_info_postcode').val('');
+             }
+            else{
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetFunctionList")',
+                dataType: 'html',
+                 data: { unit_code:  $('#unit_info_postcode').val()},
+                success: function (data) {
+                   $("#listfunctions").html(data);
+                   $("#updateAreas").show();
+                },
+                error: function (ex) {
+                   alert("Có lỗi xảy ra trong quá trình lấy dữ liệu!");
+                }
+            });
+          }
+        });
+
+    });
+
+    $('.save-postcode').click(function () {
+        var ids = '';
+        $('.checkMe').each(function (index, obj) {
+            if ($(this).is(":checked")) {
+                ids = ids + $(this).data("id") + "|";
+            }
+        });
+            alert(ids);
+        var cate='';
+        $('.toggle-single').each(function (index, obj) {
+            if ($(this).is(":checked")) {
+                cate = cate + $(this).data("id") + "|";
+            }
+        });
+         var ret=confirm("Bạn có chắc chắn với những thiết lập quyền đã chọn?");
+      if(ret)
+      {
+         $.ajax({
+            url: '@Url.Content("~/Systems/Decentral/SaveUnitInfo")',
+            type: 'POST',
+            dataType: "json",
+            data: {
+                id: ids,
+                cate:cate,
+                unit_code: $("#unit_info_postcode").val()
+            },
+            success: function (data) {
+                if(data.response_code=="00")
+                {
+                    //$("#alert_info").show();
+                    ShowAlert("Success",data.response_message)
+                }
+                else
+                 {
+                      ShowAlert("Fail",data.response_message)
+                 }
+            }
+        });
+      }
+       // location.reload();
+    });
+
+    function ShowAlert(typeMes, mes) {
+        if (typeMes == "Success") {
+            $("#alert_info").removeClass("alert-info");
+            $("#alert_info").removeClass("alert-danger");
+            $("#alert_info").addClass("alert-success");
+        } else {
+            $("#alert_info").removeClass("alert-info");
+            $("#alert_info").removeClass("alert-success");
+            $("#alert_info").addClass("alert-danger");
+        }
+        // alert(mes);
+        $("#msgContent").html(mes);
+        //$("#mes").html(mes);
+
+        $("#alert_info").show();
+
+        window.setTimeout(function () {
+            $("#alert_info").hide();
+        }, 5000);
+    }
+</script>

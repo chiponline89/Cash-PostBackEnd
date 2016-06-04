@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayID.Portal", "PayID.Portal\PayID.Portal.csproj", "{2F487624-5357-4F4A-891D-6F09168DC5C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayID.DataHelper", "PayID.DataHelper\PayID.DataHelper.csproj", "{9706996A-E00D-4D59-A8ED-6D51C96152E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayID.Common", "PayID.Common\PayID.Common.csproj", "{EBBF6288-A4A6-4D36-98C8-2CEA4B19C2FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayID.API", "PayID.API\PayID.API.csproj", "{4771137F-545B-406E-8B4E-52C5A892CCEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayID.Partner", "PayID.Partner\PayID.Partner.csproj", "{AFB979A5-10CE-4C0D-B982-1258A8CA035A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayID.Core", "..\..\BackEnd\PayID.Core\PayID.Core.csproj", "{4751241C-D6EA-4C33-AF97-C0FDCBC87ECE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F487624-5357-4F4A-891D-6F09168DC5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F487624-5357-4F4A-891D-6F09168DC5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F487624-5357-4F4A-891D-6F09168DC5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F487624-5357-4F4A-891D-6F09168DC5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9706996A-E00D-4D59-A8ED-6D51C96152E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9706996A-E00D-4D59-A8ED-6D51C96152E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9706996A-E00D-4D59-A8ED-6D51C96152E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9706996A-E00D-4D59-A8ED-6D51C96152E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBBF6288-A4A6-4D36-98C8-2CEA4B19C2FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBBF6288-A4A6-4D36-98C8-2CEA4B19C2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBBF6288-A4A6-4D36-98C8-2CEA4B19C2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBBF6288-A4A6-4D36-98C8-2CEA4B19C2FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4771137F-545B-406E-8B4E-52C5A892CCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4771137F-545B-406E-8B4E-52C5A892CCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4771137F-545B-406E-8B4E-52C5A892CCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4771137F-545B-406E-8B4E-52C5A892CCEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFB979A5-10CE-4C0D-B982-1258A8CA035A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFB979A5-10CE-4C0D-B982-1258A8CA035A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFB979A5-10CE-4C0D-B982-1258A8CA035A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFB979A5-10CE-4C0D-B982-1258A8CA035A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4751241C-D6EA-4C33-AF97-C0FDCBC87ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4751241C-D6EA-4C33-AF97-C0FDCBC87ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4751241C-D6EA-4C33-AF97-C0FDCBC87ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4751241C-D6EA-4C33-AF97-C0FDCBC87ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

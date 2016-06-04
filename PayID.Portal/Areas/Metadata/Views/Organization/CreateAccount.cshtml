@@ -1,0 +1,110 @@
+﻿
+@model PayID.Portal.Models.Account
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    @if (Model.Id > 0)
+    {
+        <h2 id="modaltitle" class="modal-title">Sửa thông tin Người dùng</h2>
+    }
+    else
+    {
+        <h2 id="modaltitle" class="modal-title">Thêm mới người dùng</h2>
+    }
+</div>
+@using (Ajax.BeginForm("UpdateAccount", "Organization", new { Area = "Metadata" }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "Po.AccountOnsuccess" }, new { @id = "fCreateAccount", @autocomplete = "off" }))
+{
+    <div class="modal-body" style="padding:0px !important;">
+        <div class="alert alert-info" style="margin-bottom:0px !important; border-width:0px;">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.UnitLink)
+            @Html.HiddenFor(x => x.UnitCode)
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="UserName">Tên tài khoản&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @if (Model.Id > 0)
+                            {
+                                @Html.HiddenFor(x => x.UserName)
+                                @Html.TextBoxFor(x => x.UserName, new { @class = "form-control validate[required, funcCall[common.CheckCharSpecial]]", @placeholder = "Tên tài khoản", @disabled = "disabled" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(x => x.UserName, new { @autocomplete = "off", @class = "form-control validate[required, funcCall[common.CheckCharSpecial]]", @placeholder = "Tên tài khoản" })
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.Id == 0)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="PassWord">Mật khẩu&nbsp;<span style="color:#f48260;">(*)</span></label>
+                                <input type="text" style="display:none;" />
+                                @Html.PasswordFor(x => x.Password, new { @class = "form-control validate[required]", @placeholder = "Mật khẩu", @autocomplete = "off", })
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="FullName">Họ và tên&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @Html.TextBoxFor(x => x.FullName, new { @class = "form-control validate[required, funcCall[common.CheckCharSpecial]]", @placeholder = "Họ và tên" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="PhoneNumber">Số điện thoại&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control validate[required, funcCall[common.CheckMobileNumber]]", @placeholder = "Số điện thoại" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="Address">Địa chỉ&nbsp;<span style="color:#f48260;">(*)</span></label>
+                            @Html.TextAreaFor(x => x.Address, new { @class = "form-control validate[required]", @placeholder = "Địa chỉ" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="Role">Phân quyền</label>
+                            @Html.DropDownListFor(x => x.Role, (IEnumerable<SelectListItem>)ViewBag.ListRole, new { @class = "form-control validate[required]" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="UserOfficer">Chức vụ</label>
+                            @Html.TextBoxFor(x => x.UserOfficer,  new { @class = "form-control validate[required]" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+<div class="modal-footer">
+    <div class="row">
+        <div class="col-md-6" style="text-align:left;">
+            <button type="button" onclick="Po.SubmitAccount()" class="btn btn-primary"><i class="fa fa-check"></i> Lưu</button>
+        </div>
+        <div class="col-md-6" style="float:right;">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Thoát</button>
+        </div>
+    </div>
+</div>

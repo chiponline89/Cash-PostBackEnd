@@ -1,0 +1,141 @@
+﻿
+<div class="table-responsive">
+    <div class="form-group">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Đơn vị</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="unit_info_address" placeholder="Bưu điện tỉnh A/Huyện A1" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Bưu cục</label>
+            <div class="col-sm-10">
+                <select id="unit_info_postcode" class="form-control">
+                    <option>Chọn bưu cục</option>
+                </select>
+            </div>
+        </div>
+    </div>
+   
+</div>
+<div class="row" id="user_info">
+    
+    <input type="hidden" value="" class="form-control" id="unitcode" readonly="readonly" name="concept">
+    <fieldset>
+        <legend>Thông tin tài khoản</legend>
+        <div align="right" style="padding-bottom:10px;">
+            <a href="#" title="Thêm người dùng" class="add-user"><b><span class="icon-plus-sign-alt"></span></b>Người dùng</a> <br />
+        </div>
+        <table id="mytable" class="table table-bordred table-striped">
+            <thead>
+                <tr>
+                    <th>Tài khoản</th>
+                    <th>Họ tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Điện thoại</th>
+                    <th>Chức vụ</th>
+                    <th>Quyền truy cập</th>
+                    <th>Khóa/Mở</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="listUsers"></tbody>
+        </table>
+        <div class="panel-body form-horizontal payment-form">
+            <div class="row">
+                <div class="form-group">
+                    <label for="concept" class="col-sm-2 control-label">Tài khoản</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="user-account" name="concept">
+                    </div>
+             
+                    <label for="amount" class="col-sm-2 control-label">Mật khẩu</label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control pwd" id="user-password" name="amount">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">Họ tên</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="user-name" name="description">
+                    </div>
+             
+                    <label for="description" class="col-sm-2 control-label">Địa chỉ</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="user-address" name="description">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">Điện thoại</label>
+                    <div class="col-sm-4">
+                        <input type="text" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" class="form-control" id="user-phone" name="description">
+                    </div>
+              
+                    <label for="description" class="col-sm-2 control-label">Chức vụ</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="user-office" name="description">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="role_id" class="col-sm-2 control-label">Phân quyền</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="user-role" name="status">
+                            <option>Admin</option>
+                            <option>Trưởng đơn vị</option>
+                            <option>Chăm sóc Khách hàng</option>
+                            <option>Vận hành</option>
+                            <option>Nghiệp vụ</option>
+                            <option>Nhân viên</option>
+                            <option>Bưu tá</option>
+                        </select>
+                    </div>
+                </div>              
+            </div>
+            <div align="right">
+
+                <button type="button" class="btn btn-primary btn-lg btn-block save-user">Cập nhật</button>
+
+            </div>
+        </div>
+    </fieldset>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.save-user').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaveAccount")',
+                dataType: 'json',
+                data: {
+                    _id: $("#user-account").val(),
+                    full_name: $("#user-name").val(),
+                    password: $("#user-password").val(),
+                    role: $("#user-role").val(),
+                    unit_code: $("#unitcode").val(),
+                    unit_info_address: $('#unit_info_address').text(),
+                    unit_info_postcode: $('#unit_info_postcode').text(),
+                    user_office: $("#user-office").val(),
+                    address: $("#user-address").val(),
+                    phone: $("#user-phone").val(),
+                    status: 0,
+                    _idEdit: $("#UsrId").val()
+                },
+                success: function (data) {
+                    refreshUserList();
+                },
+                error: function (ex) {
+
+                }
+            });
+            return false;
+        });
+
+    });
+</script>

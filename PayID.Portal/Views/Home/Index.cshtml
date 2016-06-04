@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@*@section TopMenu{
+    <li class="active"><a href="#">Trang chủ</a></li>
+    <li>@Html.ActionLink("Quản lý Khách hàng", "Index", "Home", new { area = "merchant" }, null)</li>
+    <li>@Html.ActionLink("Yêu cầu Dịch vụ", "Index", "Home", new { area = "servicerequest" }, null)</li>
+    <li>@Html.ActionLink("Quản lý Danh mục", "Index", "Home", new { area = "metadata" }, null)</li>
+}*@
+<style>
+    body {      
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 14px;    
+    }
+    a {
+        color: #0088cc;
+        text-decoration: none;
+    }
+    .label-info, .badge-info {
+        background-color: #3a87ad;
+    }
+    .badge {
+        padding-left: 9px;
+        padding-right: 9px;        
+        -moz-border-radius: 9px;
+        border-radius: 9px;
+    }
+    .label, .badge {
+        display: inline-block;
+        padding: 2px 4px;
+        font-size: 11.844px;
+        font-weight: bold;
+        line-height: 14px;
+        color: #ffffff;
+        vertical-align: baseline;
+        white-space: nowrap;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        
+    }
+</style>
+<div class="actions cm-sticky-scroll" data-ce-top="5" data-ce-padding="73" id="actions_panel" style="">
+    <div class="title pull-left">
+        <h2 style="font-family:-webkit-body;" title="Dashboard">Thống kê sản lượng trong ngày @DateTime.Now.ToString("dd/MM/yyyy")</h2>
+    </div>
+</div>
+<div class="content content-no-sidebar no-sidebar ufa" style="margin:auto;">
+    <div class="content-wrap">
+        <div class="dashboard" id="dashboard">
+            <div class="dashboard-row-bottom">
+                <table class="dashboard-card-table dashboard-card-table-center nowrap">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="dashboard-card">
+                                    <div class="dashboard-card-title">Tin tạo mới</div>
+                                    <div class="dashboard-card-content">
+                                        <h3><a href="@Url.Content("~/ServiceRequest/Request/List?status=C1")" ><span id="idC1"></span></a></h3>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dashboard-card">
+                                    <div class="dashboard-card-title">Tin mới chấp nhận</div>
+                                    <div class="dashboard-card-content">
+                                        <h3><a href="@Url.Content("~/ServiceRequest/Request/List?status=C5")"><span id="idC5"></span></a></h3>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dashboard-card">
+                                    <div class="dashboard-card-title">Tin chờ lấy hàng</div>
+                                    <div class="dashboard-card-content">
+                                        <h3><a href="@Url.Content("~/ServiceRequest/Request/List?status=C6")"><span id="idC6"></span></a></h3>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dashboard-card">
+                                    <div class="dashboard-card-title">Tin hủy</div>
+                                    <div class="dashboard-card-content">
+                                        <h3><a href="@Url.Content("~/ServiceRequest/Request/List?status=C8")"><span id="idC8"></span></a></h3>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-lg-12" align="right">
+        <h7>@ViewBag.Local</h7>
+    </div>
+</div>*@
+
+
+<script>
+    $(document).ready(function () {
+        
+        Quantity();
+    });
+    function Quantity() {        
+        $.ajax({
+            url: '@Url.Content("~/Home/Quantity")',
+            contentType: 'application/html; charset=utf-8',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .success(function (data) {            
+            $('#idC1').text(data.C1);
+            $('#idC5').text(data.C5);
+            $('#idC6').text(data.C6);
+            $('#idC8').text(data.C8);
+        })
+    }
+</script>
